@@ -36,13 +36,13 @@ function randomness_salting(quote_number){
 function days_since_epoch(){
     var now = new Date();
     let tz_epoch_ms = now.valueOf() - now.getTimezoneOffset() * 60 * 1000 ; // getTimezoneOffset returns minutes!
-    return tz_epoch_ms / ( 24 * 60 * 60 * 1000 );
+    return parseInt(tz_epoch_ms / ( 24 * 60 * 60 * 1000 ));
 }
 function day_of_year_hash(quote_number){
     var now = new Date();
-    let day_stuff = Math.pow(now.getDate(),3);
-    let month_stuff = Math.pow(now.getMonth(),2);
-    let year_stuff = now.getFullYear();
+    let day_stuff = Math.pow(parseInt(now.getDate()),3);
+    let month_stuff = Math.pow(parseInt(now.getMonth()),2);
+    let year_stuff = parseInt(now.getFullYear());
     let hash_salt = (include_randomness)? randomness_salting(quote_number) : 0;
     return (day_stuff + month_stuff + year_stuff + hash_salt) % quote_number;
 }
@@ -53,7 +53,7 @@ function epoch_days_hash(quote_number){
 function get_todays_hash(quote_number) {
     // generate the quote hash
     let hash_salt = (include_randomness)? randomness_salting(quote_number) : 0;
-    return ( epoch_days_hash(quote_number) * day_of_year_hash(quote_number) + hash_salt) % quote_number;
+    return ( parseInt(epoch_days_hash(quote_number)) * parseInt(day_of_year_hash(quote_number)) + hash_salt) % quote_number;
 }
 
 function get_quote_daily(source_index){
