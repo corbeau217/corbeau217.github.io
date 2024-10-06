@@ -12,10 +12,6 @@ html {
 img {
     box-shadow: 5px 5px 3px #1f1f1f;
 }
-li {
-    margin-top:7px;
-    margin-bottom:7px;
-}
 
 
 
@@ -23,7 +19,7 @@ li {
 body:not(.body_hiding_style) {
     display: grid;
     grid-template-rows: auto auto auto;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 15% auto auto auto;
 }
 .body_hiding_style{
     display:inherit;
@@ -34,26 +30,35 @@ header:not(.header_hidden) {
     display: grid;
     grid-column: 1 / span 4;
     grid-template-columns: auto auto auto;
+    grid-template-rows: auto;
     border-bottom: 2px solid #c1d4ed;
+    overflow:hidden;
+    content: unset;
 }
 .header_hidden {
     display: none;
 }
-#top_header_logo {
+.top_header_logo {
+    display: block;
     margin: 5px;
     padding: 5px;
     grid-column: 1 / span 1;
 }
+.top_header_logo_img {
+    max-height: 100%;
+}
 #top_header_text {
     padding: 5px;
     grid-column: 2 / span 2;
+    text-align: center;
+    display: block;
 }
 
 /* ===== NAV TREE ===== */
 nav:not(.nav_hidden) {
     grid-column: 1 / span 1;
-    display: grid;
-    grid-template-columns: auto;
+    display: flex;
+    flex-direction: column;
     grid-auto-flow: row dense;
     align-content:flex-start;
 }
@@ -64,6 +69,7 @@ nav:not(.nav_hidden) {
     display: block;
     grid-row: auto;
     margin: 5px;
+    max-width: 100%;
     text-align: center;
     background-color: #304d75;
     box-shadow: 3px 3px 2px #131e2f;
@@ -72,6 +78,7 @@ nav:not(.nav_hidden) {
     display: block;
     margin: 3px;
     padding: 5px;
+    max-width: 100%;
     border-bottom: 2px solid #acc5df;
     border-left: 2px solid #acc5df;
     text-align: center;
@@ -80,21 +87,20 @@ nav:not(.nav_hidden) {
 
 /* ===== MAIN BODY ===== */
 .content_body {
-    /* display: flex; */
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
-    /* flex-direction: column-reverse; */
-}
-main {
+    display: block;
+    flex-wrap: wrap;
     border-left: 2px solid #c1d4ed;
     grid-column: 2 / span 3;
     padding: 5px;
-    overflow: scroll;
+    align-content: left;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-content:flex-start;
 }
 .sectioned_content_outter:not(.section_hidden) {
-    display: block;
-    min-width:fit-content;
+    display:block;
+    max-width: 500px;
     background-color: #0c2547;
     margin: 7px;
     padding: 5px;
@@ -108,6 +114,7 @@ main {
     padding: 5px;
     border-top: 2px solid #8cb0de;
     border-left: 2px solid #8cb0de;
+    max-width:100%;
     display: grid;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto auto;
@@ -120,17 +127,25 @@ main {
     border-right: 2px solid #7297c6;
     grid-row: 1 / span 1;
     grid-column: 1 / span 1;
-    height: 7em;
+}
+.sectioned_content_thumbnail_img {
+    max-width: 100%;
+    box-shadow: 4px 4px 3px #1f1f1f;
 }
 .sectioned_content_heading {
     background-color: #0c2547;
+    text-wrap: nowrap;
+    display: block;
+    align-content: left;
+    text-align: left;
+}
+.sectioned_content_heading_text{
     padding: 5px;
     margin-right: 5px;
     border-bottom: 2px solid #7297c6;
     border-right: 2px solid #7297c6;
-    grid-row: 1 / span 1;
-    grid-column: 2 / span 2;
-    text-wrap: nowrap;
+    align-content: left;
+    text-align: left;
 }
 .sectioned_content_body {
     background-color: #0c2547;
@@ -143,10 +158,13 @@ main {
 }
 #meditations_daily_quote, #taoteching_daily_quote {
     margin-left: 2em;
+    display: block;
 }
 
 .quote_text_italics_elem {
-    padding-left: 3em;
+    margin-left: 3em;
+    display: block;
+    word-wrap: normal;
 }
 
 
@@ -156,7 +174,7 @@ footer:not(.footer_hidden){
     border-top: 2px solid #c1d4ed;
     text-align: center;
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
 }
 .footer_hidden {
     display: none;
