@@ -1,20 +1,33 @@
 
 #meditations_daily_quote, #taoteching_daily_quote {
     display: block;
-    max-width: 100%;
+    max-width: 400px;
     max-height:100%;
     margin-left: 2em;
-}
-.sectioned_content_heading {
-    font-size: 1.5em;
+    border-left: 2px solid #ffb570;
+    padding-left: 1em;
+    margin-left: unset;
+    /* border-bottom: 2px solid #ffb570; */
 }
 .quote_reference_elem {
     font-size: 1.75em;
+
+    border-bottom: 2px solid #ffb570;
+    
+    padding-left: 1em;
+    padding-bottom: 1em;
+    margin-left: unset;
 }
 .quote_text_italics_elem {
+    display: block;
     font-style: italic;
     font-size: 1.25em;
-    display: block;
-    margin-left: 3em;
+    
+    border-top: 2px solid #ffb570;
+    border-left: 2px solid #ffb570;
+    
+    padding-top: 1em;
+    padding-left: 1em;
+    margin-left: 2em;
     word-wrap: normal;
 }

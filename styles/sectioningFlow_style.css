@@ -6,15 +6,17 @@
     border-left: 2px solid #c1d4ed;
     grid-column: 2 / span 3;
     padding: 5px;
-    align-content: left;
     text-align: left;
     display: flex;
     flex-direction: row dense;
-    align-content:flex-start;
+    
+    align-content: left flex-start;
+    align-items:flex-start;
 }
+/* ======== container handles ======== */
 .sectioned_content_outter:not(.section_hidden) {
-    display:inline-flexbox;
-    max-width: 500px;
+    display:block;
+    /* max-width: 500px; */
     background-color: #0c2547;
     margin: 7px;
     padding: 5px;
@@ -34,9 +36,11 @@
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto auto;
 }
+/* ======== thumbnail styles ======== */
 .sectioned_content_thumbnail {
     background-color: #0c2547;
     padding: 5px;
+    max-width: 150px;
     margin-right: 5px;
     border-bottom: 2px solid #7297c6;
     border-right: 2px solid #7297c6;
@@ -47,12 +51,15 @@
     max-width: 100%;
     box-shadow: 4px 4px 3px #1f1f1f;
 }
+/* ======== heading styles ======== */
 .sectioned_content_heading {
     background-color: #0c2547;
-    text-wrap: nowrap;
+    text-wrap:nowrap;
+    max-width: 450px;
     display: block;
     align-content: left;
     text-align: left;
+    font-size: 1.5em;
 }
 .sectioned_content_heading_text{
     padding: 5px;
@@ -62,6 +69,7 @@
     align-content: left;
     text-align: left;
 }
+/* ======== main content of the card ======== */
 .sectioned_content_body {
     background-color: #0c2547;
     padding: 5px;

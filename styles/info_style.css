@@ -3,15 +3,24 @@ li {
     margin-top:7px;
     margin-bottom:7px;
 }
+
+/* .sectioned_content_body {
+    margin-left: unset;
+} */
 #info_quote_credits {
-    margin-left: 2em;
     display: block;
+    padding-left: 2em;
+    
+}
+.info_quote_reference_elem {
+    padding-left: 2em;
 }
 
-
 .info_quote_text_italics_elem {
-    font-style: italic;
     display: block;
-    margin-left: 3em;
+    font-style: italic;
     word-wrap: normal;
+    padding-left: 2em;
+    margin-left: 3em;
+    
 }
