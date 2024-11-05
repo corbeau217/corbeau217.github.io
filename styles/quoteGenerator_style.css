@@ -1,0 +1,20 @@
+
+#meditations_daily_quote, #taoteching_daily_quote {
+    display: block;
+    max-width: 100%;
+    max-height:100%;
+    margin-left: 2em;
+}
+.sectioned_content_heading {
+    font-size: 1.5em;
+}
+.quote_reference_elem {
+    font-size: 1.75em;
+}
+.quote_text_italics_elem {
+    font-style: italic;
+    font-size: 1.25em;
+    display: block;
+    margin-left: 3em;
+    word-wrap: normal;
+}

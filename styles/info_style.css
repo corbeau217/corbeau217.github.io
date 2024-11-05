@@ -7,3 +7,11 @@ li {
     margin-left: 2em;
     display: block;
 }
+
+
+.info_quote_text_italics_elem {
+    font-style: italic;
+    display: block;
+    margin-left: 3em;
+    word-wrap: normal;
+}
