@@ -19,13 +19,12 @@
     font-style: bold;
     font-size: 2em;
 
-    border-right: 2px solid #9b612a;
+    border: 2px solid #9b612a;
     border-left: unset;
+    border-bottom: unset;
 
-    margin-right: 0.5em;
-    padding-right: 0.5em;
-    margin-left: unset;
-    padding-left: unset;
+    margin: 0.75em;
+    padding: 0.5em;
     text-align: right;
 }
 
@@ -33,17 +32,16 @@
     display: block;
     word-wrap: normal;
 
+    border: 2px solid #9b612a;
     border-right: unset;
-    border-left: 2px solid #9b612a;
+    border-top: unset;
 
     font-family: monospace;
     font-style: italic;
     font-size: 1.75em;
 
-    margin-right: unset;
-    padding-right: unset;
-    margin-left: 0.5em;
-    padding-left: 0.5em;
+    margin: 0.75em;
+    padding: 0.5em;
     text-align: left;
 }
 
@@ -58,7 +56,27 @@
     margin-right: 2em;
     text-align: left;
 }
-.daily_inline_quote {
+.daily_textbody_quote_line_elem {
     font-style: normal;
-    font-size: 1.05em;
+    /* font-size: 1.05em; */
+    margin-left: 2em;
+}
+
+
+/* ======= the listing styles ======= */
+.daily_textbody_list, .daily_textbody_subquote_elem {
+    border-left: 2px solid #9b612a;
+}
+.daily_textbody_list_elem {
+    /* border: 2px solid #9b612a;
+    border-right: unset;
+    border-bottom: unset; */
+    /* border-top: unset; */
+    
+    margin: 0.75em;
+    margin-top:unset;
+    padding: 0.5em;
+}
+.daily_textbody_sublist_elem{
+    border: unset;
 }
