@@ -12,7 +12,7 @@ import { FRAGMENT_SHADER_SRC } from "./fragmentShader.js";
 window.addEventListener(
     "load",
     (event) => {
-        console.log("starting app");
+        console.log("starting webgl app");
         startApp();
     }
 );
@@ -223,7 +223,7 @@ function startApp() {
     // ======== prepare the canvas stuffs
 
     // weird way to grab the canvas element, shouldnt we getElementById?
-    const canvas = document.querySelector("#webgl_canvas");
+    const canvas = document.querySelector("#webgl_canvas_primary");
     // init the GL context
     const gl = canvas.getContext("webgl");
 

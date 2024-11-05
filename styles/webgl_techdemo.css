@@ -3,7 +3,7 @@ li {
     margin-top:7px;
     margin-bottom:7px;
 }
-#webgl_techdemo_container {
+.webgl_techdemo_container {
     margin-left: 2em;
     display: block;
 }
@@ -16,6 +16,6 @@ li {
 .sectioned_content_body {
     display: block;
 }
-#webgl_canvas {
+#webgl_canvas_primary {
     display: block;
 }

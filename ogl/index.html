@@ -14,6 +14,9 @@
         <!-- basic favicon -->
         <link rel="icon" href="/img/favicon32.ico" />
         <!-- ... -->
+        <!-- navigation menu building -->
+        <script src="/scripts/menu_builder.js" type="module"></script>
+        <!-- ... -->
         <link rel="stylesheet" href="/styles/globalStyle.css">
         <!-- <link rel="stylesheet" href="/styles/info_style.css"> -->
         <link rel="stylesheet" href="/styles/techdemo.css">
@@ -43,12 +46,8 @@
         </header>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <nav class="menu">
-            <!-- ============================================= -->
-            <div class="nav_link"><a href="/" class="nav_link_anchor">HOME</a></div>
-            <div class="nav_link"><a href="/info/" class="nav_link_anchor">INFO</a></div>
-            <div class="nav_link"><a href="/ogl/" class="nav_link_anchor">GRAPHICS</a></div>
-            <!-- ============================================= -->
+        <nav id="navMenu">
+            <!-- generated on page load -->
         </nav>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
@@ -62,7 +61,7 @@
                     <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/ogl/webgl_techdemo_dreenk/img/thumbnail.png" alt="[...]" /></div>
                     <div class="sectioned_content_heading"><a href="/ogl/webgl_techdemo_dreenk/"><h3 class="sectioned_content_heading_text">WebGL 3D tech demo</h3></a></div>
                     <div class="sectioned_content_body">
-                        <div id="techdemo_brief">
+                        <div class="techdemo_brief">
                             <p class="brief_heading_elem">Summary:</p>
                             <p class="brief_textbody_elem"><i>Simple demonstration of a can rotating around in 3D</i></p>
                             <p class="brief_heading_elem">Technologies:</p>

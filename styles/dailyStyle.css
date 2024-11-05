@@ -1,0 +1,46 @@
+.sectioned_content_heading {
+
+    font-family: monospace;
+}
+
+.daily_post {
+    display: block;
+    max-width: 100%;
+    max-height:100%;
+    margin-left: 2em;
+}
+.daily_heading_elem {
+    display: block;
+    word-wrap: normal;
+}
+.daily_textbody_elem, .daily_textbody_list {
+    display: block;
+    word-wrap:normal;
+    font-style: italic;
+    font-size:1.2em;
+    margin-left: -0.5em;
+}
+
+
+.daily_heading_elem {
+    font-family: monospace;
+    font-style: bold;
+    font-size: 2em;
+
+    margin-right: 1em;
+    text-align: right;
+}
+
+
+.daily_heading_theme {
+    font-family: monospace;
+    font-style: italic;
+    font-size: 1.75em;
+
+    margin-left: -1em;
+    text-align: left;
+}
+.daily_inline_quote {
+    font-style: normal;
+    font-size: 1.05em;
+}
