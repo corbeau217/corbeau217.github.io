@@ -4,15 +4,15 @@
     max-width: 400px;
     max-height:100%;
     margin-left: 2em;
-    border-left: 2px solid #ffb570;
+    border-left: 2px solid #9b612a;
     padding-left: 1em;
     margin-left: unset;
-    /* border-bottom: 2px solid #ffb570; */
+    /* border-bottom: 2px solid #9b612a; */
 }
 .quote_reference_elem {
     font-size: 1.75em;
 
-    border-bottom: 2px solid #ffb570;
+    border-bottom: 2px solid #9b612a;
     
     padding-left: 1em;
     padding-bottom: 1em;
@@ -23,8 +23,8 @@
     font-style: italic;
     font-size: 1.25em;
     
-    border-top: 2px solid #ffb570;
-    border-left: 2px solid #ffb570;
+    border-top: 2px solid #9b612a;
+    border-left: 2px solid #9b612a;
     
     padding-top: 1em;
     padding-left: 1em;
