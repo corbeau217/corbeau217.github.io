@@ -6,6 +6,10 @@
     color: #ffb570;
     text-shadow: 2px 2px 2px #2a1c0f;
 }
+code {
+    font-family: 'Courier New', Courier, monospace;
+    font-style: normal;
+}
 html {
     background: #0b2c5b;
 }
