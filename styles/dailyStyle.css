@@ -80,3 +80,12 @@
 .daily_textbody_sublist_elem{
     border: unset;
 }
+
+/* ======= line stylings ======= */
+.hr_list_elem_seperating {
+    border: unset;
+    border-top: 3px inset #9b612a;
+    border-bottom: 3px inset #9b612a;
+
+    padding-top: 3px;
+}
