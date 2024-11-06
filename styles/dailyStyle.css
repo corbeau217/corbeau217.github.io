@@ -3,12 +3,13 @@
 .sectioned_content_heading {
     font-family: monospace;
 }
+.sectioned_content_body {
+    max-width: 60em;
+}
 
 /* ======= body styles ======= */
 .daily_post {
     display: block;
-    max-width: 700px;
-    max-height:100%;
     margin-left: 2em;
     overflow: clip;
 }
@@ -46,11 +47,17 @@
 }
 
 /* ======= content styles ======= */
+.daily_textbody_elem {
+    font-size: 1.2em;
+}
 .daily_textbody_elem, .daily_textbody_list {
     display: block;
-    word-wrap: normal;
+    word-wrap:normal;
+    /* text-wrap:balance; */
+    
     font-style: italic;
-    font-size:1.2em;
+
+    max-width: 70em;
 
     margin-left: 2em;
     margin-right: 2em;
@@ -78,6 +85,7 @@
     padding: 0.5em;
 }
 .daily_textbody_sublist_elem{
+    font-size: 0.85em;
     border: unset;
 }
 
@@ -122,4 +130,7 @@
     margin: 7px;
     /* padding: 5px; */
     
+}
+#thursday_noisy_canopys {
+    max-width: 80em;
 }
