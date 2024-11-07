@@ -14,6 +14,8 @@
     * currently just the JSON files used for each text
 * `Graphics` - a space to work on technical demonstrations using WebGL and OpenGL compiled to web
     * currently just a rotating can tech demo ported over from an older iteration of the website, to break the surface of decision paralysis
+* `Daily` - daily posts idea we had. fun idea to spend some time on
+    * who knows when it'll end
 
 ## The future
 
