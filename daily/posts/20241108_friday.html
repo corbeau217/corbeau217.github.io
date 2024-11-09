@@ -1,91 +1,89 @@
-<section class="sectioned_content_outter">
-    <div class="sectioned_content_inner">
-        <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="[...]" /></div>
-        <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">[08/11/2024] :: Free Flowing Fridays</h3></div>
-        <div class="sectioned_content_body">
-            <div class="friday_post daily_post">
-                <!-- <hr /> -->
-                <p class="daily_heading_theme daily_heading_elem">Free Flowing Fridays</p>
-                <!-- <hr /> -->
-                <p class="daily_heading_elem"><i>shapes, extrusions, worms, and NURBS</i></p>
-                <!-- <hr /> -->
-                <p class="daily_textbody_elem">
-                    <ul class="daily_textbody_list">
-                        <li class="daily_textbody_list_elem">
-                            <hr class="hr_list_elem_seperating" />
-                            <p>the main idea today was something to do with flight but before we can approach that we need an aeroplane</p>
-                            <div class="daily_post_content_image_container">
-                                <img class="daily_post_content_image" src="./img/aeroplane_first_drawing.png" alt="first sketch of an aeroplane for the day" />
-                                <img class="daily_post_content_image" src="./img/aeroplane_part_labelling.png" alt="general labelling of the parts of an aeroplane" />
-                            </div>
-                        </li>
+<div class="sectioned_content_inner">
+    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="[...]" /></div>
+    <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">[08/11/2024] :: Free Flowing Fridays</h3></div>
+    <div class="sectioned_content_body">
+        <div class="friday_post daily_post">
+            <!-- <hr /> -->
+            <p class="daily_heading_theme daily_heading_elem">Free Flowing Fridays</p>
+            <!-- <hr /> -->
+            <p class="daily_heading_elem"><i>shapes, extrusions, worms, and NURBS</i></p>
+            <!-- <hr /> -->
+            <p class="daily_textbody_elem">
+                <ul class="daily_textbody_list">
+                    <li class="daily_textbody_list_elem">
+                        <hr class="hr_list_elem_seperating" />
+                        <p>the main idea today was something to do with flight but before we can approach that we need an aeroplane</p>
+                        <div class="daily_post_content_image_container">
+                            <img class="daily_post_content_image" src="./img/aeroplane_first_drawing.png" alt="first sketch of an aeroplane for the day" />
+                            <img class="daily_post_content_image" src="./img/aeroplane_part_labelling.png" alt="general labelling of the parts of an aeroplane" />
+                        </div>
+                    </li>
 
-                        <li class="daily_textbody_list_elem">
-                            <hr class="hr_list_elem_seperating" />
-                            <p>creating the shape of aeroplane is something people have been doing for a while, and something we thought to do was to use extrusions, or "worming" as it seemed to look like</p>
-                            <ul class="daily_textbody_list daily_textbody_sublist">
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this isn't the first time we've thought about this, and probably not the last. having it as extrusions means we can focus on just the key points in the shape</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a nice way to think about it would be key frames within an animation and the blending between them</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">during the design of the engine, it was fine to just leave it as some function to determine the radius of a given circle at each point along the worm, much like the body of the aeroplane</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">however, we couldn't keep ignoring the missing piece once we got to drawing the wings and trying to find some baseline or center line.</li>
-                            </ul>
-                            <div class="daily_post_content_image_container">
-                                <img class="daily_post_content_image" src="./img/aeroplane_worm_fuselage.png" alt="worm of the body for the aeroplane" />
-                                <img class="daily_post_content_image" src="./img/aeroplane_worm_engine.png" alt="engine is a contracted worm" />
-                                <img class="daily_post_content_image" src="./img/aeroplane_worm_engine_radius_graph.png" alt="rough graph of the engine's circle radius" />
-                            </div>
-                        </li>
-                        <li class="daily_textbody_list_elem">
-                            <hr class="hr_list_elem_seperating" />
-                            <p>during the exploration of wing shapes, we came across a couple of theses with nice diagrams. finally we found a diagram about <a href="https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline"><code>NURBS</code></a></p>
-                            <ul class="daily_textbody_list daily_textbody_sublist">
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline"><code>NURBS</code></a> => <code>Non-Uniform Rational B-Splines</code>, where <a href="https://en.wikipedia.org/wiki/B-spline"><code>B-Spline</code></a> stands for <code>basis spline</code>, and not <code>b&eacute;zier spline</code> like originally thought</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">turns out <code>NURBS</code> is a very important thing and it seems that you can just turn any old polygon into a smooth shape with some 3D <code>b&eacute;zier</code>s</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">also means that this isn't the first time someone thought to do our worming idea for aeroplanes so we can use this to our advantage</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">below is a quick sketch of <code>NURBS</code>, and will be explored later in more detail. for now, the work will be left as polygons</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">hilariously, <code>B-Splines</code> implied the existence of <a href="https://en.wikipedia.org/wiki/T-spline"><code>T-Splines</code></a> which at first glance are more useful for 3D, and closer to the way that text is rendered</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">alternatively there's <a href="https://en.wikipedia.org/wiki/Subdivision_surface"><code>Subdivision surface</code></a>s, which with a quick glance, go down the rabbit hole of <a href="https://en.wikipedia.org/wiki/Geodesic_polyhedron"><code>icosphere / geodesic polyhedron</code></a>s</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the diagram we drew for <code>NURBS</code> doesn't do it justice (and upon reflection is actually incorrect). The process ends up smoothing out the surfaces and treating the vertices as control points for curves which start and end at the midpoints of the edges (recommend google image search "NURBS" to find some better diagrams for this)</li>
-                            </ul>
-                            <div class="daily_post_content_image_container">
-                                <img class="daily_post_content_image" src="./img/rudimentary_nurbs_diagram.png" alt="quick sketch of nurbs" />
-                            </div>
-                        </li>
-                        <li class="daily_textbody_list_elem"><p>at this point it was apparent we should collect all the findings so far, including some of the older diagrams about similar topics in the past and make our post as we were close to time</p></li>
-                        <li class="daily_textbody_list_elem">
-                            <hr class="hr_list_elem_seperating" />
-                            <p>some explanation on how to use extrusions</p>
-                            <ul class="daily_textbody_list daily_textbody_sublist">
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">imagine we to have a list of 2D shapes, and each of them has the same number of vertices in each</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we can then traverse the points in the shape (which hopefully are in a loop, but isn't entirely necessary)</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">given our point in a shape within the list, we want to find the neighbouring point in the next shape within the list</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we then join our vertex to the next shape's vertex, to create an edge, and then we connect our vertex to the next shape's next vertex to form our triangle</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this is quite a mouthful of words, and below you'll find a sketch illustrating this in a small subsection of a fictitious shape (taken from an old notebook)</li>
-                                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
-                                    <p>this principle can then be taken into the land of 3D where you then make sure that the binding of vertices keeps the winding order such that all faces are facing outwards from the center of the shape</p>
-                                    <ul class="daily_textbody_list daily_textbody_sublist">
-                                        <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the winding order of the shape is important as it's how we determine whether a face is point towards the camera or away from the camera and matters once we start trying to render 3D shapes</li>
-                                        <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having the idea of winding order, then means we can use cross-products to generate normal vectors for a given face which then show the orientation</li>
-                                        <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using cross products also means that it can be computed much faster than other inferior methods of determining a point lying within a face and all that nonsense required</li>
-                                        <li class="daily_textbody_list_elem daily_textbody_sublist_elem">one of these days maybe we'll explore this further as ray tracing starts to blur the boundaries on how we're determining shape rendering, and some old technologies may hold keys to faster computation (it was many years before <a href="https://en.wikipedia.org/wiki/Ada_Lovelace"><code>ada-lovelace</code></a> had their work become so important, same with <a href="https://en.wikipedia.org/wiki/George_Boole"><code>george boole</code></a>)</li>
-                                        <li class="daily_textbody_list_elem daily_textbody_sublist_elem">OpenGL lets you change the winding order to either counter clockwise or clockwise. It's counter clockwise by default, so we'll stick with that</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <hr />
-                            <!-- .. -->
-                            <div class="daily_post_content_image_container">
-                                <img class="daily_post_content_image" src="./img/extrusion_simplified_diagram.png" alt="simplified diagram showing meshing" />
-                                <img class="daily_post_content_image" src="./img/extrusion_meshing_algorithm.png" alt="extrusions algorithm including winding" />
-                            </div>
-                        </li>
-                        <li class="daily_textbody_list_elem">
-                            <hr class="hr_list_elem_seperating" />
-                            <p>probably the last post</p>
-                        </li>
-                    </ul>
-                </p>
-            </div>
+                    <li class="daily_textbody_list_elem">
+                        <hr class="hr_list_elem_seperating" />
+                        <p>creating the shape of aeroplane is something people have been doing for a while, and something we thought to do was to use extrusions, or "worming" as it seemed to look like</p>
+                        <ul class="daily_textbody_list daily_textbody_sublist">
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this isn't the first time we've thought about this, and probably not the last. having it as extrusions means we can focus on just the key points in the shape</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a nice way to think about it would be key frames within an animation and the blending between them</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">during the design of the engine, it was fine to just leave it as some function to determine the radius of a given circle at each point along the worm, much like the body of the aeroplane</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">however, we couldn't keep ignoring the missing piece once we got to drawing the wings and trying to find some baseline or center line.</li>
+                        </ul>
+                        <div class="daily_post_content_image_container">
+                            <img class="daily_post_content_image" src="./img/aeroplane_worm_fuselage.png" alt="worm of the body for the aeroplane" />
+                            <img class="daily_post_content_image" src="./img/aeroplane_worm_engine.png" alt="engine is a contracted worm" />
+                            <img class="daily_post_content_image" src="./img/aeroplane_worm_engine_radius_graph.png" alt="rough graph of the engine's circle radius" />
+                        </div>
+                    </li>
+                    <li class="daily_textbody_list_elem">
+                        <hr class="hr_list_elem_seperating" />
+                        <p>during the exploration of wing shapes, we came across a couple of theses with nice diagrams. finally we found a diagram about <a href="https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline"><code>NURBS</code></a></p>
+                        <ul class="daily_textbody_list daily_textbody_sublist">
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline"><code>NURBS</code></a> => <code>Non-Uniform Rational B-Splines</code>, where <a href="https://en.wikipedia.org/wiki/B-spline"><code>B-Spline</code></a> stands for <code>basis spline</code>, and not <code>b&eacute;zier spline</code> like originally thought</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">turns out <code>NURBS</code> is a very important thing and it seems that you can just turn any old polygon into a smooth shape with some 3D <code>b&eacute;zier</code>s</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">also means that this isn't the first time someone thought to do our worming idea for aeroplanes so we can use this to our advantage</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">below is a quick sketch of <code>NURBS</code>, and will be explored later in more detail. for now, the work will be left as polygons</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">hilariously, <code>B-Splines</code> implied the existence of <a href="https://en.wikipedia.org/wiki/T-spline"><code>T-Splines</code></a> which at first glance are more useful for 3D, and closer to the way that text is rendered</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">alternatively there's <a href="https://en.wikipedia.org/wiki/Subdivision_surface"><code>Subdivision surface</code></a>s, which with a quick glance, go down the rabbit hole of <a href="https://en.wikipedia.org/wiki/Geodesic_polyhedron"><code>icosphere / geodesic polyhedron</code></a>s</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the diagram we drew for <code>NURBS</code> doesn't do it justice (and upon reflection is actually incorrect). The process ends up smoothing out the surfaces and treating the vertices as control points for curves which start and end at the midpoints of the edges (recommend google image search "NURBS" to find some better diagrams for this)</li>
+                        </ul>
+                        <div class="daily_post_content_image_container">
+                            <img class="daily_post_content_image" src="./img/rudimentary_nurbs_diagram.png" alt="quick sketch of nurbs" />
+                        </div>
+                    </li>
+                    <li class="daily_textbody_list_elem"><p>at this point it was apparent we should collect all the findings so far, including some of the older diagrams about similar topics in the past and make our post as we were close to time</p></li>
+                    <li class="daily_textbody_list_elem">
+                        <hr class="hr_list_elem_seperating" />
+                        <p>some explanation on how to use extrusions</p>
+                        <ul class="daily_textbody_list daily_textbody_sublist">
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">imagine we to have a list of 2D shapes, and each of them has the same number of vertices in each</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we can then traverse the points in the shape (which hopefully are in a loop, but isn't entirely necessary)</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">given our point in a shape within the list, we want to find the neighbouring point in the next shape within the list</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we then join our vertex to the next shape's vertex, to create an edge, and then we connect our vertex to the next shape's next vertex to form our triangle</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this is quite a mouthful of words, and below you'll find a sketch illustrating this in a small subsection of a fictitious shape (taken from an old notebook)</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                                <p>this principle can then be taken into the land of 3D where you then make sure that the binding of vertices keeps the winding order such that all faces are facing outwards from the center of the shape</p>
+                                <ul class="daily_textbody_list daily_textbody_sublist">
+                                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the winding order of the shape is important as it's how we determine whether a face is point towards the camera or away from the camera and matters once we start trying to render 3D shapes</li>
+                                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having the idea of winding order, then means we can use cross-products to generate normal vectors for a given face which then show the orientation</li>
+                                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using cross products also means that it can be computed much faster than other inferior methods of determining a point lying within a face and all that nonsense required</li>
+                                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">one of these days maybe we'll explore this further as ray tracing starts to blur the boundaries on how we're determining shape rendering, and some old technologies may hold keys to faster computation (it was many years before <a href="https://en.wikipedia.org/wiki/Ada_Lovelace"><code>ada-lovelace</code></a> had their work become so important, same with <a href="https://en.wikipedia.org/wiki/George_Boole"><code>george boole</code></a>)</li>
+                                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">OpenGL lets you change the winding order to either counter clockwise or clockwise. It's counter clockwise by default, so we'll stick with that</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <hr />
+                        <!-- .. -->
+                        <div class="daily_post_content_image_container">
+                            <img class="daily_post_content_image" src="./img/extrusion_simplified_diagram.png" alt="simplified diagram showing meshing" />
+                            <img class="daily_post_content_image" src="./img/extrusion_meshing_algorithm.png" alt="extrusions algorithm including winding" />
+                        </div>
+                    </li>
+                    <li class="daily_textbody_list_elem">
+                        <hr class="hr_list_elem_seperating" />
+                        <p>probably the last post</p>
+                    </li>
+                </ul>
+            </p>
         </div>
     </div>
-</section>
+</div>
