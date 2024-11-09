@@ -11,18 +11,18 @@
                         <p>the idea for today is that we have the posts imported to generate the daily page</p>
                         <ul class="daily_textbody_list daily_textbody_sublist">
                             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">whenever we've thought up new ways to structure and generate the entire page requiring remakes, it often gets put off</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this time it'll solely be aimed at having each post be a seperate file which is imported and added to the section content on page load</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this time it'll solely be aimed at having each post be a separate file which is imported and added to the section content on page load</li>
                             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could list a bunch of things that would be options after doing this, but that will dampen the mood and overly stress the idea. let's stay light on our toes for now</li>
                         </ul>
                     </li>
                     <li class="daily_textbody_list_elem">
                         <hr class="hr_list_elem_seperating" />
-                        <p>some notes about importing html files</p>
+                        <p>some notes about importing <code>html</code> files</p>
                         <ul class="daily_textbody_list daily_textbody_sublist">
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using the link tag we can import the files, however the blog post we found this said it was only chrome that let you use it so we'll need to try a few things</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">another option was polyfill, but it seemed like a whole thing</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">last resort is we can just keep it as a javascript module that has the html code in raw text to be added, and or a JSON file which we then build the post with</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the best possible solution is just to go straight from markdown into html code, but this would likely require a library or a lot of time to make the parser, so baby steps for now</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using the link tag we can import the files, however the <a href="https://www.jotform.com/blog/html5-imports-import-html-files-into-html-files-83467/">blog post</a> we found this said it was only chrome that let you use it so we'll need to try a few things</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">another option was <a href="https://en.wikipedia.org/wiki/Polyfill_(programming)"><code>polyfill</code></a>, but it seemed like a whole thing</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">last resort is we can just keep it as a <code>javascript</code> module that has the <code>html</code> code in raw text to be added, and or a <code>JSON</code> file which we then build the post with</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the best possible solution is just to go straight from <code>markdown</code> into <code>html</code> code, but this would likely require a library or a lot of time to make the <a href="https://en.wikipedia.org/wiki/Parsing">parser</a>, so baby steps for now</li>
                         </ul>
                     </li>
                     <li class="daily_textbody_list_elem">
@@ -30,7 +30,7 @@
                         <p>link tag was a scam, we ended up using a <a href="https://www.w3schools.com/howto/howto_html_include.asp">w3 schools tutorial</a> for it</p>
                         <ul class="daily_textbody_list daily_textbody_sublist">
                             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this ends up using something we're not as familiar with and feels slightly cursed but it seems to do the trick for now</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the idea is that we'll still need to layout the elements as needed, and then it'll run over the body and find all of those elements (posts), which require importing and then import them via an XML command</li>
+                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the idea is that we'll still need to layout the elements as needed, and then it'll run over the body and find all of those elements (posts), which require importing and then import them via an <code>XML</code> command</li>
                             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">what we should do now is have a way to assign what elements need to be readied for loading into the body of the flow document</li>
                             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">so we did it</li>
                             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
@@ -55,6 +55,9 @@
                             <img class="daily_post_content_image" src="./img/other_elem_structure.png" alt="other page elements structure sketch" />
                         </div>
                     </li>
+                    <li class="daily_textbody_list_elem"><p>it's also worth noting how much the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild">mdn docs</a> helped with this, they're so useful for figuring out what the heck we is legal / illegal with <code>html</code></p></li>
+                    <li class="daily_textbody_list_elem"><p>we also definitely used the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild">w3 schools</a> for more than just the <code>xml</code> function</p></li>
+                    <li class="daily_textbody_list_elem"><p>without those two sites, this page wouldn't look nearly as neat as it does, and it would be some time before we could make it nicer</p></li>
                     <li class="daily_textbody_list_elem">
                         <hr class="hr_list_elem_seperating" />
                         <p>probably the last post</p>
