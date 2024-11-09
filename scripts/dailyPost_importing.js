@@ -1,7 +1,3 @@
-
-
-
-
 const DAILY_POST_LINKS = [
     "20241109_saturday.html",
     "20241108_friday.html",
@@ -10,21 +6,21 @@ const DAILY_POST_LINKS = [
     "20241105_tuesday.html",
 ];
 
+// to show which section elements need to have their content imported
+const IMPORT_SECTION_CLASS_IDENTIFIER = "html_import_section";
+// doing this because we can and so it's a bit more fun
+const IMPORT_HTML_REF_ATTRIBUTE = "import-html";
+
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
-
-window.addEventListener(
-    "load",
-    (event) => {
-        console.log("preparing daily post stubs");
-        daily_post_flow_initialise();
-        console.log("importing daily posts");
-        import_all_daily_posts();
-    }
-);
-
+function process_daily_post_importing() {
+    console.log("preparing daily post stubs");
+    daily_post_flow_initialise();
+    console.log("importing daily posts");
+    import_all_daily_posts();
+}
 
 // ############################################################################################
 // ############################################################################################
@@ -32,7 +28,7 @@ window.addEventListener(
 
 // generate the element that will be added to the section flow body of the daily posts page
 function create_daily_post_stub(daily_post_page_link){
-    return `<section class="sectioned_content_outter daily_post_import" import-html="/daily/posts/${daily_post_page_link}"></section>`;
+    return `<section class="sectioned_content_outter ${IMPORT_SECTION_CLASS_IDENTIFIER}" ${IMPORT_HTML_REF_ATTRIBUTE}="/daily/posts/${daily_post_page_link}"></section>`;
 }
 
 // prepare all daily post stubs for importing
@@ -71,14 +67,14 @@ function daily_post_flow_initialise() {
 // ############################################################################################
 
 function daily_post_flow_get_all_stubs(){
-    return document.getElementsByClassName("daily_post_import");
+    return document.getElementsByClassName( IMPORT_SECTION_CLASS_IDENTIFIER );
 }
 
 // handles a section element that needs to have its inner content imported
 //  used by import all daily posts but can be used for other things too
 function process_html_importing_section_element( html_importing_stub_section ){
     // get the importing attribute
-    let html_file = html_importing_stub_section.getAttribute("import-html");
+    let html_file = html_importing_stub_section.getAttribute( IMPORT_HTML_REF_ATTRIBUTE );
     // when we've provided a file to get
     if (html_file) {
         // create the http request for it
@@ -93,8 +89,9 @@ function process_html_importing_section_element( html_importing_stub_section ){
                 //  should have a thing for failed stubs?
                 if (this.status == 404) { html_importing_stub_section.innerHTML = "Page not found."; }
                 /* Remove the attribute, and call this function once more: */
-                html_importing_stub_section.removeAttribute("import-html");
-                
+                html_importing_stub_section.removeAttribute( IMPORT_HTML_REF_ATTRIBUTE );
+                // also remove the class that says it needs an import
+                html_importing_stub_section.classList.remove( IMPORT_SECTION_CLASS_IDENTIFIER );
             }
         };
         // set as a get request
@@ -122,6 +119,18 @@ function import_all_daily_posts() {
 }
 
 
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+// get the page to listen for when they need to be loaded
+window.addEventListener(
+    "load",
+    (event) => {
+        process_daily_post_importing();
+    }
+);
 
 // ############################################################################################
 // ############################################################################################
