@@ -16,7 +16,7 @@
     align-items: flex-start;
 }
 /* ======== container handles ======== */
-.sectioned_content_outter:not(.section_hidden) {
+.sectioned_content_outer:not(.section_hidden) {
     display:block;
     /* max-width: 500px; */
     background-color: #0c2547;

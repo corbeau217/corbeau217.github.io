@@ -10,7 +10,7 @@ li {
 .sectioned_content_thumbnail {
     max-width: 100px;
 }
-.sectioned_content_outter:not(.section_hidden) {
+.sectioned_content_outer:not(.section_hidden) {
     max-width: 100%;
 }
 .sectioned_content_body {

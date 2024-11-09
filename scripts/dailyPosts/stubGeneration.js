@@ -20,8 +20,9 @@ const DAILY_POST_LINKS = [
 // ############################################################################################
 
 // generate the element that will be added to the section flow body of the daily posts page
-function create_daily_post_stub(daily_post_page_link){
-    return `<section class="sectioned_content_outter ${IMPORT_SECTION_CLASS_IDENTIFIER}" ${IMPORT_HTML_REF_ATTRIBUTE}="/daily/posts/${daily_post_page_link}"></section>`;
+function create_daily_post_stub(daily_post_index){
+    const daily_post_stub_file = generate_stub_file_name( daily_post_index );
+    return `<section class="sectioned_content_outer ${IMPORT_SECTION_CLASS_IDENTIFIER}" ${IMPORT_HTML_REF_ATTRIBUTE}="/daily/posts/${ daily_post_stub_file }"></section>`;
 }
 
 // prepare all daily post stubs for importing
