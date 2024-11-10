@@ -1,5 +1,5 @@
 // import { initBuffers } from "./init-buffers.js";
-import { initScene, updateScene, drawScene } from "./draw-scene.js";
+import { Scene } from "./scene.js";
 import { VERTEX_SHADER_SRC } from "./shaders/vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "./shaders/fragmentShader.js";
 
@@ -60,6 +60,7 @@ var programInfo;
 var oldTime;
 // var buffers;
 
+var scene;
 
 
 // ############################################################################################
@@ -172,10 +173,10 @@ function draw( deltaTime ) {
 
 
     // function updateScene( gl, programInfo, deltaTime ){
-    updateScene( gl, programInfo, deltaTime );
+    scene.update( deltaTime );
         
     // function drawScene( gl, programInfo ){
-    drawScene( gl, programInfo );
+    scene.draw();
 }
 function frameUpdate( newTime ){
     // ... generate delta time
@@ -305,7 +306,7 @@ function startApp() {
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.FRONT);
 
-    initScene( gl );
+    scene = new Scene( gl, programInfo );
 
     oldTime = Date.now();
 

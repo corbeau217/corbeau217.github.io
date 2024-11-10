@@ -11,12 +11,6 @@ class Can {
 
     // creates a scene object
     constructor( gl_context ){
-
-        const INITIAL_SCALE_VECTOR = [
-            1.0, // i
-            1.0, // j
-            1.0, // k
-        ];
         
           
         // model to world matrix, just use identity for now
