@@ -1,38 +1,50 @@
 const TAU = 2.0*Math.PI;
 
 class Camera {
-    // ...
+    // construct a camera instance using the supplied aspect ratio
     constructor( aspectRatio ){
         // prepare the camera information
         
         //    needs negative  [   -x,   -y,   -z ]
-        this.CAMERA_OFFSET = [ -0.0, -0.0, -8.0 ];
-        this.CAMERA_FOV = 1.2*TAU/7.0;
-        this.CAMERA_ZNEAR = 1;
-        this.CAMERA_ZFAR = 50.0;
+        this.offset = [ -0.0, -0.0, -8.0 ];
+        this.fov_y = 1.2*TAU/7.0;
+        this.z_near = 1;
+        this.z_far = 50.0;
         this.aspect = aspectRatio;
         
         // build the matrices
 
         // initialise the projection matrix
         this.projectionMatrix = mat4.create();
-        // build camera view matrix
+
+        // === handle view ===
+        this.buildViewMatrix();
+
+        // === handle projection ===
+        this.buildProjectionMatrix();
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    buildViewMatrix(){
+        // init as identity
         this.viewMatrix = mat4.create();
-
-        // handle view
-
         
         mat4.translate(
             this.viewMatrix,
             this.viewMatrix,
-            this.CAMERA_OFFSET,
+            this.offset,
             // [-0.0, 0.0, -6.0],
         );
-
-        // handle projection
+    }
+    buildProjectionMatrix(){
+        // init as identity
+        this.projectionMatrix = mat4.create();
 
         // first arg as the destination to receive result
-        mat4.perspective(this.projectionMatrix, this.CAMERA_FOV, this.aspect, this.CAMERA_ZNEAR, this.CAMERA_ZFAR);
+        mat4.perspective(this.projectionMatrix, this.fov_y, this.aspect, this.z_near, this.z_far);
     }
 
     // ############################################################################################
