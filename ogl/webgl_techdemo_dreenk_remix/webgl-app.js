@@ -34,29 +34,48 @@ const CIRCLE_POINTS = 16;
 let fps = 40;
 var timeBetweenFrames = 1000.0/fps;
 //   0.0 to 1.0:     [   R,   G,   B,   A ]
-const canvasClearColour = [ 0.2, 0.2, 0.2, 1.0 ];
+var canvasClearColour = [ 0.2, 0.2, 0.2, 1.0 ];
 //    needs negative  [   -x,   -y,   -z ]
-const CAMERA_OFFSET = [ -0.0, -0.0, -8.0 ];
-const CAMERA_FOV = 1.2*TAU/7.0;
-const CAMERA_ZNEAR = 1;
-const CAMERA_ZFAR = 50.0;
+var CAMERA_OFFSET = [ -0.0, -0.0, -8.0 ];
+var CAMERA_FOV = 1.2*TAU/7.0;
+var CAMERA_ZNEAR = 1;
+var CAMERA_ZFAR = 50.0;
 
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
 
-const texture_path = "./img/dreenk.png";
+var texture_path = "./img/dreenk.png";
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+var canvas;
+var gl;
+var shader_program;
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+var programInfo;
+var cameraViewMat;
+var cameraInfo;
+var oldTime;
+var buffers;
+var texture;
 
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
 // init a shader program, so WebGL knows how to draw our data
-function initShaderProgram(gl, vsSourceIn, fsSourceIn){
+function initShaderProgram(vsSourceIn, fsSourceIn){
 
-    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSourceIn);
-    const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSourceIn);
+    const vertexShader = loadShader(gl.VERTEX_SHADER, vsSourceIn);
+    const fragmentShader = loadShader(gl.FRAGMENT_SHADER, fsSourceIn);
 
     // ------------------------------------------------
     // ------------------------------------------------
@@ -94,7 +113,7 @@ function initShaderProgram(gl, vsSourceIn, fsSourceIn){
 // Initialize a texture and load an image.
 // When the image finished loading copy it into the texture.
 //
-function loadTexture(gl, url) {
+function loadTexture(url) {
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
   
@@ -174,11 +193,11 @@ function loadTexture(gl, url) {
 //          using gl.getShaderInfoLog(), then delete the shader and return null to indicate failure to load shader
 // 5. if shader was loaded and successfully compiled, the compiled shader is returned to caller
 //.
-// but also add the `const shaderProgram = initShaderProgram(gl, vsSource, fsSource)` to main
+// but also add the `const shaderProgram = initShaderProgram(vsSource, fsSource)` to main
 
 
 // create a shader of the given type, uploads the source and compiles it
-function loadShader(gl, type, source){
+function loadShader(type, source){
     // ask the canvas instance for shader instance
     const shader = gl.createShader(type);
 
@@ -210,6 +229,36 @@ function loadShader(gl, type, source){
 // ############################################################################################
 // ############################################################################################
 
+function getCanvasElement(){
+    return document.querySelector("#webgl_canvas_primary");
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+
+function init_webgl_context(){
+
+
+    // weird way to grab the canvas element, shouldnt we getElementById?
+    canvas = getCanvasElement();
+    
+    // init the GL context
+    gl = canvas.getContext("webgl");
+}
+
+function draw( deltaTime) {
+
+    updateScene( gl, programInfo, buffers, cameraInfo, deltaTime );
+    drawScene( gl, programInfo, CIRCLE_POINTS, buffers, texture, cameraInfo, deltaTime );
+}
+function frameUpdate( newTime ){
+    // ... generate delta time
+    const deltaTime = (newTime - oldTime)/1000.0;
+    oldTime = newTime;
+    draw(deltaTime);
+}
 
 // entry point
 function startApp() {
@@ -222,10 +271,7 @@ function startApp() {
     // ======================================================================
     // ======== prepare the canvas stuffs
 
-    // weird way to grab the canvas element, shouldnt we getElementById?
-    const canvas = document.querySelector("#webgl_canvas_primary");
-    // init the GL context
-    const gl = canvas.getContext("webgl");
+    init_webgl_context();
 
     // gl.
     // aaa we need to use window.getsomething the things
@@ -245,7 +291,7 @@ function startApp() {
 
     // init a shader program; this is where all the lighting for the 
     //  vertices and projection/transforms etc is established.
-    const shaderProgram = initShaderProgram(gl, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
+    shader_program = initShaderProgram(VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
 
 
     // after we created a shader program we need to look up the locations that webgl
@@ -268,17 +314,17 @@ function startApp() {
     //  loop up which attribute our shader program is using
     //  for aVertexPosition and look up uniform locations
     //      [looks kinda json/dictionary]
-    const programInfo = {
-        program: shaderProgram,
+    programInfo = {
+        program: shader_program,
         attribLocations: {
-            vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"), // smh, you're just doing it for sillies now huh
-            textureCoord: gl.getAttribLocation(shaderProgram, "aTextureCoord"),
+            vertexPosition: gl.getAttribLocation(shader_program, "aVertexPosition"), // smh, you're just doing it for sillies now huh
+            textureCoord: gl.getAttribLocation(shader_program, "aTextureCoord"),
         },
         uniformLocations: {
-            projectionMatrix: gl.getUniformLocation(shaderProgram, "uProjectionMatrix"),
-            viewMatrix: gl.getUniformLocation(shaderProgram, "uViewMatrix"),
-            modelMatrix: gl.getUniformLocation(shaderProgram, "uModelMatrix"),
-            uSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
+            projectionMatrix: gl.getUniformLocation(shader_program, "uProjectionMatrix"),
+            viewMatrix: gl.getUniformLocation(shader_program, "uViewMatrix"),
+            modelMatrix: gl.getUniformLocation(shader_program, "uModelMatrix"),
+            uSampler: gl.getUniformLocation(shader_program, "uSampler"),
         },
     };  
 
@@ -336,7 +382,7 @@ function startApp() {
     gl.cullFace(gl.FRONT);
 
     // build camera view matrix
-    const cameraViewMat = mat4.create();
+    cameraViewMat = mat4.create();
     
     mat4.translate(
         cameraViewMat,
@@ -345,7 +391,7 @@ function startApp() {
         // [-0.0, 0.0, -6.0],
     );
 
-    var cameraInfo = {
+    cameraInfo = {
         viewMatrix: cameraViewMat,
         aspect: gl.canvas.clientWidth / gl.canvas.clientHeight,
         fieldOfView: CAMERA_FOV,
@@ -355,13 +401,13 @@ function startApp() {
     };
 
 
-    let oldTime = Date.now();
+    oldTime = Date.now();
 
     // here's where we call the "routine" that builds all the objs we'll be drawing
-    const buffers = initBuffers(gl,CIRCLE_POINTS);
+    buffers = initBuffers(gl,CIRCLE_POINTS);
 
     // Load texture
-    const texture = loadTexture(gl, texture_path);
+    texture = loadTexture(texture_path);
     // Flip image pixels into the bottom-to-top order that WebGL expects.
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
@@ -378,17 +424,11 @@ function startApp() {
     // ======== do drawing
 
 
-    function draw( gl, programInfo, buffers, texture, cameraInfo, newTime) {
-        const deltaTime = (newTime - oldTime)/1000.0;
-        oldTime = newTime;
 
-        updateScene( gl, programInfo, buffers, cameraInfo, deltaTime );
-        drawScene( gl, programInfo, CIRCLE_POINTS, buffers, texture, cameraInfo, deltaTime );
-    }
     setInterval(
             function () {
                 requestAnimationFrame(
-                        (t) => draw( gl, programInfo, buffers, texture, cameraInfo,t)
+                        (t) => frameUpdate( t )
                     );
             },
             timeBetweenFrames
