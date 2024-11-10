@@ -1,11 +1,32 @@
+
+import { Camera } from "./objects/camera.js";
+import { Can } from "./objects/can.js";
+
 const TAU = 2.0*Math.PI;
 
+var aspectRatio;
+
+var camera;
+var can;
+
+
+function initScene( gl_context ){
+
+
+  aspectRatio = gl_context.canvas.clientWidth / gl_context.canvas.clientHeight;
+
+  // generate the camera
+  camera = new Camera(aspectRatio);
+  // here's where we call the "routine" that builds all the objs we'll be drawing
+  // buffers = initBuffers(gl,CIRCLE_POINTS);
+  can = new Can( gl_context );
+}
 
 
 // function drawScene( gl, programInfo, can, cameraObject ){
-function updateScene( gl, programInfo, can, cameraObject, deltaTime ){
+function updateScene( gl, programInfo, deltaTime ){
 
-  cameraObject.update(deltaTime);
+  camera.update(deltaTime);
   can.updateRotationMatrix(deltaTime);
 
 
@@ -24,7 +45,7 @@ function updateScene( gl, programInfo, can, cameraObject, deltaTime ){
 
 // TODO: have it not rebuild the matrices every frame tbh omg 
 // function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObject, deltaTime ){
-function drawScene( gl, programInfo, can, cameraObject ){
+function drawScene( gl, programInfo ){
   // // prepare globals
   // vertexNumber = (circlePoints+1)*2 + (circlePoints)*2;
   // triangleNumber = circlePoints*2 + circlePoints + circlePoints;
@@ -46,8 +67,8 @@ function drawScene( gl, programInfo, can, cameraObject ){
 
 
   // set the shader uniforms
-  gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, cameraObject.getProjectionMatrix() );
-  gl.uniformMatrix4fv( programInfo.uniformLocations.viewMatrix, false, cameraObject.getViewMatrix() );
+  gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, camera.getProjectionMatrix() );
+  gl.uniformMatrix4fv( programInfo.uniformLocations.viewMatrix, false, camera.getViewMatrix() );
 
   can.prepareTexture(gl);
 
@@ -62,4 +83,4 @@ function drawScene( gl, programInfo, can, cameraObject ){
 
 }
 
-export { updateScene, drawScene }; // que pasa? modules?
+export { initScene, updateScene, drawScene }; // que pasa? modules?

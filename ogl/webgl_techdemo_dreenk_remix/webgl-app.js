@@ -1,9 +1,7 @@
 // import { initBuffers } from "./init-buffers.js";
-import { updateScene, drawScene } from "./draw-scene.js";
+import { initScene, updateScene, drawScene } from "./draw-scene.js";
 import { VERTEX_SHADER_SRC } from "./shaders/vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "./shaders/fragmentShader.js";
-import { Camera } from "./objects/camera.js";
-import { Can } from "./objects/can.js";
 
 
 
@@ -61,11 +59,8 @@ var shader_program;
 var programInfo;
 var oldTime;
 // var buffers;
-var texture;
 
 
-var camera;
-var can;
 
 // ############################################################################################
 // ############################################################################################
@@ -176,11 +171,11 @@ function init_webgl_context(){
 function draw( deltaTime ) {
 
 
-    //     function updateScene( gl, programInfo, can, cameraObject, deltaTime ){
-        updateScene( gl, programInfo, can, camera, deltaTime );
+    // function updateScene( gl, programInfo, deltaTime ){
+    updateScene( gl, programInfo, deltaTime );
         
-        // function drawScene( gl, programInfo, can, cameraObject ){
-    drawScene( gl, programInfo, can, camera );
+    // function drawScene( gl, programInfo ){
+    drawScene( gl, programInfo );
 }
 function frameUpdate( newTime ){
     // ... generate delta time
@@ -310,17 +305,9 @@ function startApp() {
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.FRONT);
 
-    const aspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;
-
-    // generate the camera
-    camera = new Camera(aspectRatio);
-
+    initScene( gl );
 
     oldTime = Date.now();
-
-    // here's where we call the "routine" that builds all the objs we'll be drawing
-    // buffers = initBuffers(gl,CIRCLE_POINTS);
-    can = new Can( gl );
 
 
     // Load texture
