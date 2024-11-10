@@ -14,7 +14,6 @@ const INITIAL_SCALE_VECTOR = [
   1.0, // k
 ];
 
-var projectionMatrix = mat4.create();
 
 // model to world matrix, just use identity for now
 var modelMatrix = mat4.create();
@@ -112,18 +111,6 @@ function rebuild_model_matrix(){
     // right matrix
     modelMatrix_rotation,
   );
-  
-  // possibly spooky
-  // // ---- scale ----
-  // // existing scale that was then rotated
-  // mat4.multiply(
-  //   // destination
-  //   modelMatrix,
-  //   // left matrix
-  //   modelMatrix,
-  //   // right matrix
-  //   modelMatrix_scale
-  // );
 
 }
 
@@ -166,11 +153,9 @@ function updateRotationMatrix(deltaTime){
 }
 
 
-function updateScene( gl, programInfo, buffers, cameraInfo, deltaTime ){
+function updateScene( gl, programInfo, buffers, cameraObject, deltaTime ){
 
-  // first arg as the destination to receive result
-  mat4.perspective(projectionMatrix, cameraInfo.fieldOfView, cameraInfo.aspect, cameraInfo.zNear, cameraInfo.zFar);
-
+  cameraObject.update(deltaTime);
   updateRotationMatrix(deltaTime);
 
 
@@ -225,7 +210,7 @@ function setTextureAttribute(gl, buffers, programInfo) {
 
 
 // TODO: have it not rebuild the matrices every frame tbh omg 
-function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraInfo, deltaTime ){
+function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObject, deltaTime ){
   // prepare globals
   vertexNumber = (circlePoints+1)*2 + (circlePoints)*2;
   triangleNumber = circlePoints*2 + circlePoints + circlePoints;
@@ -247,8 +232,8 @@ function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraInfo,
 
 
   // set the shader uniforms
-  gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix );
-  gl.uniformMatrix4fv( programInfo.uniformLocations.viewMatrix, false, cameraInfo.viewMatrix );
+  gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, cameraObject.getProjectionMatrix() );
+  gl.uniformMatrix4fv( programInfo.uniformLocations.viewMatrix, false, cameraObject.getViewMatrix() );
 
   // Tell WebGL we want to affect texture unit 0
   gl.activeTexture(gl.TEXTURE0);

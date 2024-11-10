@@ -2,6 +2,7 @@ import { initBuffers } from "./init-buffers.js";
 import { updateScene, drawScene } from "./draw-scene.js";
 import { VERTEX_SHADER_SRC } from "./shaders/vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "./shaders/fragmentShader.js";
+import { Camera } from "./objects/camera.js";
 
 
 
@@ -35,11 +36,7 @@ let fps = 40;
 var timeBetweenFrames = 1000.0/fps;
 //   0.0 to 1.0:     [   R,   G,   B,   A ]
 var canvasClearColour = [ 0.2, 0.2, 0.2, 1.0 ];
-//    needs negative  [   -x,   -y,   -z ]
-var CAMERA_OFFSET = [ -0.0, -0.0, -8.0 ];
-var CAMERA_FOV = 1.2*TAU/7.0;
-var CAMERA_ZNEAR = 1;
-var CAMERA_ZFAR = 50.0;
+
 
 // ############################################################################################
 // ############################################################################################
@@ -61,11 +58,12 @@ var shader_program;
 // ############################################################################################
 
 var programInfo;
-var cameraViewMat;
-var cameraInfo;
 var oldTime;
 var buffers;
 var texture;
+
+
+var camera;
 
 // ############################################################################################
 // ############################################################################################
@@ -250,8 +248,8 @@ function init_webgl_context(){
 
 function draw( deltaTime) {
 
-    updateScene( gl, programInfo, buffers, cameraInfo, deltaTime );
-    drawScene( gl, programInfo, CIRCLE_POINTS, buffers, texture, cameraInfo, deltaTime );
+    updateScene( gl, programInfo, buffers, camera, deltaTime );
+    drawScene( gl, programInfo, CIRCLE_POINTS, buffers, texture, camera, deltaTime );
 }
 function frameUpdate( newTime ){
     // ... generate delta time
@@ -381,24 +379,10 @@ function startApp() {
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.FRONT);
 
-    // build camera view matrix
-    cameraViewMat = mat4.create();
-    
-    mat4.translate(
-        cameraViewMat,
-        cameraViewMat,
-        CAMERA_OFFSET,
-        // [-0.0, 0.0, -6.0],
-    );
+    const aspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;
 
-    cameraInfo = {
-        viewMatrix: cameraViewMat,
-        aspect: gl.canvas.clientWidth / gl.canvas.clientHeight,
-        fieldOfView: CAMERA_FOV,
-        zNear: CAMERA_ZNEAR,
-        zFar: CAMERA_ZFAR,
-        // i'd love to hape projection matrix here but then we cant modify it??
-    };
+    // generate the camera
+    camera = new Camera(aspectRatio);
 
 
     oldTime = Date.now();
