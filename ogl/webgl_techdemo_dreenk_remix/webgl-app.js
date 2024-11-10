@@ -1,7 +1,7 @@
 import { initBuffers } from "./init-buffers.js";
 import { updateScene, drawScene } from "./draw-scene.js";
-import { VERTEX_SHADER_SRC } from "./vertexShader.js";
-import { FRAGMENT_SHADER_SRC } from "./fragmentShader.js";
+import { VERTEX_SHADER_SRC } from "./shaders/vertexShader.js";
+import { FRAGMENT_SHADER_SRC } from "./shaders/fragmentShader.js";
 
 
 
