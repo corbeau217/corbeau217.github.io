@@ -13,22 +13,12 @@ class Can {
 
     // creates a scene object
     constructor( gl_context ){
-        // local references, very cursed
+        // local reference to opengl context
         this.gl_context = gl_context;
-        // this.programInfo = programInfo;
+        // make the shader for this can
         this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
-        this.shader_bindings = {
-            attribLocations: {
-                vertexPosition: this.gl_context.getAttribLocation(this.shader, "aVertexPosition"), // smh, you're just doing it for sillies now huh
-                textureCoord: this.gl_context.getAttribLocation(this.shader, "aTextureCoord"),
-            },
-            uniformLocations: {
-                projectionMatrix: this.gl_context.getUniformLocation(this.shader, "uProjectionMatrix"),
-                viewMatrix: this.gl_context.getUniformLocation(this.shader, "uViewMatrix"),
-                modelMatrix: this.gl_context.getUniformLocation(this.shader, "uModelMatrix"),
-                uSampler: this.gl_context.getUniformLocation(this.shader, "uSampler"),
-            },
-        };
+
+        // ==========================================
           
         // model to world matrix, just use identity for now
         this.modelMatrix = mat4.create();
@@ -36,7 +26,6 @@ class Can {
         this.modelMatrix_rotation = mat4.create();
         this.modelMatrix_rotation_offKilter = mat4.create();
         this.modelMatrix_rotation_updateFactor = mat4.create();
-        this.modelMatrix_scale = mat4.create();
 
         this.generate_rotation_matrices();
         
@@ -45,12 +34,12 @@ class Can {
         this.vertexValues = [];
         this.bindings = [];
 
+        // ==========================================
+
         this.texture_path = "/img/dreenk_texture.png";
         
         // Load texture
         this.loadTexture( gl_context );
-
-        this.circlePoints = CIRCLE_POINTS;
 
         this.uvData = {
             bottom: {
@@ -85,15 +74,52 @@ class Can {
             }
         };
 
+        // ==========================================
+
+        this.circlePoints = CIRCLE_POINTS;
+
+        // ==========================================
+
         this.modelScale = {
             x: 1.2,
             y: 1.2,
             z: 2
         };
 
-        // deal with shape
-        this.build_shape();
-        this.initBuffers( gl_context );
+        // ==========================================
+        
+        this.bottomVertices = CIRCLE_POINTS + 1;
+        this.topVertices = CIRCLE_POINTS + 1;
+        this.sideBottomVertices = CIRCLE_POINTS + 1;
+        this.sideTopVertices = CIRCLE_POINTS + 1;
+        this.perVertexFloats = 4;
+        this.vertexNumber = (CIRCLE_POINTS+1)*2 + (CIRCLE_POINTS)*2;
+        this.triangleNumber = CIRCLE_POINTS*2 + CIRCLE_POINTS + CIRCLE_POINTS
+        this.centerBottomIndex = (CIRCLE_POINTS*2);
+        this.centerTopIndex = (CIRCLE_POINTS*2)+1;
+        this.bottomIndexOffset = 0;
+        this.topIndexOffset = CIRCLE_POINTS;
+        this.sidesBottomIndexOffset = this.bottomVertices+this.topVertices;
+        this.sidesTopIndexOffset    = this.bottomVertices+this.topVertices + this.sideBottomVertices;
+
+        // ==========================================
+
+        this.generateVertices();
+        this.generateBindings();
+        this.generateMappings();
+
+        // ==========================================
+
+    
+        this.initVertexBuffer();
+        this.initIndexBuffer();
+
+        // ==========================================
+    
+        this.initTextureBuffer();
+
+        // ==========================================
+        // ==========================================
     }
 
 
@@ -436,73 +462,21 @@ class Can {
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
-
-    build_shape(){
-        // ...
-
-        // ==========================================
-        // ==========================================
-        
-        this.bottomVertices = CIRCLE_POINTS + 1;
-        this.topVertices = CIRCLE_POINTS + 1;
-        this.sideBottomVertices = CIRCLE_POINTS + 1;
-        this.sideTopVertices = CIRCLE_POINTS + 1;
-        this.perVertexFloats = 4;
-        this.vertexNumber = (CIRCLE_POINTS+1)*2 + (CIRCLE_POINTS)*2;
-        this.triangleNumber = CIRCLE_POINTS*2 + CIRCLE_POINTS + CIRCLE_POINTS
-        this.centerBottomIndex = (CIRCLE_POINTS*2);
-        this.centerTopIndex = (CIRCLE_POINTS*2)+1;
-        this.bottomIndexOffset = 0;
-        this.topIndexOffset = CIRCLE_POINTS;
-        this.sidesBottomIndexOffset = this.bottomVertices+this.topVertices;
-        this.sidesTopIndexOffset    = this.bottomVertices+this.topVertices + this.sideBottomVertices;
-
-        // ==========================================
-        // ==========================================
-
-        this.generateVertices();
-        this.generateBindings();
-        this.generateMappings();
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    initBuffers(){
     
-        this.initVertexBuffer( this.gl_context );
-        this.initIndexBuffer( this.gl_context );
-    
-    
-        this.initTextureBuffer( this.gl_context );
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-    
-    initVertexBuffer( gl ){
-
+    initVertexBuffer(){
         // create a buffer for the shape's positions.
-        this.positionBuffer = gl.createBuffer();
+        this.positionBuffer = this.gl_context.createBuffer();
     
         // selec the vertexBuffer as one to apply
         //  buffer opers to from now on
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-    
-        // generateVertices();
-    
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.positionBuffer);
     
         // allocate space on gpu of the number of vertices
-        gl.bufferData(
-            gl.ARRAY_BUFFER,
+        this.gl_context.bufferData(
+            this.gl_context.ARRAY_BUFFER,
             new Float32Array(this.vertexValues),
-            gl.STATIC_DRAW
+            this.gl_context.STATIC_DRAW
         );
-    
-    
-        // return positionBuffer;
     }
 
     // ############################################################################################
@@ -510,48 +484,35 @@ class Can {
     // ############################################################################################
 
 
-    initIndexBuffer( gl ){
-
+    initIndexBuffer(){
         // create a buffer for the shape's indices.
-        this.indexBuffer = gl.createBuffer();
+        this.indexBuffer = this.gl_context.createBuffer();
     
         // select the indexBuffer as one to apply
         //  buffer opers to from now on
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        
-        // indices = generateBindings();
+        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     
         // allocate space on gpu of the number of indices
-        gl.bufferData(
-            gl.ELEMENT_ARRAY_BUFFER,
+        this.gl_context.bufferData(
+            this.gl_context.ELEMENT_ARRAY_BUFFER,
             new Uint16Array(this.bindings),
-            gl.STATIC_DRAW
+            this.gl_context.STATIC_DRAW
         );
-    
-        // // copy dataa over, passing in offset
-        // gl.bufferSubData( gl.ELEMENT_ARRAY_BUFFER, 0, indices );
-    
-        // return indexBuffer;
     }
 
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    initTextureBuffer( gl ){
-        this.textureCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-        
-        // textureCoordinates = generateMappings();
-        // generateMappings();
+    initTextureBuffer(){
+        this.textureCoordBuffer = this.gl_context.createBuffer();
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.textureCoordBuffer);
     
-        gl.bufferData(
-          gl.ARRAY_BUFFER,
+        this.gl_context.bufferData(
+          this.gl_context.ARRAY_BUFFER,
           new Float32Array(this.textureCoordinates),
-          gl.STATIC_DRAW,
+          this.gl_context.STATIC_DRAW,
         );
-      
-        // return textureCoordBuffer;
     }
 
     // ############################################################################################
@@ -630,80 +591,45 @@ class Can {
 
     // Tell WebGL how to pull out the positions from the position
     // buffer into the vertexPosition attribute.
-    setPositionAttribute( gl_context ) {
+    setPositionAttribute( vertexPosition_location ) {
         const numComponents = 4;
-        const type = gl_context.FLOAT; // the data in the buffer is 32bit floats
+        const type = this.gl_context.FLOAT; // the data in the buffer is 32bit floats
         const normalize = false; // don't normalize
         const stride = 0; // how many bytes to get from one set of values to the next
         // 0 = use type and numComponents above
         const offset = 0; // how many bytes inside the buffer to start from
-        gl_context.bindBuffer(gl_context.ARRAY_BUFFER, this.getVertexBuffer());
-        gl_context.vertexAttribPointer(
-            this.shader_bindings.attribLocations.vertexPosition,
+
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.positionBuffer);
+        this.gl_context.vertexAttribPointer(
+            vertexPosition_location,
             numComponents,
             type,
             normalize,
             stride,
             offset
         );
-        gl_context.enableVertexAttribArray(this.shader_bindings.attribLocations.vertexPosition);
+        this.gl_context.enableVertexAttribArray(vertexPosition_location);
     }
 
 
     // tell webgl how to pull out the texture coordinates from buffer
-    setTextureAttribute(gl_context) {
+    setTextureAttribute( textureCoord_location ) {
         const num = 2; // every coordinate composed of 2 values
-        const type = gl_context.FLOAT; // the data in the buffer is 32-bit float
+        const type = this.gl_context.FLOAT; // the data in the buffer is 32-bit float
         const normalize = false; // don't normalize
         const stride = 0; // how many bytes to get from one set to the next
         const offset = 0; // how many bytes inside the buffer to start from
-        gl_context.bindBuffer(gl_context.ARRAY_BUFFER, this.getTextureCoordBuffer());
-        gl_context.vertexAttribPointer(
-            this.shader_bindings.attribLocations.textureCoord,
+
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.textureCoordBuffer);
+        this.gl_context.vertexAttribPointer(
+            textureCoord_location,
             num,
             type,
             normalize,
             stride,
             offset,
         );
-        gl_context.enableVertexAttribArray(this.shader_bindings.attribLocations.textureCoord);
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    prepareTexture(){
-
-        // Tell WebGL we want to affect texture unit 0
-        this.gl_context.activeTexture(this.gl_context.TEXTURE0);
-
-        // Bind the texture to texture unit 0
-        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
-
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    // getTexture(){
-    //     return this.texture;
-    // }
-    getTextureCoordBuffer(){
-        return this.textureCoordBuffer;
-    }
-    getVertexBuffer(){
-        return this.positionBuffer;
-    }
-    getBindingBuffer(){
-        return this.indexBuffer;
-    }
-    getCirclePoints(){
-        return this.circlePoints;
-    }
-    getModelMatrix(){
-        return this.modelMatrix;
+        this.gl_context.enableVertexAttribArray(textureCoord_location);
     }
 
     // ############################################################################################
@@ -724,38 +650,66 @@ class Can {
 
     draw(cameraViewMatrix, cameraProjectionMatrix){
 
+        // ----------------------------------------------------------------------------------------
+        // --- prepare our shader
+
         // tell webgl to use our program when drawing
         this.gl_context.useProgram(this.shader);
 
-        // allow the vertex position attribute to exist
-        this.gl_context.enableVertexAttribArray(this.shader_bindings.attribLocations.vertexPosition);
+        // ----------------------------------------------------------------------------------------
+        // --- prepare our attributes
 
-        
-        this.gl_context.uniformMatrix4fv( this.shader_bindings.uniformLocations.modelMatrix, false, this.modelMatrix );
-      
+        let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "aVertexPosition");
+        let textureCoord_location = this.gl_context.getAttribLocation(this.shader, "aTextureCoord");
+
+        // allow the vertex position attribute to exist
+        this.gl_context.enableVertexAttribArray(vertexPosition_location);
+
         // Tell WebGL how to pull out the positions from the position
         // buffer into the vertexPosition attribute.
-        this.setPositionAttribute(this.gl_context);
+        this.setPositionAttribute(vertexPosition_location);
       
-        this.setTextureAttribute(this.gl_context);
-      
+        this.setTextureAttribute(textureCoord_location);
+        
+        // ----------------------------------------------------------------------------------------
+        // --- prepare our uniforms
+
+        let projectionMatrix_location =  this.gl_context.getUniformLocation(this.shader, "uProjectionMatrix");
+        let viewMatrix_location =  this.gl_context.getUniformLocation(this.shader, "uViewMatrix");
+        let modelMatrix_location =  this.gl_context.getUniformLocation(this.shader, "uModelMatrix");
+
+        this.gl_context.uniformMatrix4fv( modelMatrix_location, false, this.modelMatrix );
       
         // set the shader uniforms
-        this.gl_context.uniformMatrix4fv( this.shader_bindings.uniformLocations.projectionMatrix, false, cameraProjectionMatrix );
-        this.gl_context.uniformMatrix4fv( this.shader_bindings.uniformLocations.viewMatrix, false, cameraViewMatrix );
+        this.gl_context.uniformMatrix4fv( projectionMatrix_location, false, cameraProjectionMatrix );
+        this.gl_context.uniformMatrix4fv( viewMatrix_location, false, cameraViewMatrix );
       
-        this.prepareTexture();
+        // ----------------------------------------------------------------------------------------
+        // --- prepare texture information
+
+        let uSampler_location =  this.gl_context.getUniformLocation(this.shader, "uSampler");
+        
+        // Tell WebGL we want to affect texture unit 0
+        this.gl_context.activeTexture(this.gl_context.TEXTURE0);
+
+        // Bind the texture to texture unit 0
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
       
         // Tell the shader we bound the texture to texture unit 0
-        this.gl_context.uniform1i(this.shader_bindings.uniformLocations.uSampler, 0);
+        this.gl_context.uniform1i(uSampler_location, 0);
       
+        // ----------------------------------------------------------------------------------------
+        // --- do the drawing
       
         //                 ( mode, numElements, datatype, offset )
         // gl.drawElements(gl.LINE_STRIP, 60, gl.UNSIGNED_SHORT, 0);
         // gl.drawElements(gl.TRIANGLE_STRIP, (buffers.triangleCount*3), gl.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.TRIANGLES, (4*this.circlePoints)*3, this.gl_context.UNSIGNED_SHORT, 0);
+      
+        // ----------------------------------------------------------------------------------------
+        // --- cleanup our shader context
         
-        this.gl_context.disableVertexAttribArray(this.shader_bindings.attribLocations.vertexPosition);
+        this.gl_context.disableVertexAttribArray(vertexPosition_location);
     }
 
     // ############################################################################################
