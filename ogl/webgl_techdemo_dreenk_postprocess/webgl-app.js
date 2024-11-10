@@ -2,7 +2,7 @@
 import { Scene } from "./scene.js";
 import { VERTEX_SHADER_SRC } from "./shaders/vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "./shaders/fragmentShader.js";
-
+import { generate_shader_program } from "./shaders.js";
 
 
 // ############################################################################################
@@ -59,89 +59,6 @@ var oldTime;
 
 var scene;
 
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-// init a shader program, so WebGL knows how to draw our data
-function initShaderProgram(vsSourceIn, fsSourceIn){
-
-    const vertexShader = loadShader(gl.VERTEX_SHADER, vsSourceIn);
-    const fragmentShader = loadShader(gl.FRAGMENT_SHADER, fsSourceIn);
-
-    // ------------------------------------------------
-    // ------------------------------------------------
-
-    // create the shader program
-
-    // create, then attach the parts, then link it to the canvas instance
-    const shaderProgram = gl.createProgram();
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
-
-    // if creating the shader program failed tell the user about it
-    if( !gl.getProgramParameter(shaderProgram, gl.LINK_STATUS) ){
-        alert(
-            `unable to init the shader program: ${gl.getProgramInfoLog( // this is vry cool tbh, i likey
-                shaderProgram, // another comma??? @mdn-tutorial pls why r u like this
-            )}`, // why the comma @mdn-tutorial??
-        );
-        // give them junk
-        return null;
-    }
-
-    // otherwise happy handoff
-    return shaderProgram;
-}
-
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-
-// 1.  new shader is created by calling gl.createShader()
-// 2. the shaders source code is sent to the shader by calling gl.shaderSource()
-// 3. once the shader has the source code, it's compiled using gl.compileShader()
-// 4. to check to be sure the shader successfully compiled, the shader param gl.COMPILE_STATUS is checked
-//      to get its value we call gl.getShaderParameter() specifying the shader and the name of the parameter to check
-//      if it's false, we know it failed to compile so show alert with log information obtained from compiler
-//          using gl.getShaderInfoLog(), then delete the shader and return null to indicate failure to load shader
-// 5. if shader was loaded and successfully compiled, the compiled shader is returned to caller
-//.
-// but also add the `const shaderProgram = initShaderProgram(vsSource, fsSource)` to main
-
-
-// create a shader of the given type, uploads the source and compiles it
-function loadShader(type, source){
-    // ask the canvas instance for shader instance
-    const shader = gl.createShader(type);
-
-    // send the source to the shader object
-
-    gl.shaderSource(shader, source);
-
-    // compile the shader program
-
-    gl.compileShader(shader);
-
-    // see if it compiled successfully
-
-    if( !gl.getShaderParameter(shader, gl.COMPILE_STATUS) ){ // seems we can get a lot from canvas elements
-        alert(
-            // very interesting that theres' an info log, does this mean we can debug webgl irl?
-            //  instead of prayer-debugging
-            `an error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`, //again with the comma??? @mdn-tutorial pls
-        );
-        // scammed, give junk
-        return null;
-    }
-
-    // happy give
-    return shader;
-}
 
 // ############################################################################################
 // ############################################################################################
@@ -211,9 +128,6 @@ function startApp() {
     // ======================================================================
     // prepare the webGL stuffs
 
-    // init a shader program; this is where all the lighting for the 
-    //  vertices and projection/transforms etc is established.
-    shader_program = initShaderProgram(VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
 
 
     // after we created a shader program we need to look up the locations that webgl
@@ -232,23 +146,22 @@ function startApp() {
     // ======================================================================
     // ======================================================================
 
-    // collect all the info needed to use the shader program
-    //  loop up which attribute our shader program is using
-    //  for aVertexPosition and look up uniform locations
-    //      [looks kinda json/dictionary]
-    programInfo = {
-        program: shader_program,
-        attribLocations: {
-            vertexPosition: gl.getAttribLocation(shader_program, "aVertexPosition"), // smh, you're just doing it for sillies now huh
-            textureCoord: gl.getAttribLocation(shader_program, "aTextureCoord"),
-        },
-        uniformLocations: {
-            projectionMatrix: gl.getUniformLocation(shader_program, "uProjectionMatrix"),
-            viewMatrix: gl.getUniformLocation(shader_program, "uViewMatrix"),
-            modelMatrix: gl.getUniformLocation(shader_program, "uModelMatrix"),
-            uSampler: gl.getUniformLocation(shader_program, "uSampler"),
-        },
-    };  
+    // // collect all the info needed to use the shader program
+    // //  loop up which attribute our shader program is using
+    // //  for aVertexPosition and look up uniform locations
+    // //      [looks kinda json/dictionary]
+    // programInfo = {
+    //     attribLocations: {
+    //         vertexPosition: gl.getAttribLocation(shader_program, "aVertexPosition"), // smh, you're just doing it for sillies now huh
+    //         textureCoord: gl.getAttribLocation(shader_program, "aTextureCoord"),
+    //     },
+    //     uniformLocations: {
+    //         projectionMatrix: gl.getUniformLocation(shader_program, "uProjectionMatrix"),
+    //         viewMatrix: gl.getUniformLocation(shader_program, "uViewMatrix"),
+    //         modelMatrix: gl.getUniformLocation(shader_program, "uModelMatrix"),
+    //         uSampler: gl.getUniformLocation(shader_program, "uSampler"),
+    //     },
+    // };  
 
 
 
@@ -303,7 +216,7 @@ function startApp() {
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.FRONT);
 
-    scene = new Scene( gl, programInfo );
+    scene = new Scene( gl );
 
     oldTime = Date.now();
 
@@ -313,12 +226,6 @@ function startApp() {
     // Flip image pixels into the bottom-to-top order that WebGL expects.
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-    // tell webgl to use our program when drawing
-    gl.useProgram(programInfo.program);
-
-
-    // allow the vertex position attribute to exist
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 
     // ======================================================================
     // ======================================================================
