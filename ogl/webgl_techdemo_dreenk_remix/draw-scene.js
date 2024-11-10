@@ -2,11 +2,11 @@ const TAU = 2.0*Math.PI;
 // var rotationFactorZ = 0.0;
 
 const perVertexFloats = 3;
-// const circlePoints = 12;
-//          (bottom+bottomCenter) + (top+topCenter) + (sideBottoms+sideTops)
-let vertexNumber;
-//                      side triangles  +   bottom  +  top
-let triangleNumber;
+// // const circlePoints = 12;
+// //          (bottom+bottomCenter) + (top+topCenter) + (sideBottoms+sideTops)
+// let vertexNumber;
+// //                      side triangles  +   bottom  +  top
+// let triangleNumber;
 
 const INITIAL_SCALE_VECTOR = [
   1.0, // i
@@ -44,23 +44,6 @@ const model_rotation_per_frame_factor = [
   0.0,
 ];
 
-// number of seconds before repeating the bobbing
-const MODEL_BOBBING_PERIOD = 7.0;
-// how much up or down it should move
-//  * as we're using a sine wave, this would be a factor of the movement
-//  * displacement is the area under the graph, which is suffering if more
-//    complex, but we know that the limited sine wave function is equal in
-//    area either side of the x axis as it's not offset at all.
-//  * this 'half' that's mirrored either side is half a circle, since sine
-//    waves are about circles
-//  * so then it is to say, we just need half the area of a circle to get
-//    how much it displaces up or down (the amplitude of the wave)
-//  * area of a circle is PI*RADIUS*RADIUS, and since it's the unit circle,
-//    this becomes PI*1*1, which is just PI
-//  * TAU is more fun to work with so this boils down to TAU/2.0
-//  * it is then apparent that the model will move TAU/2.0 units up or down,
-//    when this variable is 1.0 in value.
-const MODEL_BOBBING_AMPLITUDE_FACTOR = 0.1;
 
 
 
@@ -152,8 +135,8 @@ function updateRotationMatrix(deltaTime){
   );
 }
 
-
-function updateScene( gl, programInfo, buffers, cameraObject, deltaTime ){
+// function drawScene( gl, programInfo, can, cameraObject ){
+function updateScene( gl, programInfo, can, cameraObject, deltaTime ){
 
   cameraObject.update(deltaTime);
   updateRotationMatrix(deltaTime);
@@ -166,14 +149,14 @@ function updateScene( gl, programInfo, buffers, cameraObject, deltaTime ){
 
 // Tell WebGL how to pull out the positions from the position
 // buffer into the vertexPosition attribute.
-function setPositionAttribute(gl, buffers, programInfo) {
+function setPositionAttribute(gl, can, programInfo) {
   const numComponents = 4;
   const type = gl.FLOAT; // the data in the buffer is 32bit floats
   const normalize = false; // don't normalize
   const stride = 0; // how many bytes to get from one set of values to the next
   // 0 = use type and numComponents above
   const offset = 0; // how many bytes inside the buffer to start from
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+  gl.bindBuffer(gl.ARRAY_BUFFER, can.getVertexBuffer());
   gl.vertexAttribPointer(
     programInfo.attribLocations.vertexPosition,
     numComponents,
@@ -187,13 +170,13 @@ function setPositionAttribute(gl, buffers, programInfo) {
 
 
 // tell webgl how to pull out the texture coordinates from buffer
-function setTextureAttribute(gl, buffers, programInfo) {
+function setTextureAttribute(gl, can, programInfo) {
   const num = 2; // every coordinate composed of 2 values
   const type = gl.FLOAT; // the data in the buffer is 32-bit float
   const normalize = false; // don't normalize
   const stride = 0; // how many bytes to get from one set to the next
   const offset = 0; // how many bytes inside the buffer to start from
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+  gl.bindBuffer(gl.ARRAY_BUFFER, can.getTextureCoordBuffer());
   gl.vertexAttribPointer(
     programInfo.attribLocations.textureCoord,
     num,
@@ -209,11 +192,15 @@ function setTextureAttribute(gl, buffers, programInfo) {
 
 
 
+// updateScene( gl, programInfo, can, camera, deltaTime );
+// drawScene( gl, programInfo, can, camera, deltaTime );
+
 // TODO: have it not rebuild the matrices every frame tbh omg 
-function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObject, deltaTime ){
-  // prepare globals
-  vertexNumber = (circlePoints+1)*2 + (circlePoints)*2;
-  triangleNumber = circlePoints*2 + circlePoints + circlePoints;
+// function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObject, deltaTime ){
+function drawScene( gl, programInfo, can, cameraObject ){
+  // // prepare globals
+  // vertexNumber = (circlePoints+1)*2 + (circlePoints)*2;
+  // triangleNumber = circlePoints*2 + circlePoints + circlePoints;
 
 
   
@@ -226,9 +213,9 @@ function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObjec
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
-  setPositionAttribute(gl, buffers, programInfo);
+  setPositionAttribute(gl, can, programInfo);
 
-  setTextureAttribute(gl, buffers, programInfo);
+  setTextureAttribute(gl, can, programInfo);
 
 
   // set the shader uniforms
@@ -239,7 +226,7 @@ function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObjec
   gl.activeTexture(gl.TEXTURE0);
 
   // Bind the texture to texture unit 0
-  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.bindTexture(gl.TEXTURE_2D, can.getTexture());
 
   // Tell the shader we bound the texture to texture unit 0
   gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
@@ -248,7 +235,7 @@ function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraObjec
   //                 ( mode, numElements, datatype, offset )
   // gl.drawElements(gl.LINE_STRIP, 60, gl.UNSIGNED_SHORT, 0);
   // gl.drawElements(gl.TRIANGLE_STRIP, (buffers.triangleCount*3), gl.UNSIGNED_SHORT, 0);
-  gl.drawElements(gl.TRIANGLES, (4*circlePoints)*3, gl.UNSIGNED_SHORT, 0);
+  gl.drawElements(gl.TRIANGLES, (4*can.getCirclePoints())*3, gl.UNSIGNED_SHORT, 0);
 
 }
 
