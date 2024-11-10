@@ -1,0 +1,109 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>usually mondays are about the moon and their cycles, so we'll do this about time complexity of things</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>for those less familiar with time complexity, it's a way of analysing the time (in number of operations) required to perform an algorithm</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in the notation of it, we usually say <code>O(???)</code>, with something inside the brackets instead of <code>???</code></li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><code>O(???)</code> is referred to as <code>big-O notation</code>, and is regarding the time taken in worst case of an algorithm</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we're saying algorithm here rather than program, as it's important to make this distinction, since algorithm could be something like searching a data set, and program is the overall project which might contain many algorithms</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having the distinction between program and algorithm, lets us highlight when one algorithm performing an action, might take more or less time than another algorithm performing the same type of action (for example binary searching -> <code>O(log<sub>2</sub>n)</code> versus linear searching -> <code>O(n)</code>)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">whenever we mention <code>n</code> within the realm of time complexity, it's the conventional way of referencing how many items there are in whichever dataset our algorithm is working with</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in the example of searching, <code>n</code> would be the number of items to search, meaning that if there were 10 items (in ascending order), binary searching time complexity <code>O(log<sub>2</sub>n)</code> means that the worst case is <code>O(log<sub>2</sub>10)</code> roughly 3.3 operations, and linear search being <code>O(n)</code> would be <code>O(10)</code> exactly 10 operations, in the worst case scenario</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">for those less familiar with it, time complexity of an algorithm is about the operations required in relation to the information that we're processing</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this usually is something of the form <code>O(1)</code> in best case, and something like <code>O(n<sup>n</sup>)</code>/<code>O(n!)</code> when it's really bad</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the aim usually is we want <code>O(1)</code>, but this is rarely achievable, so we're instead focused on something like <code>O(n)</code>/<code>O(log<sub>x</sub>n)</code>/<code>O(n*log<sub>x</sub>n)</code></li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">whenever anyone says <code>O(logn)</code> or in our case, <code>O(log<sub>x</sub>n)</code>, it's usually log with the base of 2 since that's the base for binary counting (and we usually want to use that)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">however sometimes it can be others. we can get very particular about time complexity when it comes to programming, but ultimately it's like measurements when making things</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">if you're a scientist, caring about very big and complex equations relating to celestial bodies, or quantum science, you want near infinite precision where possible, but usually day to day, centimeters are fine</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">by this logic, we tend to simplify our <code>O(log<sub>x</sub>n)</code> complexity and pretend they're all <code>O(log<sub>2</sub>n)</code> so we just write <code>O(logn)</code></li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we also tend to simplify anything with constant time complexity (with lazy rounding of the numbers) that doesn't change, to be <code>O(1)</code>, but you can also write that as <code>O(c)</code> where <code>c</code> is some constant value which is not dependent on the size of the information (which was <code>n</code>)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">within our program there's a few algorithms with which we should explore their time complexity. usually during this analysis, there's also the very same principle applied to the memory required for an algorithm</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>now we've talked about all the snoozy parts of time complexity, we can quickly suffer over the important parts</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">simply put, the simpler the equation within the brackets, the faster our program usually is</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">sometimes chasing efficiency can have its problems in creating things that are indistinguishable from magic (see <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">fast inverse square root</a>)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">computers have advanced tremendously since 1999, so now there's a lot less emphasis on efficient operations until we get into the really large projects where it's often too late or it takes a lot of development time to deal with</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">for this reason we thought up the idea to do some quick cheeky analysis of different things we've already done</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>another idea we had (bleeding over from yesterday), was the idea to draw up a scheduling system for different tasks within our program, this scheduling system would be that things like</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">building the daily posts page would have each element added into a queue, where one by one, items are taken from the pool and the next "construction" operation is performed rather than building the entire card from start to finish before placing in the list</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">shower thought regarding the daily post, or any page construction would be that the element is assigned an ID and or class while it's being constructed to access and or make this known to other parts of the program</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">during graphical projects, we'd use multi-pass rendering, and utilising buffers for storing information between frames</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">yesterday a very entertaining though would be multi-pass rendering mixed up in a cocktail with different scheduling algorithms (especially on-time or deadline-centered algorithms), to then have updates scheduled and performed as they're needed</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">an example of that last one would be when you're standing on the surface of the earth, using the speed of light as a constant, to assume that (except in teleporting situations where we can slap a loading screen), that the time light takes to travel is the minimum time before we might see pluto again if it's hidden behind earth</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">further from that previous point, we'd also need to account for things like running really fast on the planet to catch up to its descent below the horizon, and then we could just choose the next time we try to update the position of pluto based on this</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">scheduling systems would of course benefit from having some way to know how many operations are required for different parts of the program, which would need to be manually done (as automatically requires making half the compilation pipeline and then building the call flow tree diagram with operations as the nodes, which falls apart as soon as there's an infinite loop or multithreading)</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>when it comes to building web pages there's a few things that are needed to be considerd</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>fetch requests within the page will be in terms of ping, the fetch request packet frame size, response data frame size, the user's download and upload speed, and then any other outside factors</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">other outside factors include things like tasks/processes on the user's computer which are using the internet, packet loss/packet delivery algorithms and their possible changes, other user's requesting data from the server, and the traffic within the shared lines of the internet between the server and the user (also antivirus systems, firewalls, proxies, and VPNs)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a lot of this can be summed up with ping, request/response frame size, and the download/upload speed</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">since most user's of the internet now have rather fast internet compared to previously (and most service providers have finally been bullied into unlimited bandwidth plans), we can start to draw parallels to the speed of physical rotary hard drives and 'paging' (which lets us hitchhike on all those cool ways they dealt with the time it takes)</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>brief summary of daily post page loading</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** request to view post page ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** receive the post page html code ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** browser begins parsing head ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">browser schedules icons for download</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">browser schedules scripts for download</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">browser schedules stylesheets for download</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** browser finished parsing head ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** browser begins parsing body ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">browser schedules config for download</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">browser schedules header image for download</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** browser finished parsing body ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">remaining fetch requests are performed as they show up</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">page is marked as finished loading</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** daily post page finishes loading ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">adds navigation menu to the page by updating innerHTML</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** daily post page starts generating stubs ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">access all posts in our list of post metadata</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">-- given a post, we gather the metadata</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">---- prepare top level element</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">---- recurse for the child elements</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">------ build current element</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">------ recurse for child elements</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">-------- ...</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">------ finish current element</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">---- finish top level element</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">---- add the given post stub to our page</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** daily post page starts fetching post content ***</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">gather all elements by class name indicating it needs content fetched</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">access all elements encountered</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">-- given a post, we construct the fetch request</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">-- we build a function to replace the content with our response and remove the tag saying we need to fetch</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">-- we then replace the request complete with the function we made</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">-- we start the request</li>   
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">*** page complete ***</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">since the way the page is constructed seems to be reliant fully on the browsing environment it stands to reason that the ordering changes each time</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in summary, it's likely that during our stub creation loop we're likely blocking the main thread and should instead utilise load events on each stub as they show to then have the next operation handled</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
