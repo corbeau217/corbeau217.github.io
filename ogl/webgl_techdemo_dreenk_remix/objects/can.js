@@ -11,6 +11,23 @@ class Can {
 
     // creates a scene object
     constructor( gl_context ){
+
+        const INITIAL_SCALE_VECTOR = [
+            1.0, // i
+            1.0, // j
+            1.0, // k
+        ];
+        
+          
+        // model to world matrix, just use identity for now
+        this.modelMatrix = mat4.create();
+        this.modelMatrix_translation = mat4.create();
+        this.modelMatrix_rotation = mat4.create();
+        this.modelMatrix_rotation_offKilter = mat4.create();
+        this.modelMatrix_rotation_updateFactor = mat4.create();
+        this.modelMatrix_scale = mat4.create();
+
+        this.generate_rotation_matrices();
         
         // prepare shape references
         this.textureCoordinates = [];
@@ -73,6 +90,51 @@ class Can {
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
+   
+    generate_rotation_matrices(){
+
+        // factor of TAU in radians
+        //  [1.0  * TAU] == 360
+        //  [0.75 * TAU] == 270
+        //  [0.5  * TAU] == 180
+        //  [0.25 * TAU] ==  90
+        this.model_rotation_initial = [
+            // Rx
+            -(2.0/3.0)/4.0,
+            // Ry
+            0.0,
+            // Rz
+            0.05,
+        ];
+        // anything other than y rotation tends to make it spin weird bc of the way we set up axises
+        this.model_rotation_per_frame_factor = [
+            0.0,
+            0.1,
+            0.0,
+        ];
+
+        // heaper order, heading pitch roll
+        mat4.rotateY(
+            this.modelMatrix_rotation_offKilter,
+            this.modelMatrix_rotation_offKilter,
+            this.model_rotation_initial[1] * TAU,
+        );
+        mat4.rotateX(
+            this.modelMatrix_rotation_offKilter,
+            this.modelMatrix_rotation_offKilter,
+            this.model_rotation_initial[0] * TAU,
+        );
+        mat4.rotateZ(
+            this.modelMatrix_rotation_offKilter,
+            this.modelMatrix_rotation_offKilter,
+            this.model_rotation_initial[2] * TAU,
+        );
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+    
     isPowerOf2(value) {
         return (value & (value - 1)) === 0;
     }
@@ -502,9 +564,138 @@ class Can {
     // ############################################################################################
     // ############################################################################################
 
-    getTexture(){
-        return this.texture;
+    rebuild_model_matrix(){
+        // incase we have existing junk in the matrix
+        mat4.identity(this.modelMatrix);
+      
+        // ---- translate ----
+        // existing translation
+        mat4.multiply(
+            // destination
+            this.modelMatrix,
+            // left matrix
+            this.modelMatrix,
+            // right matrix
+            this.modelMatrix_translation
+        );
+      
+        // ---- rotation ----
+        // existing rotation that was then translated
+        mat4.multiply(
+            // destination
+            this.modelMatrix,
+            // left matrix
+            this.modelMatrix,
+            // right matrix
+            this.modelMatrix_rotation,
+        );
+      
     }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    updateRotationMatrix(deltaTime){
+        // wipe the rotation matrix
+        this.modelMatrix_rotation = mat4.create();
+      
+        mat4.rotateY(
+            this.modelMatrix_rotation_updateFactor,
+            this.modelMatrix_rotation_updateFactor,
+            this.model_rotation_per_frame_factor[1] * TAU * deltaTime,
+        );
+        mat4.rotateX(
+            this.modelMatrix_rotation_updateFactor,
+            this.modelMatrix_rotation_updateFactor,
+            this.model_rotation_per_frame_factor[0] * TAU * deltaTime,
+        );
+        mat4.rotateZ(
+            this.modelMatrix_rotation_updateFactor,
+            this.modelMatrix_rotation_updateFactor,
+            this.model_rotation_per_frame_factor[2] * TAU * deltaTime,
+        );
+      
+        // merge together in the overall one
+        mat4.multiply(
+            // destination
+            this.modelMatrix_rotation,
+            // left matrix
+            this.modelMatrix_rotation_updateFactor,
+            // right matrix
+            this.modelMatrix_rotation_offKilter,
+        );
+    }
+
+    
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+
+
+    // Tell WebGL how to pull out the positions from the position
+    // buffer into the vertexPosition attribute.
+    setPositionAttribute(gl_context, programInfo ) {
+        const numComponents = 4;
+        const type = gl_context.FLOAT; // the data in the buffer is 32bit floats
+        const normalize = false; // don't normalize
+        const stride = 0; // how many bytes to get from one set of values to the next
+        // 0 = use type and numComponents above
+        const offset = 0; // how many bytes inside the buffer to start from
+        gl_context.bindBuffer(gl_context.ARRAY_BUFFER, this.getVertexBuffer());
+        gl_context.vertexAttribPointer(
+            programInfo.attribLocations.vertexPosition,
+            numComponents,
+            type,
+            normalize,
+            stride,
+            offset
+        );
+        gl_context.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    }
+
+
+    // tell webgl how to pull out the texture coordinates from buffer
+    setTextureAttribute(gl_context, programInfo) {
+        const num = 2; // every coordinate composed of 2 values
+        const type = gl_context.FLOAT; // the data in the buffer is 32-bit float
+        const normalize = false; // don't normalize
+        const stride = 0; // how many bytes to get from one set to the next
+        const offset = 0; // how many bytes inside the buffer to start from
+        gl_context.bindBuffer(gl_context.ARRAY_BUFFER, this.getTextureCoordBuffer());
+        gl_context.vertexAttribPointer(
+            programInfo.attribLocations.textureCoord,
+            num,
+            type,
+            normalize,
+            stride,
+            offset,
+        );
+        gl_context.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    prepareTexture(gl_context){
+
+        // Tell WebGL we want to affect texture unit 0
+        gl_context.activeTexture(gl_context.TEXTURE0);
+
+        // Bind the texture to texture unit 0
+        gl_context.bindTexture(gl_context.TEXTURE_2D, this.texture);
+
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    // getTexture(){
+    //     return this.texture;
+    // }
     getTextureCoordBuffer(){
         return this.textureCoordBuffer;
     }
@@ -518,6 +709,13 @@ class Can {
         return this.circlePoints;
     }
 
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    getModelMatrix(){
+        return this.modelMatrix;
+    }
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
