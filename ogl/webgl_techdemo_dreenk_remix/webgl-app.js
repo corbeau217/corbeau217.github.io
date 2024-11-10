@@ -23,9 +23,6 @@ window.addEventListener(
 
 const TAU = 2.0*Math.PI;
 
-
-const CIRCLE_POINTS = 16;
-
 // ------------------------------------------------
 // ------------------------------------------------
 // ------- settings

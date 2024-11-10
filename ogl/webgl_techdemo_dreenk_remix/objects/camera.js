@@ -51,8 +51,14 @@ class Camera {
     // ############################################################################################
     // ############################################################################################
 
-    update( deltaTime ) { 
+    update( deltaTime, aspectRatio ) { 
         // .. erm
+        if(aspectRatio != this.aspect ){
+            // ...
+            this.aspect = aspectRatio;
+            this.buildProjectionMatrix();
+            console.log("rebuilt projection matrix");
+        }
     }
 
     getProjectionMatrix(){

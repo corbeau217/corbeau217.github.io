@@ -10,8 +10,10 @@ class Can {
     // ############################################################################################
 
     // creates a scene object
-    constructor( gl_context ){
-        
+    constructor( gl_context, programInfo ){
+        // local references, very cursed
+        this.gl_context = gl_context;
+        this.programInfo = programInfo;
           
         // model to world matrix, just use identity for now
         this.modelMatrix = mat4.create();
@@ -132,11 +134,11 @@ class Can {
     isPowerOf2(value) {
         return (value & (value - 1)) === 0;
     }
-    loadTexture(gl_context){
+    loadTexture(){
         // ...
 
-        this.texture = gl_context.createTexture();
-        gl_context.bindTexture(gl_context.TEXTURE_2D, this.texture);
+        this.texture = this.gl_context.createTexture();
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
     
         // Because images have to be downloaded over the internet
         // they might take a moment until they are ready.
@@ -144,15 +146,15 @@ class Can {
         // use it immediately. When the image has finished downloading
         // we'll update the texture with the contents of the image.
         const level = 0;
-        const internalFormat = gl_context.RGBA;
+        const internalFormat = this.gl_context.RGBA;
         const width = 1;
         const height = 1;
         const border = 0;
-        const srcFormat = gl_context.RGBA;
-        const srcType = gl_context.UNSIGNED_BYTE;
+        const srcFormat = this.gl_context.RGBA;
+        const srcType = this.gl_context.UNSIGNED_BYTE;
         const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
-        gl_context.texImage2D(
-            gl_context.TEXTURE_2D,
+        this.gl_context.texImage2D(
+            this.gl_context.TEXTURE_2D,
             level,
             internalFormat,
             width,
@@ -163,33 +165,33 @@ class Can {
             pixel
         );
     
-        const image = new Image();
-        image.onload = () => {
-        gl_context.bindTexture(gl_context.TEXTURE_2D, this.texture);
-        gl_context.texImage2D(
-            gl_context.TEXTURE_2D,
+        this.texture_image = new Image();
+        this.texture_image.onload = () => {
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
+        this.gl_context.texImage2D(
+            this.gl_context.TEXTURE_2D,
             level,
             internalFormat,
             srcFormat,
             srcType,
-            image
+            this.texture_image
         );
     
         // WebGL1 has different requirements for power of 2 images
         // vs non power of 2 images so check if the image is a
         // power of 2 in both dimensions.
-        if (this.isPowerOf2(image.width) && this.isPowerOf2(image.height)) {
+        if (this.isPowerOf2(this.texture_image.width) && this.isPowerOf2(this.texture_image.height)) {
             // Yes, it's a power of 2. Generate mips.
-            gl_context.generateMipmap(gl_context.TEXTURE_2D);
+            this.gl_context.generateMipmap(this.gl_context.TEXTURE_2D);
         } else {
             // No, it's not a power of 2. Turn off mips and set
             // wrapping to clamp to edge
-            gl_context.texParameteri(gl_context.TEXTURE_2D, gl_context.TEXTURE_WRAP_S, gl_context.CLAMP_TO_EDGE);
-            gl_context.texParameteri(gl_context.TEXTURE_2D, gl_context.TEXTURE_WRAP_T, gl_context.CLAMP_TO_EDGE);
-            // gl_context.texParameteri(gl_context.TEXTURE_2D, gl_context.TEXTURE_MIN_FILTER, gl_context.LINEAR);
+            this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_S, this.gl_context.CLAMP_TO_EDGE);
+            this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_T, this.gl_context.CLAMP_TO_EDGE);
+            // this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MIN_FILTER, this.gl_context.LINEAR);
         }
         };
-        image.src = this.texture_path;
+        this.texture_image.src = this.texture_path;
   
     }
 
@@ -452,30 +454,13 @@ class Can {
     // ############################################################################################
     // ############################################################################################
 
-    initBuffers( gl_context ){
+    initBuffers(){
     
-        // prepareGlobals(circlePoints);
-    
-        this.initVertexBuffer( gl_context );
-        this.initIndexBuffer( gl_context );
+        this.initVertexBuffer( this.gl_context );
+        this.initIndexBuffer( this.gl_context );
     
     
-        this.initTextureBuffer( gl_context );
-    
-    
-        // console.log("vertex array size: " + vertexValues.length + " which is "+(vertexValues.length/perVertexFloats) + " of the " + vertexNumber);
-        // console.log("bindings array size: " + bindings.length + " which is "+(bindings.length/3) + " of the " + triangleNumber);
-        // console.log("mappings array size: " + textureCoordinates.length + " which is "+(textureCoordinates.length/2) + " of the " + vertexNumber);
-    
-        // return {
-        //     position: positionBuffer,
-        //     textureCoord: textureCoordBuffer,
-        //     indices: indexBuffer,
-        // };
-    
-        
-    
-    
+        this.initTextureBuffer( this.gl_context );
     }
 
     // ############################################################################################
@@ -702,14 +687,56 @@ class Can {
     getCirclePoints(){
         return this.circlePoints;
     }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
     getModelMatrix(){
         return this.modelMatrix;
     }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    update( deltaTime ){
+        // does the rotation
+        this.updateRotationMatrix(deltaTime);
+
+        // TRS the model matrix
+        this.rebuild_model_matrix(deltaTime);
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    draw(cameraViewMatrix, cameraProjectionMatrix){
+
+        // tell webgl to use our program when drawing
+        this.gl_context.useProgram(this.programInfo.program);
+        
+        this.gl_context.uniformMatrix4fv( this.programInfo.uniformLocations.modelMatrix, false, this.modelMatrix );
+      
+        // Tell WebGL how to pull out the positions from the position
+        // buffer into the vertexPosition attribute.
+        this.setPositionAttribute(this.gl_context, this.programInfo);
+      
+        this.setTextureAttribute(this.gl_context, this.programInfo);
+      
+      
+        // set the shader uniforms
+        this.gl_context.uniformMatrix4fv( this.programInfo.uniformLocations.projectionMatrix, false, cameraProjectionMatrix );
+        this.gl_context.uniformMatrix4fv( this.programInfo.uniformLocations.viewMatrix, false, cameraViewMatrix );
+      
+        this.prepareTexture(this.gl_context);
+      
+        // Tell the shader we bound the texture to texture unit 0
+        this.gl_context.uniform1i(this.programInfo.uniformLocations.uSampler, 0);
+      
+      
+        //                 ( mode, numElements, datatype, offset )
+        // gl.drawElements(gl.LINE_STRIP, 60, gl.UNSIGNED_SHORT, 0);
+        // gl.drawElements(gl.TRIANGLE_STRIP, (buffers.triangleCount*3), gl.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.TRIANGLES, (4*this.circlePoints)*3, this.gl_context.UNSIGNED_SHORT, 0);
+    }
+
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
