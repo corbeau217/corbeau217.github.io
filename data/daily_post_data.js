@@ -1,21 +1,6 @@
 const DAILY_POST_DATA = {
-    "post_meta": [
-        // ========================================
-        // ========================================
-        // ===== template for post data ===========
-        {
-            // date of the post in YYYY/MM/DD format
-            "date": "2024/12/31",
-            // the theme that post is for
-            "theme": "lorem ipsum",
-            // the day that post is for
-            "day": "lorem ipsum",
-            // the name for the post on that day
-            "title": "lorem ipsum",
-            // this is just always the book for now
-            "thumbnail": "/img/bookicon.png",
-            "thumbnail_alt_text": "an open book icon"
-        },
+    // data about data
+    "metadata": [
         // ========================================
         // ========================================
         {
@@ -102,7 +87,29 @@ const DAILY_POST_DATA = {
             "thumbnail_alt_text": "an open book icon"
         },
         // ========================================
-    ]
+        // ...
+        // ========================================
+    ],
+    // moving this out of the post_meta list to remove
+    //  the need for filtering/testing that we're not
+    //  generating a stub for it by accident
+    "template": [
+        // putting it in a list to make it
+        //  easier to copy paste
+        {
+            // date of the post in YYYY/MM/DD format
+            "date": "2024/12/31",
+            // the theme that post is for
+            "theme": "lorem ipsum",
+            // the day that post is for
+            "day": "lorem ipsum",
+            // the name for the post on that day
+            "title": "lorem ipsum",
+            // this is just always the book for now
+            "thumbnail": "/img/bookicon.png",
+            "thumbnail_alt_text": "an open book icon"
+        },
+    ],
 };
 
 export {

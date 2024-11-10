@@ -1,5 +1,5 @@
 import {
-    IMPORT_SECTION_CLASS_IDENTIFIER,
+    IMPORT_POST_TAG_CLASS,
     IMPORT_HTML_REF_ATTRIBUTE
 } from '/scripts/dailyPosts/symbols.js';
 
@@ -8,7 +8,7 @@ import {
 // ############################################################################################
 
 function daily_post_flow_get_all_stubs(){
-    return document.getElementsByClassName( IMPORT_SECTION_CLASS_IDENTIFIER );
+    return document.getElementsByClassName( IMPORT_POST_TAG_CLASS );
 }
 
 // handles a section element that needs to have its inner content imported
@@ -32,7 +32,7 @@ function process_html_importing_section_element( html_importing_stub_section ){
                 /* Remove the attribute, and call this function once more: */
                 html_importing_stub_section.removeAttribute( IMPORT_HTML_REF_ATTRIBUTE );
                 // also remove the class that says it needs an import
-                html_importing_stub_section.classList.remove( IMPORT_SECTION_CLASS_IDENTIFIER );
+                html_importing_stub_section.classList.remove( IMPORT_POST_TAG_CLASS );
             }
         };
         // set as a get request
