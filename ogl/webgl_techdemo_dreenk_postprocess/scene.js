@@ -14,14 +14,12 @@ class Scene {
     constructor( gl_context ){
         // .. local references to gl and program info
         this.gl_context = gl_context;
-        // this.programInfo = programInfo;
         
         this.aspectRatio = gl_context.canvas.clientWidth / gl_context.canvas.clientHeight;
 
         // generate the camera
         this.camera = new Camera(this.aspectRatio);
-        // here's where we call the "routine" that builds all the objs we'll be drawing
-        // buffers = initBuffers(gl,CIRCLE_POINTS);
+        // generate can
         this.can = new Can( this.gl_context );
     }
 

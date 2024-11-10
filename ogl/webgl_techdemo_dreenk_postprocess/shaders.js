@@ -1,12 +1,5 @@
 
 
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-
-
-
 
 
 // ############################################################################################
@@ -58,6 +51,15 @@ function loadShader( gl_context, type, source){
     return shader;
 }
 
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+
+
+
 // init a shader program, so WebGL knows how to draw our data
 function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
 
@@ -86,11 +88,25 @@ function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
         return null;
     }
 
+    // now that it's linked, detach the prepared content
     gl_context.detachShader(shaderProgram, vertexShader);
     gl_context.detachShader(shaderProgram, fragmentShader);
 
-    // otherwise happy handoff
+    // and delete it
+    gl_context.deleteShader(vertexShader);
+    gl_context.deleteShader(fragmentShader);
+
+    // happy handoff now
     return shaderProgram;
 }
+
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+
+
 
 export { generate_shader_program };
