@@ -1,64 +1,49 @@
-<div class="sectioned_content_inner">
-    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="[...]" /></div>
-    <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">[06/11/2024] :: wdym Wednesdays</h3></div>
-    <div class="sectioned_content_body">
-        <div class="wednesday_post daily_post">
-            <!-- <hr /> -->
-            <p class="daily_heading_theme daily_heading_elem">wdym Wednesdays</p>
-            <!-- <hr /> -->
-            <p class="daily_heading_elem">Spooky skeletons</p>
-            <!-- <hr /> -->
-            <p class="daily_textbody_elem">
-                <ul class="daily_textbody_list">
-                    <li class="daily_textbody_list_elem">
-                        <p><code>Joint</code>s first</p>
-                        <ul class="daily_textbody_list daily_textbody_sublist">
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">3 circles around each of the x/y/z axis using hard coded points of the unit circle</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then lines are drawn between each of these points and drawn using <code>GL_LINES</code> draw setting</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">these lines should be coloured to the colour of the <code>Skeleton</code></li>
-                        </ul>
-                        <hr />
-                        <!-- .. -->
-                        <div class="daily_post_content_image_container">
-                            <img class="daily_post_content_image" src="./img/joints.png" alt="illustration of the 3 circles on the x, y, and z axises" />
-                            <img class="daily_post_content_image" src="./img/unit_circle.png" alt="diagram illustrating the unit circle, and its coordinates" />
-                        </div>
-                        <!-- .. -->
-                    </li>
-                    <li class="daily_textbody_list_elem">
-                        <hr class="hr_list_elem_seperating" />
-                        <p><code>Bone</code>s next</p>
-                        <ul class="daily_textbody_list daily_textbody_sublist">
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><code>Bone</code>s would be triangular pyramids or square based pyramids between the <code>Joint</code>s</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the position of these would just be offset by the radius of the <code>Joint</code>s. These would be the edges of the <code>Skeleton</code>'s graph</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">drawn using the <code>GL_LINES</code> draw setting</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it would be optional to have a coordinate frame at the end of the <code>Bone</code> to show position/rotation of any following joints relative to their parent</li>
-                        </ul>
-                        <hr />
-                        <!-- .. -->
-                        <p>we spent a lot of time on the drawings for <code>Joint</code>s so this will just be left to the imagination for now</p>
-                        <!-- .. -->
-                    </li>
-                    <li class="daily_textbody_list_elem">
-                        <hr class="hr_list_elem_seperating" />
-                        <p><code>Skeleton</code> last</p>
-                        <ul class="daily_textbody_list daily_textbody_sublist">
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the <code>Skeleton</code>, is a graph/tree structure where the <code>Joint</code>s are nodes, and <code>Bone</code>s are edges connecting them</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it then follows that <code>Bone</code>s should be the way we access the next <code>Joint</code> in the <code>Skeleton</code> graph</li>
-                            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in a place where you might view the <code>Skeleton</code>, it should be that mousing over a <code>Bone</code>, draws the lines thicker, including any visible coordinate frame at the end</li>
-                        </ul>
-                        <hr />
-                        <!-- .. -->
-                        <p>we spent a lot of time on the drawings for <code>Joint</code>s so this will just be left to the imagination for now</p>
-                        <!-- .. -->
-                    </li>
-                    <li class="daily_textbody_list_elem">
-                        <hr class="hr_list_elem_seperating" />
-                        <p>probably the last post</p>
-                    </li>
-                </ul>
-            </p>
-            <!-- <hr /> -->
+
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p><code>Joint</code>s first</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">3 circles around each of the x/y/z axis using hard coded points of the unit circle</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then lines are drawn between each of these points and drawn using <code>GL_LINES</code> draw setting</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">these lines should be coloured to the colour of the <code>Skeleton</code></li>
+        </ul>
+        <hr />
+        <!-- .. -->
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="./img/joints.png" alt="illustration of the 3 circles on the x, y, and z axises" />
+            <img class="daily_post_content_image" src="./img/unit_circle.png" alt="diagram illustrating the unit circle, and its coordinates" />
         </div>
-    </div>
-</div>
+        <!-- .. -->
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p><code>Bone</code>s next</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><code>Bone</code>s would be triangular pyramids or square based pyramids between the <code>Joint</code>s</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the position of these would just be offset by the radius of the <code>Joint</code>s. These would be the edges of the <code>Skeleton</code>'s graph</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">drawn using the <code>GL_LINES</code> draw setting</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it would be optional to have a coordinate frame at the end of the <code>Bone</code> to show position/rotation of any following joints relative to their parent</li>
+        </ul>
+        <hr />
+        <!-- .. -->
+        <p>we spent a lot of time on the drawings for <code>Joint</code>s so this will just be left to the imagination for now</p>
+        <!-- .. -->
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p><code>Skeleton</code> last</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the <code>Skeleton</code>, is a graph/tree structure where the <code>Joint</code>s are nodes, and <code>Bone</code>s are edges connecting them</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it then follows that <code>Bone</code>s should be the way we access the next <code>Joint</code> in the <code>Skeleton</code> graph</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in a place where you might view the <code>Skeleton</code>, it should be that mousing over a <code>Bone</code>, draws the lines thicker, including any visible coordinate frame at the end</li>
+        </ul>
+        <hr />
+        <!-- .. -->
+        <p>we spent a lot of time on the drawings for <code>Joint</code>s so this will just be left to the imagination for now</p>
+        <!-- .. -->
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
