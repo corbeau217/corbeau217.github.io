@@ -1,0 +1,51 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>now we're building the posts as we go</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the idea was to have as second thing for Saturday and label it as a bonus round or encore where we just refactoring the <code>JS</code> code for the webpage and <code>OpenGL</code> code structure for our tech demos</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">for the page generation, we would be having the core code as one file and then each part separated out into their own files</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the cleaning of the post code directly tied into todays idea, but mostly we were focused on refactoring the <code>OpenGL</code> code to allow our daily theme to be about bringing ideas to fruition</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>changed over to using <a href="https://en.wikipedia.org/wiki/JSON"><code>JSON</code></a> <a href="https://en.wikipedia.org/wiki/Tree_(abstract_data_type)"><code>tree</code></a> structuring and post meta data</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">very loosely employs a very hardcoded and simple <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)"><code>interpretor</code></a> to deal with building and replacing the elements</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">possibly breaking if we do anything out of the usual format though</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">but now we have <code>JSON</code> data to use for the posts</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>brief overview of how it works</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">first gather a post's meta data</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then we pass it into the builder with the structure</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">as we process the structure of each element, we replace any of the content with the metadata we know</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then we recursively build all sub elements of for the post, up to when it would want the body imported</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it then adds this item to the post flow box that we're using for our post displaying</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">after which, we go and fetch the content for every one of the posts one by one and replace the body with this fetched content</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>it should be investigated about the speed at which this is processed</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we're replacing content as we go during the structure building process which was our naive way of making it efficient</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">however, it might produce better response times by not blocking the main <a href="https://en.wikipedia.org/wiki/Thread_(computing)"><code>thread</code></a>, and generate all the structures, then <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)"><code>interpreting</code></a>, then importing as 3 separate actions</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this means there's less working time between loops, but it would mean triple handling instead of just double handling</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it'd likely be much nicer to have multiple <a href="https://en.wikipedia.org/wiki/Thread_(computing)"><code>thread</code></a>s handling the building, where some are adding the stubs and others are fetching the content</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could also then have the 3 stages and use these <a href="https://en.wikipedia.org/wiki/Thread_(computing)"><code>thread</code></a>s to make it even faster since there's <a href="https://en.wikipedia.org/wiki/Banker%27s_algorithm">minimal workload</a> per <a href="https://en.wikipedia.org/wiki/Thread_(computing)"><code>thread</code></a> lifetime, regardless of the triple handling</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">ultimately if we could find some way to build like we're a printer, so we're building <a href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search"><code>breadth-first</code></a>, it'd make very nice effect in the way that the content loads, like <a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"><code>stack</code></a>ing up cards (which is our general theme of the site)</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">all of this happens on load and is very predetermined so would need modification to the source to handle other areas of the site</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">as it we took the approach of "works first, polish later", the source is a little messy (we also kept feature creeping no matter how much we tried to under<a href="https://en.wikipedia.org/wiki/Scope_(project_management)"><code>scope</code></a>) so will need to be tidied up</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem"><p>once again, thank you <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement"><code>mdn docs</code></a> <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">for all</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof">the support</a></p></li>
+    <li class="daily_textbody_list_elem"><p>and, thank you <a href="https://www.w3schools.com/jsref/jsref_switch.asp"><code>w3 schools</code></a> <a href="https://www.w3schools.com/jsref/jsref_includes.asp">for your</a> <a href="https://www.w3schools.com/jsref/met_element_setattribute.asp">wonderful explanations</a></p></li>
+    
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
