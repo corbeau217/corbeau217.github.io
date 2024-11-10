@@ -1,7 +1,7 @@
-import {
-    IMPORT_POST_TAG_CLASS,
-    IMPORT_HTML_REF_ATTRIBUTE
-} from '/scripts/dailyPosts/symbols.js';
+// import {
+//     IMPORT_POST_TAG_CLASS,
+//     IMPORT_HTML_REF_ATTRIBUTE
+// } from '/scripts/dailyPosts/symbols.js';
 import {
     DAILY_POST_DATA
 } from '/data/daily_post_data.js';
