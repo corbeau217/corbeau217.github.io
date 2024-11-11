@@ -38,7 +38,7 @@ function loadShader( gl_context, type, source){
     // see if it compiled successfully
 
     if( !gl_context.getShaderParameter(shader, gl_context.COMPILE_STATUS) ){ // seems we can get a lot from canvas elements
-        alert(
+        console.log(
             // very interesting that theres' an info log, does this mean we can debug webgl irl?
             //  instead of prayer-debugging
             `an error occurred compiling the shaders: ${gl_context.getShaderInfoLog(shader)}`, //again with the comma??? @mdn-tutorial pls
@@ -79,7 +79,7 @@ function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
 
     // if creating the shader program failed tell the user about it
     if( !gl_context.getProgramParameter(shaderProgram, gl_context.LINK_STATUS) ){
-        alert(
+        console.log(
             `unable to init the shader program: ${gl_context.getProgramInfoLog( // this is vry cool tbh, i likey
                 shaderProgram, // another comma??? @mdn-tutorial pls why r u like this
             )}`, // why the comma @mdn-tutorial??

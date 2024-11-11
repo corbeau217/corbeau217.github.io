@@ -1,4 +1,3 @@
-// import { initBuffers } from "./init-buffers.js";
 import { Scene } from "./scene.js";
 
 
@@ -10,7 +9,7 @@ window.addEventListener(
     "load",
     (event) => {
         console.log("starting webgl app");
-        startApp();
+        app_maim();
     }
 );
 
@@ -31,21 +30,24 @@ var timeBetweenFrames = 1000.0/fps;
 var canvasClearColour = [ 0.2, 0.2, 0.2, 1.0 ];
 
 
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
+// ------------------------------------------------
+// ------------------------------------------------
 
 var canvas;
-var gl;
+var gl_context;
 
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-var oldTime;
+// ------------------------------------------------
+// ------------------------------------------------
 
 var scene;
 
+// ------------------------------------------------
+// ------------------------------------------------
+
+var oldTime;
+
+// ------------------------------------------------
+// ------------------------------------------------
 
 // ############################################################################################
 // ############################################################################################
@@ -55,49 +57,77 @@ function getCanvasElement(){
     return document.querySelector("#webgl_canvas_primary");
 }
 
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-
-function init_webgl_context(){
-
+function gl_context_init(){
 
     // weird way to grab the canvas element, shouldnt we getElementById?
     canvas = getCanvasElement();
     
     // init the GL context
-    gl = canvas.getContext("webgl");
+    gl_context = canvas.getContext("webgl");
 }
 
-function draw( deltaTime ) {
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
 
+function canvas_init(){
+    gl_context.clearColor(canvasClearColour[0], canvasClearColour[1], canvasClearColour[2], canvasClearColour[3]); // clear to black
+    gl_context.clearDepth(1.0); // clear everything
 
-    // function updateScene( gl, programInfo, deltaTime ){
-    scene.update( deltaTime );
-        
-    // function drawScene( gl, programInfo ){
+    gl_context.enable(gl_context.DEPTH_TEST); // enable depth testing
+    gl_context.depthFunc(gl_context.LEQUAL); // near things obscure far things
+
+    gl_context.enable(gl_context.CULL_FACE);
+    gl_context.cullFace(gl_context.FRONT);
+
+    scene = new Scene( gl_context );
+
+    oldTime = Date.now();
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+function canvas_update(deltaTime){
+    // do update
+    scene.update(deltaTime);
+}
+
+function canvas_draw() {
+    // clear canvas before we start drawing on it
+    gl_context.clear(gl_context.COLOR_BUFFER_BIT);
+    gl_context.clear(gl_context.DEPTH_BUFFER_BIT);
+    // draw the scene
     scene.draw();
 }
+
 function frameUpdate( newTime ){
     // ... generate delta time
     const deltaTime = (newTime - oldTime)/1000.0;
     oldTime = newTime;
-    draw( deltaTime );
+    // do update
+    canvas_update(deltaTime);
+    // then draw
+    canvas_draw();
 }
 
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
 // entry point
-function startApp() {
+function app_maim() {
 
     // ======================================================================
     // ======================================================================
     // ======================================================================
     // ======== prepare the canvas stuffs
 
-    init_webgl_context();
+    gl_context_init();
 
     // only continue if webGL is available and working
-    if( null === gl ){
+    if( null === gl_context ){
         alert(
             "unable to init webGL. your device may not support it"
         );
@@ -109,23 +139,7 @@ function startApp() {
     // ======================================================================
     // ======== initialise things
     
-
-    gl.clearColor(canvasClearColour[0], canvasClearColour[1], canvasClearColour[2], canvasClearColour[3]); // clear to black
-    gl.clearDepth(1.0); // clear everything
-
-    gl.enable(gl.DEPTH_TEST); // enable depth testing
-    gl.depthFunc(gl.LEQUAL); // near things obscure far things
-
-    gl.enable(gl.CULL_FACE);
-    gl.cullFace(gl.FRONT);
-
-    scene = new Scene( gl );
-
-    oldTime = Date.now();
-
-    // Flip image pixels into the bottom-to-top order that WebGL expects.
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-
+    canvas_init();
 
     // ======================================================================
     // ======================================================================
