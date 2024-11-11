@@ -1,7 +1,7 @@
 const FRAGMENT_SHADER_SRC = `
-precision highp float;
+precision mediump float;
 
-varying highp vec2 v_texcoord;
+varying mediump vec2 v_texcoord;
 
 uniform sampler2D u_texture;
 

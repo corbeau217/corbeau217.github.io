@@ -22,8 +22,8 @@ class Render_Space {
             y: this.gl_context.canvas.height,
         };
         this.render_dimensions = {
-            x: (this.viewport_dimensions.x)/4,
-            y: (this.viewport_dimensions.y)/4,
+            x: Math.floor(this.viewport_dimensions.x/4),
+            y: Math.floor(this.viewport_dimensions.y/4),
         };
         
 
@@ -130,7 +130,8 @@ class Render_Space {
                             this.render_dimensions.x, this.render_dimensions.y, border,
                             format, type, data);
         
-        this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MIN_FILTER, this.gl_context.LINEAR);
+        this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MIN_FILTER, this.gl_context.NEAREST);
+        this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MAG_FILTER, this.gl_context.NEAREST);
         this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_S, this.gl_context.CLAMP_TO_EDGE);
         this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_T, this.gl_context.CLAMP_TO_EDGE);
 

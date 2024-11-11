@@ -76,10 +76,14 @@ function canvas_init(){
     gl_context.clearDepth(1.0); // clear everything
 
     gl_context.enable(gl_context.DEPTH_TEST); // enable depth testing
-    gl_context.enable(gl_context.CULL_FACE);
-    
     gl_context.depthFunc(gl_context.LEQUAL); // near things obscure far things
+    
+    gl_context.enable(gl_context.CULL_FACE);
     gl_context.cullFace(gl_context.FRONT);
+    
+    gl_context.enable(gl_context.BLEND);
+    gl_context.blendFunc(gl_context.SRC_ALPHA, gl_context.ONE_MINUS_SRC_ALPHA);
+    // gl_context.blendFunc(gl_context.ONE, gl_context.ONE_MINUS_SRC_ALPHA);
 
 
     scene = new Scene( gl_context );
