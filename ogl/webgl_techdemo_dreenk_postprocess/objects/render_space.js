@@ -43,9 +43,9 @@ class Render_Space {
 
         this.bindings = [
             // face 0
-            0, 1, 2,
+            0, 2, 1,
             // face 1
-            0, 2, 3,
+            0, 3, 2,
         ];
 
         this.faceCount = 2;
@@ -146,6 +146,8 @@ class Render_Space {
         const attachmentPoint = this.gl_context.COLOR_ATTACHMENT0;
         this.gl_context.framebufferTexture2D( this.gl_context.FRAMEBUFFER, attachmentPoint,
             this.gl_context.TEXTURE_2D, this.render_target_texture, level );
+
+
         
         // unbind the frame buffer for other operations
         this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, null);
@@ -220,6 +222,22 @@ class Render_Space {
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_uv_pixel_size") , 1.0/this.render_dimensions.x, 1.0/this.render_dimensions.y );
 
         // ----------------------------------------------------------------------------------------
+
+
+    
+        // select the indexBuffer as one to apply
+        //  buffer opers to from now on
+        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+    
+        // allocate space on gpu of the number of indices
+        this.gl_context.bufferData(
+            this.gl_context.ELEMENT_ARRAY_BUFFER,
+            new Uint16Array(this.bindings),
+            this.gl_context.STATIC_DRAW
+        );
+        
+
+        // ----------------------------------------------------------------------------------------
         // --- prepare our positions
 
         let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
@@ -253,6 +271,13 @@ class Render_Space {
         const stride = 0; // how many bytes to get from one set to the next
         const offset = 0; // how many bytes inside the buffer to start from
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.uv_mappings_buffer);
+        // this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.uv_mappings_buffer);
+    
+        this.gl_context.bufferData(
+          this.gl_context.ARRAY_BUFFER,
+          new Float32Array(this.uv_mappings),
+          this.gl_context.STATIC_DRAW,
+        );
         this.gl_context.vertexAttribPointer(
             a_texcoord_location,
             num,
@@ -267,7 +292,7 @@ class Render_Space {
         // --- do the drawing
       
         //                 ( mode, numElements, datatype, offset )
-        this.gl_context.drawElements(this.gl_context.TRIANGLE_STRIP, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
       
         // ----------------------------------------------------------------------------------------
         // --- cleanup our shader context

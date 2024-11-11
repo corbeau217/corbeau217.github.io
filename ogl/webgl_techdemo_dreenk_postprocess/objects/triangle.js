@@ -149,7 +149,7 @@ class Triangle {
         // ----------------------------------------------------------------------------------------
         // --- cleanup our shader context
         
-        this.gl_context.disableVertexAttribArray(vertexPosition_location);
+        // this.gl_context.disableVertexAttribArray(vertexPosition_location);
     }
 
     // ############################################################################################

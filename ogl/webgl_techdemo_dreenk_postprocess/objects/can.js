@@ -12,13 +12,13 @@ class Can {
     // ############################################################################################
 
     // creates a scene object
-    constructor( gl_context, programInfo ){
+    constructor( gl_context ){
         // local references, very cursed
         this.gl_context = gl_context;
-        this.programInfo = programInfo;
         // make the shader for this can
         this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
-          
+
+
         // model to world matrix, just use identity for now
         this.modelMatrix = mat4.create();
         this.modelMatrix_translation = mat4.create();
@@ -83,6 +83,8 @@ class Can {
         // deal with shape
         this.build_shape();
         this.initBuffers( gl_context );
+
+        
     }
 
 
@@ -171,29 +173,29 @@ class Can {
     
         this.texture_image = new Image();
         this.texture_image.onload = () => {
-        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
-        this.gl_context.texImage2D(
-            this.gl_context.TEXTURE_2D,
-            level,
-            internalFormat,
-            srcFormat,
-            srcType,
-            this.texture_image
-        );
-    
-        // WebGL1 has different requirements for power of 2 images
-        // vs non power of 2 images so check if the image is a
-        // power of 2 in both dimensions.
-        if (this.isPowerOf2(this.texture_image.width) && this.isPowerOf2(this.texture_image.height)) {
-            // Yes, it's a power of 2. Generate mips.
-            this.gl_context.generateMipmap(this.gl_context.TEXTURE_2D);
-        } else {
-            // No, it's not a power of 2. Turn off mips and set
-            // wrapping to clamp to edge
-            this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_S, this.gl_context.CLAMP_TO_EDGE);
-            this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_T, this.gl_context.CLAMP_TO_EDGE);
-            // this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MIN_FILTER, this.gl_context.LINEAR);
-        }
+            this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
+            this.gl_context.texImage2D(
+                this.gl_context.TEXTURE_2D,
+                level,
+                internalFormat,
+                srcFormat,
+                srcType,
+                this.texture_image
+            );
+        
+            // WebGL1 has different requirements for power of 2 images
+            // vs non power of 2 images so check if the image is a
+            // power of 2 in both dimensions.
+            if (this.isPowerOf2(this.texture_image.width) && this.isPowerOf2(this.texture_image.height)) {
+                // Yes, it's a power of 2. Generate mips.
+                this.gl_context.generateMipmap(this.gl_context.TEXTURE_2D);
+            } else {
+                // No, it's not a power of 2. Turn off mips and set
+                // wrapping to clamp to edge
+                this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_S, this.gl_context.CLAMP_TO_EDGE);
+                this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_T, this.gl_context.CLAMP_TO_EDGE);
+                // this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MIN_FILTER, this.gl_context.LINEAR);
+            }
         };
         this.texture_image.src = this.texture_path;
   
@@ -479,7 +481,6 @@ class Can {
             gl.STATIC_DRAW
         );
     
-    
         // return positionBuffer;
     }
 
@@ -519,9 +520,6 @@ class Can {
     initTextureBuffer( gl ){
         this.textureCoordBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-        
-        // textureCoordinates = generateMappings();
-        // generateMappings();
     
         gl.bufferData(
           gl.ARRAY_BUFFER,
@@ -605,75 +603,10 @@ class Can {
     // ############################################################################################
 
 
-
-    // Tell WebGL how to pull out the positions from the position
-    // buffer into the vertexPosition attribute.
-    setPositionAttribute(gl_context, programInfo ) {
-        const numComponents = 4;
-        const type = gl_context.FLOAT; // the data in the buffer is 32bit floats
-        const normalize = false; // don't normalize
-        const stride = 0; // how many bytes to get from one set of values to the next
-        // 0 = use type and numComponents above
-        const offset = 0; // how many bytes inside the buffer to start from
-        gl_context.bindBuffer(gl_context.ARRAY_BUFFER, this.getVertexBuffer());
-        gl_context.vertexAttribPointer(
-            programInfo.attribLocations.vertexPosition,
-            numComponents,
-            type,
-            normalize,
-            stride,
-            offset
-        );
-        gl_context.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-    }
-
-
-    // tell webgl how to pull out the texture coordinates from buffer
-    setTextureAttribute(gl_context, programInfo) {
-        const num = 2; // every coordinate composed of 2 values
-        const type = gl_context.FLOAT; // the data in the buffer is 32-bit float
-        const normalize = false; // don't normalize
-        const stride = 0; // how many bytes to get from one set to the next
-        const offset = 0; // how many bytes inside the buffer to start from
-        gl_context.bindBuffer(gl_context.ARRAY_BUFFER, this.getTextureCoordBuffer());
-        gl_context.vertexAttribPointer(
-            programInfo.attribLocations.textureCoord,
-            num,
-            type,
-            normalize,
-            stride,
-            offset,
-        );
-        gl_context.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
-    }
-
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    prepareTexture(gl_context){
-
-        // Tell WebGL we want to affect texture unit 0
-        gl_context.activeTexture(gl_context.TEXTURE0);
-
-        // Bind the texture to texture unit 0
-        gl_context.bindTexture(gl_context.TEXTURE_2D, this.texture);
-
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    // getTexture(){
-    //     return this.texture;
-    // }
-    getTextureCoordBuffer(){
-        return this.textureCoordBuffer;
-    }
-    getVertexBuffer(){
-        return this.positionBuffer;
-    }
     getBindingBuffer(){
         return this.indexBuffer;
     }
@@ -700,34 +633,120 @@ class Can {
     // ############################################################################################
     // ############################################################################################
 
+
+    // const vertex_shader_location = this.gl_context.getAttribLocation(this.shader, "aVertexPosition");
+    // this.programInfo = {
+    //     attribLocations: {
+    //         vertexPosition: , // smh, you're just doing it for sillies now huh
+    //         textureCoord: this.gl_context.getAttribLocation(this.shader, ""),
+    //     },
+    //     uniformLocations: {
+    //         projectionMatrix: ,
+    //         viewMatrix: ,
+    //         modelMatrix: ,
+    //         uSampler: ,
+    //     },
+    // };  
+
+
     draw(cameraViewMatrix, cameraProjectionMatrix){
 
         // tell webgl to use our program when drawing
-        this.gl_context.useProgram(this.programInfo.program);
+        this.gl_context.useProgram(this.shader);
+
+        // every draw to make sure it's the right direction
+        // Flip image pixels into the bottom-to-top order that WebGL expects.
+        this.gl_context.pixelStorei(this.gl_context.UNPACK_FLIP_Y_WEBGL, true);
+
+
+        let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "aVertexPosition");
         
-        this.gl_context.uniformMatrix4fv( this.programInfo.uniformLocations.modelMatrix, false, this.modelMatrix );
+        
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "uModelMatrix"), false, this.modelMatrix );
+
+
+
+        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        
+        // indices = generateBindings();
+    
+        // allocate space on gpu of the number of indices
+        this.gl_context.bufferData(
+            this.gl_context.ELEMENT_ARRAY_BUFFER,
+            new Uint16Array(this.bindings),
+            this.gl_context.STATIC_DRAW
+        );
+
+
       
         // Tell WebGL how to pull out the positions from the position
         // buffer into the vertexPosition attribute.
-        this.setPositionAttribute(this.gl_context, this.programInfo);
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.positionBuffer);
+        this.gl_context.vertexAttribPointer(
+            vertexPosition_location,
+            4,
+            this.gl_context.FLOAT,
+            false,
+            0,
+            0
+        );
+        this.gl_context.enableVertexAttribArray(vertexPosition_location);
       
-        this.setTextureAttribute(this.gl_context, this.programInfo);
+        
+        // -----------------------------------------------------
+
+
+        let textureCoords_location = this.gl_context.getAttribLocation(this.shader, "aTextureCoord");
+        this.gl_context.enableVertexAttribArray(textureCoords_location);
+        
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.textureCoordBuffer);
+    
+        this.gl_context.bufferData(
+          this.gl_context.ARRAY_BUFFER,
+          new Float32Array(this.textureCoordinates),
+          this.gl_context.STATIC_DRAW,
+        );
+
+        this.gl_context.vertexAttribPointer(
+            textureCoords_location,
+            2, // every coordinate composed of 2 values
+            this.gl_context.FLOAT,
+            false,
+            0,
+            0,
+        );
+
+        // -----------------------------------------------------
+
+        // -----------------------------------------------------
+        // -----------------------------------------------------
       
       
         // set the shader uniforms
-        this.gl_context.uniformMatrix4fv( this.programInfo.uniformLocations.projectionMatrix, false, cameraProjectionMatrix );
-        this.gl_context.uniformMatrix4fv( this.programInfo.uniformLocations.viewMatrix, false, cameraViewMatrix );
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "uProjectionMatrix"), false, cameraProjectionMatrix );
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "uViewMatrix"), false, cameraViewMatrix );
       
-        this.prepareTexture(this.gl_context);
+
+        // Tell WebGL we want to affect texture unit 0
+        this.gl_context.activeTexture(this.gl_context.TEXTURE0);
+
+        // Bind the texture to texture unit 0
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.texture);
+
       
         // Tell the shader we bound the texture to texture unit 0
-        this.gl_context.uniform1i(this.programInfo.uniformLocations.uSampler, 0);
+        this.gl_context.uniform1i(this.gl_context.getUniformLocation(this.shader, "uSampler"), 0);
       
       
         //                 ( mode, numElements, datatype, offset )
         // gl.drawElements(gl.LINE_STRIP, 60, gl.UNSIGNED_SHORT, 0);
         // gl.drawElements(gl.TRIANGLE_STRIP, (buffers.triangleCount*3), gl.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.TRIANGLES, (4*this.circlePoints)*3, this.gl_context.UNSIGNED_SHORT, 0);
+
+
+        
+        this.gl_context.disableVertexAttribArray(vertexPosition_location);
+        this.gl_context.disableVertexAttribArray(textureCoords_location);
     }
 
     // ############################################################################################

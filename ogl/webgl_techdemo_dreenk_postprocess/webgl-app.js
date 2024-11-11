@@ -86,8 +86,9 @@ function canvas_init(){
     // gl_context.blendFunc(gl_context.ONE, gl_context.ONE_MINUS_SRC_ALPHA);
 
 
-    scene = new Scene( gl_context );
     render_space = new Render_Space( gl_context );
+
+    scene = new Scene( gl_context, render_space.get_render_aspect() );
 
     oldTime = Date.now();
 }
@@ -98,8 +99,8 @@ function canvas_init(){
 
 function canvas_update(deltaTime){
     // do update
-    scene.update(deltaTime);
     render_space.update(deltaTime);
+    scene.update(deltaTime, render_space.get_render_aspect());
 }
 
 function canvas_draw() {
