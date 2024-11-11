@@ -1,6 +1,6 @@
 import { FRAGMENT_SHADER_SRC } from "../shaders/triangle_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/triangle_vertexShader.js";
-import { generate_shader_program } from "../shaders.js";
+import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 
 const TAU = 2.0*Math.PI;
 class Triangle {
