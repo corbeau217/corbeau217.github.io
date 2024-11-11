@@ -2,6 +2,7 @@ import { FRAGMENT_SHADER_SRC } from "../shaders/triangle_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/triangle_vertexShader.js";
 import { generate_shader_program } from "../shaders.js";
 
+const TAU = 2.0*Math.PI;
 class Triangle {
 
     // ############################################################################################
@@ -14,6 +15,14 @@ class Triangle {
         this.gl_context = gl_context;
         // make the shader for this can
         this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
+
+        // ==========================================
+        // === prepare model changing variables
+
+        // model to world matrix
+        this.modelMatrix = mat4.create();
+
+        this.z_rotation_per_second = 0.1;
 
         // ==========================================
         // === generate the vertices
@@ -39,11 +48,6 @@ class Triangle {
         // === prepare face count
 
         this.faceCount = 1;
-
-        // ==========================================
-          
-        // model to world matrix, just use identity for now
-        this.modelMatrix = mat4.create();
 
         // ==========================================
     
@@ -87,8 +91,13 @@ class Triangle {
     // ############################################################################################
 
     update( deltaTime ){
-        // incase we have existing junk in the matrix
-        mat4.identity(this.modelMatrix);
+        let z_rotation_factor = TAU * (this.z_rotation_per_second * deltaTime);
+        
+        mat4.rotateZ(
+            this.modelMatrix,
+            this.modelMatrix,
+            z_rotation_factor,
+        );
     }
 
     // ############################################################################################
@@ -102,6 +111,11 @@ class Triangle {
 
         // tell webgl to use our program when drawing
         this.gl_context.useProgram(this.shader);
+
+        // ----------------------------------------------------------------------------------------
+        // --- provide model matrix
+
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.modelMatrix );
 
         // ----------------------------------------------------------------------------------------
         // --- prepare our positions
