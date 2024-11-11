@@ -1,9 +1,13 @@
 const FRAGMENT_SHADER_SRC = `
 precision highp float;
 
+varying highp vec2 v_texcoord;
+
+uniform sampler2D u_texture;
+
 void main() {
-  // blue
-  gl_FragColor = vec4(0, 0, 1, 1);
+  vec4 frag_value = texture2D(u_texture, v_texcoord);
+  gl_FragColor = vec4(frag_value.xyz,1);
 }
 `;
 

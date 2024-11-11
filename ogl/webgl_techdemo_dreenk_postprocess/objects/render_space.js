@@ -22,8 +22,8 @@ class Render_Space {
             y: this.gl_context.canvas.height,
         };
         this.render_dimensions = {
-            x: (this.viewport_dimensions.x)/2,
-            y: (this.viewport_dimensions.y)/2,
+            x: (this.viewport_dimensions.x)/4,
+            y: (this.viewport_dimensions.y)/4,
         };
         
 
@@ -84,6 +84,35 @@ class Render_Space {
         );
         
         // ==========================================
+        // === prepare uv mappings
+
+
+        this.uv_mappings = [
+            // v0
+            // -1.0,  1.0, 0.0, 1.0,
+            0.0, 1.0,
+            // v1
+            // -1.0, -1.0, 0.0, 1.0,
+            0.0, 0.0,
+            // v2
+            // 1.0,  -1.0, 0.0, 1.0,
+            1.0, 0.0,
+            // v3
+            // 1.0,   1.0, 0.0, 1.0,
+            1.0, 1.0,
+        ];
+
+
+        this.uv_mappings_buffer = this.gl_context.createBuffer();
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.uv_mappings_buffer);
+    
+        this.gl_context.bufferData(
+          this.gl_context.ARRAY_BUFFER,
+          new Float32Array(this.uv_mappings),
+          this.gl_context.STATIC_DRAW,
+        );
+
+        // ==========================================
         // === create the texture
 
         this.render_target_texture = this.gl_context.createTexture();
@@ -105,7 +134,7 @@ class Render_Space {
         this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_S, this.gl_context.CLAMP_TO_EDGE);
         this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_T, this.gl_context.CLAMP_TO_EDGE);
 
-        // ==========================================\
+        // ==========================================
         // === build frame buffer
 
         // Create and bind the framebuffer
@@ -136,7 +165,7 @@ class Render_Space {
         this.gl_context.viewport(0, 0, this.render_dimensions.x, this.render_dimensions.y);
     
         // Clear the canvas AND the depth buffer.
-        this.gl_context.clearColor(0, 0, 1, 1);   // clear to blue
+        // this.gl_context.clearColor(0, 0, 1, 1);   // clear to blue
         this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
     }
 
@@ -151,7 +180,7 @@ class Render_Space {
         this.gl_context.viewport(0, 0, this.viewport_dimensions.x, this.viewport_dimensions.y);
      
         // Clear the canvas AND the depth buffer.
-        this.gl_context.clearColor(1, 1, 1, 1);   // clear to white
+        // this.gl_context.clearColor(1, 1, 1, 1);   // clear to white
         this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
      
         this.aspect = this.gl_context.canvas.clientWidth / this.gl_context.canvas.clientHeight;
@@ -185,7 +214,7 @@ class Render_Space {
         // ----------------------------------------------------------------------------------------
         // --- prepare our positions
 
-        let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "aVertexPosition");
+        let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
 
         // 0 = use type and numComponents above
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.positionBuffer);
@@ -205,6 +234,27 @@ class Render_Space {
         // allow the vertex position attribute to exist
         this.gl_context.enableVertexAttribArray(vertexPosition_location);
       
+        // ----------------------------------------------------------------------------------------
+        // --- prepare the texture data
+
+        let a_texcoord_location = this.gl_context.getAttribLocation(this.shader, "a_texcoord");
+
+        const num = 2; // every coordinate composed of 2 values
+        const type = this.gl_context.FLOAT; // the data in the buffer is 32-bit float
+        const normalize = false; // don't normalize
+        const stride = 0; // how many bytes to get from one set to the next
+        const offset = 0; // how many bytes inside the buffer to start from
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.uv_mappings_buffer);
+        this.gl_context.vertexAttribPointer(
+            a_texcoord_location,
+            num,
+            type,
+            normalize,
+            stride,
+            offset,
+        );
+        this.gl_context.enableVertexAttribArray(a_texcoord_location);
+
         // ----------------------------------------------------------------------------------------
         // --- do the drawing
       
