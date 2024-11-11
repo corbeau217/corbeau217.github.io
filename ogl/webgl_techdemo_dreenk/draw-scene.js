@@ -1,12 +1,5 @@
 const TAU = 2.0*Math.PI;
-// var rotationFactorZ = 0.0;
 
-const perVertexFloats = 3;
-// const circlePoints = 12;
-//          (bottom+bottomCenter) + (top+topCenter) + (sideBottoms+sideTops)
-let vertexNumber;
-//                      side triangles  +   bottom  +  top
-let triangleNumber;
 
 const INITIAL_SCALE_VECTOR = [
   1.0, // i
@@ -22,8 +15,6 @@ var modelMatrix_translation = mat4.create();
 var modelMatrix_rotation = mat4.create();
 var modelMatrix_rotation_offKilter = mat4.create();
 var modelMatrix_rotation_updateFactor = mat4.create();
-var modelMatrix_scale = mat4.create();
-
 
 // factor of TAU in radians
 //  [1.0  * TAU] == 360
@@ -44,24 +35,6 @@ const model_rotation_per_frame_factor = [
   0.1,
   0.0,
 ];
-
-// number of seconds before repeating the bobbing
-const MODEL_BOBBING_PERIOD = 7.0;
-// how much up or down it should move
-//  * as we're using a sine wave, this would be a factor of the movement
-//  * displacement is the area under the graph, which is suffering if more
-//    complex, but we know that the limited sine wave function is equal in
-//    area either side of the x axis as it's not offset at all.
-//  * this 'half' that's mirrored either side is half a circle, since sine
-//    waves are about circles
-//  * so then it is to say, we just need half the area of a circle to get
-//    how much it displaces up or down (the amplitude of the wave)
-//  * area of a circle is PI*RADIUS*RADIUS, and since it's the unit circle,
-//    this becomes PI*1*1, which is just PI
-//  * TAU is more fun to work with so this boils down to TAU/2.0
-//  * it is then apparent that the model will move TAU/2.0 units up or down,
-//    when this variable is 1.0 in value.
-const MODEL_BOBBING_AMPLITUDE_FACTOR = 0.1;
 
 
 
@@ -113,17 +86,6 @@ function rebuild_model_matrix(){
     modelMatrix_rotation,
   );
   
-  // possibly spooky
-  // // ---- scale ----
-  // // existing scale that was then rotated
-  // mat4.multiply(
-  //   // destination
-  //   modelMatrix,
-  //   // left matrix
-  //   modelMatrix,
-  //   // right matrix
-  //   modelMatrix_scale
-  // );
 
 }
 
@@ -132,11 +94,6 @@ function updateRotationMatrix(deltaTime){
   // wipe the rotation matrix
   modelMatrix_rotation = mat4.create();
   // rotate the update matrix
-  // mat4.rotateY(
-  //   modelMatrix_rotation_updateFactor,
-  //   modelMatrix_rotation_updateFactor,
-  //   model_rotation_per_frame_factor[1] * TAU * deltaTime,
-  // );
 
   mat4.rotateY(
     modelMatrix_rotation_updateFactor,
@@ -221,14 +178,7 @@ function setTextureAttribute(gl, buffers, programInfo) {
 }
   
 
-
-
-
-// TODO: have it not rebuild the matrices every frame tbh omg 
 function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraInfo, deltaTime ){
-  // prepare globals
-  vertexNumber = (circlePoints+1)*2 + (circlePoints)*2;
-  triangleNumber = circlePoints*2 + circlePoints + circlePoints;
 
 
   
@@ -267,4 +217,4 @@ function drawScene( gl, programInfo, circlePoints, buffers, texture, cameraInfo,
 
 }
 
-export { updateScene, drawScene }; // que pasa? modules?
+export { updateScene, drawScene };

@@ -30,7 +30,7 @@ class Can {
         this.vertexValues = [];
         this.bindings = [];
 
-        this.texture_path = "/ogl/webgl_techdemo_dreenk_remix/img/dreenk.png";
+        this.texture_path = "/img/dreenk_texture.png";
         
         // Load texture
         this.loadTexture( gl_context );
@@ -291,9 +291,6 @@ class Can {
             // console.log("side top vertex " + vertexIdx + " done");
             
         }
-
-        // // create an array of positions for the shape
-        // return vertexValues;
     }
 
     // ############################################################################################
@@ -348,8 +345,6 @@ class Can {
             this.bindings.push( nextBottom );    // v1
             this.bindings.push( currentBottom ); // v2
         }
-    
-        // return bindings;
     }
 
     // ############################################################################################
@@ -413,9 +408,6 @@ class Can {
         // manually do the last one
         this.textureCoordinates.push( (this.uvData.side.origin.u + (this.uvData.side.size.u/2.0)) ); // u
         this.textureCoordinates.push( (this.uvData.side.origin.v + (this.uvData.side.size.v/2.0)) ); // v
-    
-        // // create an array of positions for the shape
-        // return textureCoordinates;
     }
 
     // ############################################################################################
@@ -432,9 +424,6 @@ class Can {
         this.topVertices = CIRCLE_POINTS + 1;
         this.sideBottomVertices = CIRCLE_POINTS + 1;
         this.sideTopVertices = CIRCLE_POINTS + 1;
-        this.perVertexFloats = 4;
-        this.vertexNumber = (CIRCLE_POINTS+1)*2 + (CIRCLE_POINTS)*2;
-        this.triangleNumber = CIRCLE_POINTS*2 + CIRCLE_POINTS + CIRCLE_POINTS
         this.centerBottomIndex = (CIRCLE_POINTS*2);
         this.centerTopIndex = (CIRCLE_POINTS*2)+1;
         this.bottomIndexOffset = 0;

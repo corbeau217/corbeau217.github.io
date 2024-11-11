@@ -11,14 +11,6 @@ let vertices;
 let indices;
 
 
-let texture;
-
-// let positionBuffer;
-// let indexBuffer;
-// let textureCoordBuffer;
-
-// const circlePoints = 12;
-
 // the ends/caps including their center vertex
 let bottomVertices = 0;
 let topVertices = 0;
@@ -26,14 +18,6 @@ let topVertices = 0;
 //  including the doubled vertices/corner to hide wrapping issues
 let sideBottomVertices = 0;
 let sideTopVertices = 0;
-
-// ==========================================
-// ==========================================
-let perVertexFloats = 0;
-//          (bottom+bottomCenter) + (top+topCenter) + (sideBottoms+sideTops)
-let vertexNumber = 0;
-//                      side triangles  +   bottom  +  top
-let triangleNumber = 0;
 
 // ==========================================
 // ==========================================
@@ -61,9 +45,6 @@ function prepareGlobals( circlePoints ){
     topVertices = circlePoints + 1;
     sideBottomVertices = circlePoints + 1;
     sideTopVertices = circlePoints + 1;
-    perVertexFloats = 4;
-    vertexNumber = (circlePoints+1)*2 + (circlePoints)*2;
-    triangleNumber = circlePoints*2 + circlePoints + circlePoints
     centerBottomIndex = (circlePoints*2);
     centerTopIndex = (circlePoints*2)+1;
     bottomIndexOffset = 0;
@@ -342,11 +323,6 @@ function initBuffers( gl, circlePoints ){
 
     const textureCoordBuffer = initTextureBuffer( gl, circlePoints );
 
-
-    // console.log("vertex array size: " + vertexValues.length + " which is "+(vertexValues.length/perVertexFloats) + " of the " + vertexNumber);
-    // console.log("bindings array size: " + bindings.length + " which is "+(bindings.length/3) + " of the " + triangleNumber);
-    // console.log("mappings array size: " + textureCoordinates.length + " which is "+(textureCoordinates.length/2) + " of the " + vertexNumber);
-
     return {
         position: positionBuffer,
         textureCoord: textureCoordBuffer,
@@ -399,9 +375,6 @@ function initIndexBuffer( gl, circlePoints ){
         gl.STATIC_DRAW
     );
 
-    // // copy dataa over, passing in offset
-    // gl.bufferSubData( gl.ELEMENT_ARRAY_BUFFER, 0, indices );
-
     return indexBuffer;
 }
 
@@ -421,6 +394,4 @@ function initTextureBuffer( gl, circlePoints ){
     return textureCoordBuffer;
 }
 
-
-// HELLO???
 export { initBuffers };
