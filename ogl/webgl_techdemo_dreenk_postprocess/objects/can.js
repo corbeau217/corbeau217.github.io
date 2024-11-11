@@ -1,4 +1,6 @@
-
+import { FRAGMENT_SHADER_SRC } from "../shaders/dreenk_fragmentShader.js";
+import { VERTEX_SHADER_SRC } from "../shaders/dreenk_vertexShader.js";
+import { generate_shader_program } from "../shaders.js";
 
 const TAU = 2.0*Math.PI;
 const CIRCLE_POINTS = 16;
@@ -14,6 +16,8 @@ class Can {
         // local references, very cursed
         this.gl_context = gl_context;
         this.programInfo = programInfo;
+        // make the shader for this can
+        this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
           
         // model to world matrix, just use identity for now
         this.modelMatrix = mat4.create();
