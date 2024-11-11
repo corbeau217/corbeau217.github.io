@@ -101,6 +101,9 @@ function canvas_update(deltaTime){
 function canvas_draw() {
     // clear canvas before we start drawing on it
     gl_context.clear(gl_context.COLOR_BUFFER_BIT | gl_context.DEPTH_BUFFER_BIT);
+
+    // handle switching frame buffer
+    render_space.prepare_render_space();
     // draw the scene
     scene.draw();
     // draw the render space

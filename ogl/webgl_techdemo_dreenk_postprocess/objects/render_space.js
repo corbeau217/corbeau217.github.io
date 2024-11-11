@@ -16,7 +16,19 @@ class Render_Space {
         this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
 
         // ==========================================
-        // === generate the vertices
+        // === prepare viewport information
+        this.viewport_dimensions = {
+            x: this.gl_context.canvas.width,
+            y: this.gl_context.canvas.height,
+        };
+        this.render_dimensions = {
+            x: (this.viewport_dimensions.x)/2,
+            y: (this.viewport_dimensions.y)/2,
+        };
+        
+
+        // ==========================================
+        // === generate the shape
 
         this.vertexValues = [
             // v0
@@ -29,9 +41,6 @@ class Render_Space {
             1.0,   1.0, 0.0, 1.0,
         ];
 
-        // ==========================================
-        // === generate the bindings
-
         this.bindings = [
             // face 0
             0, 1, 2,
@@ -39,12 +48,10 @@ class Render_Space {
             0, 2, 3,
         ];
 
-        // ==========================================
-        // === prepare face count
-
         this.faceCount = 2;
 
         // ==========================================
+        // === bind the shape
     
 
         // create a buffer for the shape's positions.
@@ -75,11 +82,84 @@ class Render_Space {
             new Uint16Array(this.bindings),
             this.gl_context.STATIC_DRAW
         );
+        
+        // ==========================================
+        // === create the texture
 
+        this.render_target_texture = this.gl_context.createTexture();
+        // bind it for modification
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.render_target_texture);
+        const level = 0;
+        const internalFormat = this.gl_context.RGBA;
+        const border = 0;
+        const format = this.gl_context.RGBA;
+        const type = this.gl_context.UNSIGNED_BYTE;
+        const data = null; // dont supply data, just allocate the texture
+
+        // for now we use the same size as the viewport otherwise we need a camera
+        this.gl_context.texImage2D(this.gl_context.TEXTURE_2D, level, internalFormat,
+                            this.render_dimensions.x, this.render_dimensions.y, border,
+                            format, type, data);
+        
+        this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_MIN_FILTER, this.gl_context.LINEAR);
+        this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_S, this.gl_context.CLAMP_TO_EDGE);
+        this.gl_context.texParameteri(this.gl_context.TEXTURE_2D, this.gl_context.TEXTURE_WRAP_T, this.gl_context.CLAMP_TO_EDGE);
+
+        // ==========================================\
+        // === build frame buffer
+
+        // Create and bind the framebuffer
+        this.fb = this.gl_context.createFramebuffer();
+        this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, this.fb);
+        
+        // attach the texture as the first color attachment
+        const attachmentPoint = this.gl_context.COLOR_ATTACHMENT0;
+        this.gl_context.framebufferTexture2D( this.gl_context.FRAMEBUFFER, attachmentPoint,
+            this.gl_context.TEXTURE_2D, this.render_target_texture, level );
+        
+        // unbind the frame buffer for other operations
+        this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, null);
         // ==========================================
         // ==========================================
     }
     
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    prepare_render_space(){
+        // render to our targetTexture by binding the framebuffer
+        this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, this.fb);
+    
+        // Tell WebGL how to convert from clip space to pixels
+        this.gl_context.viewport(0, 0, this.render_dimensions.x, this.render_dimensions.y);
+    
+        // Clear the canvas AND the depth buffer.
+        this.gl_context.clearColor(0, 0, 1, 1);   // clear to blue
+        this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
+    }
+
+    prepare_canvas_space(){
+        // render to the canvas
+        this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, null);
+
+        // ready the texture we just rendered to
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.render_target_texture);
+     
+        // Tell WebGL how to convert from clip space to pixels
+        this.gl_context.viewport(0, 0, this.viewport_dimensions.x, this.viewport_dimensions.y);
+     
+        // Clear the canvas AND the depth buffer.
+        this.gl_context.clearColor(1, 1, 1, 1);   // clear to white
+        this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
+     
+        this.aspect = this.gl_context.canvas.clientWidth / this.gl_context.canvas.clientHeight;
+    }
+
+    get_render_aspect(){
+        return this.render_dimensions.x / this.render_dimensions.y;
+    }
 
     // ############################################################################################
     // ############################################################################################
@@ -94,6 +174,7 @@ class Render_Space {
     // ############################################################################################
 
     draw(){
+        this.prepare_canvas_space();
 
         // ----------------------------------------------------------------------------------------
         // --- prepare our shader
