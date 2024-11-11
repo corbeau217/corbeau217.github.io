@@ -213,6 +213,13 @@ class Render_Space {
         this.gl_context.useProgram(this.shader);
 
         // ----------------------------------------------------------------------------------------
+
+        // the size of our texture
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_texture_size") , this.render_dimensions.x, this.render_dimensions.y );
+        // the size of a pixel in our uv mapping
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_uv_pixel_size") , 1.0/this.render_dimensions.x, 1.0/this.render_dimensions.y );
+
+        // ----------------------------------------------------------------------------------------
         // --- prepare our positions
 
         let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
