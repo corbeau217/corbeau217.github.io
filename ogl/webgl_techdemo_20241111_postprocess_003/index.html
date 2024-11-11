@@ -92,6 +92,12 @@
                             <p class="brief_textbody_elem"><i>so far this is just refactoring the post processing effect code and making some unused glsl files</i></p>
                             <p class="brief_heading_elem">TODO:</p>
                             <p class="brief_textbody_elem"><i>need some way to wait for the fetch requests for our shader files before drawing, maybe it just used a generic silhouette shader</i></p>
+                            <p class="brief_heading_elem">Suggestions</p>
+                            <p class="brief_textbody_elem"><i>should turn it into a grid where each "channel" is a rectangle in the grid, which has a glow mask slightly larger than the channel</i></p>
+                            <p class="brief_textbody_elem"><i>we should then have it that the rendering is full scale to whatever the render resolution is,</i></p>
+                            <p class="brief_textbody_elem"><i>then we put our masking texture through mipmaps and use 3 of unsigned char (8bit per channel) to then bitwise and with the colour</i></p>
+                            <p class="brief_textbody_elem"><i>glow mask is like a sticker over the cell which might spill over, so we need to have the channel locations as another layer</i></p>
+                            <p class="brief_textbody_elem"><i>generating masking textures for indexing, and for different parts of the effects, which happen as the frame updates after a resize</i></p>
                             <hr />
                         </div>
                     </div>
