@@ -84,6 +84,10 @@ class Can {
         this.build_shape();
         this.initBuffers( gl_context );
 
+
+        // enforce it on can building
+        // Flip image pixels into the bottom-to-top order that WebGL expects.
+        this.gl_context.pixelStorei(this.gl_context.UNPACK_FLIP_Y_WEBGL, true);
         
     }
 
