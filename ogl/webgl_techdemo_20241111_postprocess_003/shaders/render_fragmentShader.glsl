@@ -19,6 +19,9 @@ void main() {
   // buckets are just the size of our pixelation we're doing
   vec2 bucket_uv = vec2( floor(mod(pixel_coord.x,4.0)), floor(mod(pixel_coord.y,4.0)) );
 
+  // uv correction
+  vec2 uv_correction = vec2(0.0, bucket_uv.y * u_uv_pixel_size.y);
+
 
   // ================================================================
   // === do the crt effect
@@ -26,7 +29,7 @@ void main() {
   // check for not the bars
   if(bucket_uv.x < 3.0 && bucket_uv.y < 3.0){
     // remove the bucket amount from the texture uv mapping
-    vec2 uv_mapping = vec2(v_texcoord.x - (bucket_uv.x * u_uv_pixel_size.x), v_texcoord.y - (bucket_uv.y * u_uv_pixel_size.y));
+    vec2 uv_mapping = vec2(v_texcoord.x - uv_correction.x, v_texcoord.y - uv_correction.y);
     // get the true colour
     vec4 true_texture_colour = texture2D(u_texture, uv_mapping);
     // ------------------------
