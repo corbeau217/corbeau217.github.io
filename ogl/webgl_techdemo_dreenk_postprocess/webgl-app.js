@@ -1,5 +1,5 @@
 import { Scene } from "./scene.js";
-
+import { Render_Space } from "./objects/render_space.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -40,6 +40,7 @@ var gl_context;
 // ------------------------------------------------
 
 var scene;
+var render_space;
 
 // ------------------------------------------------
 // ------------------------------------------------
@@ -75,12 +76,14 @@ function canvas_init(){
     gl_context.clearDepth(1.0); // clear everything
 
     gl_context.enable(gl_context.DEPTH_TEST); // enable depth testing
-    gl_context.depthFunc(gl_context.LEQUAL); // near things obscure far things
-
     gl_context.enable(gl_context.CULL_FACE);
+    
+    gl_context.depthFunc(gl_context.LEQUAL); // near things obscure far things
     gl_context.cullFace(gl_context.FRONT);
 
+
     scene = new Scene( gl_context );
+    render_space = new Render_Space( gl_context );
 
     oldTime = Date.now();
 }
@@ -92,14 +95,16 @@ function canvas_init(){
 function canvas_update(deltaTime){
     // do update
     scene.update(deltaTime);
+    render_space.update(deltaTime);
 }
 
 function canvas_draw() {
     // clear canvas before we start drawing on it
-    gl_context.clear(gl_context.COLOR_BUFFER_BIT);
-    gl_context.clear(gl_context.DEPTH_BUFFER_BIT);
+    gl_context.clear(gl_context.COLOR_BUFFER_BIT | gl_context.DEPTH_BUFFER_BIT);
     // draw the scene
     scene.draw();
+    // draw the render space
+    render_space.draw();
 }
 
 function frameUpdate( newTime ){
