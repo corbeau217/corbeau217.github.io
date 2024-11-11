@@ -1,44 +1,132 @@
 <ul class="daily_textbody_list">
     <li class="daily_textbody_list_elem">
         <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
+        <p>to start with today, we were a little stumped on ideas so did a little exploration</p>
         <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-        </ul>
-    </li>
-    <li class="daily_textbody_list_elem">
-        <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
-        <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-        </ul>
-    </li>
-    <li class="daily_textbody_list_elem">
-        <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
-        <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">first thought (bleeding over from an idea yesterday), was to layout a shape library structure and or a shader effect library</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">following this (also mostly from yesterday thoughts), was to hammer out the foundation of tags or to set out a design for graphics posts to be shown as categories which then have multiple apps within a given page</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we then had a bit of a dig through the different conventions agreed upon in <a href="https://en.wikipedia.org/wiki/OpenGL"><code>OpenGL</code></a>, and particularly <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API"><code>WebGL</code></a></li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the first two thoughts were mostly dismissed for today, as they would commit us to chasing unrealistic beauty standards</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in the realm of conventions, the ideas of having a shared tile-map texture was particularly of interest as this seems fun to implement and greatly improves performance</li>
             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
-                <p>lorem ipsum</p>
+                <p>some of the other conventions that were of interest were (<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices"><code>source for these notes</code></a>)</p>
                 <ul class="daily_textbody_list daily_textbody_sublist">
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">parallel compilation and linking of shaders</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">avoid using get requests (seems a general thing, maybe we should experiment with saving uniform/attribute locations between draw calls rather than refetching each time)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">not blocking the main thread when fetching resources like images</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">memory limits of <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API"><code>WebGL</code></a>, in particular for texture usage</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">some notes on the precision of RGBA colouring using 0.0-1.0 float values and suggesting switching to 0-255 unsigned char style value (which also lets us do our masking ideas really easily and seems very entertaining)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">limiting operations withing the fragment shader (as this was readily apparent by the nature of it, it was already a thought but the rather strong emphasis on it has encouraged revisiting this)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using built in functions rather than creating our own (in particular <code>dot</code>, <code>mix</code>, <code>cross</code>) and how there's likely bindings for specialised hardware for these which can't be guaranteed they'd be used in custom made definitions</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">batching draw calls where possible</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">limiting shader error logging to only when there's a linking failure, with some notes on warnings and the maximum of 32 before warnings aren't reported</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">also estimating vram budgets per pixel</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>below you'll find some screenshots of our notebook while exploring these ideas</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">below you'll find a diagram drawn during the exploration of the texture tiling idea within a shared space</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">there was also an idea to mimic a model's <a href="https://en.wikipedia.org/wiki/Geometric_transformation"><code>transformation</code></a> pipeline in the way we handle our <a href="https://en.wikipedia.org/wiki/Texture_mapping"><code>uv mappings</code></a> for a texture</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in the next section you'll find a screenshot of the app structure hypothetical, and the transcription</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>lastly, we tunnel-visioned the scene graph and accessing elements within it, while trying to model how the scene graph's figurative wheel might be <a href="https://en.wikipedia.org/wiki/Hidden-surface_determination#Divide_and_conquer"><code>re-invented</code></a></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">first the thought was regarding model to world matrices and how at each point we're trying to crawl all the way back up the tree during update calls to get a relationship to another object</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">(upon reflection, it might be worth the time to explore flow diagram modelling or directed graphs for the relationship between elements in separate branches of the tree so we might then schedule items in a bottom-to-top ordering of which item to update first)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">during this we explored passing by need rather than by value or reference, which just seemed to be some of the usual ways we're dealing with it</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">another idea was exploring <a href="https://en.wikipedia.org/wiki/Quadtree"><code>quadtree</code></a>s and <a href="https://en.wikipedia.org/wiki/Octree"><code>octree</code></a>s, with how we might minimise operations needed to handle changes in locations and to keep track of likeliness to change</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the general point was that we should assign things a probability for an error if an update weren't to occur, then build mappings for each part of the <a href="https://en.wikipedia.org/wiki/Quadtree"><code>quadtree</code></a>/<a href="https://en.wikipedia.org/wiki/Octree"><code>octree</code></a> to what the likelihood is for a change to happen from the bottom up</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we then find which regions are included in the view volume, and also include any regions with a likelihood higher than our acceptable error chance in our update calls, ignoring everything else</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">during the write up for this, we had the idea to determine the likelihood via things like, average speed of an object and how many full second updates before it move more or less <a href="https://en.wikipedia.org/wiki/Octree"><code>octree</code></a> branch blocks than the regular amount (rounding the location changes by block size)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">to summarise, this would be using something like <a href="https://en.wikipedia.org/wiki/Huffman_coding"><code>huffman coding</code></a> but in terms of likelihood of change, where the tree would be 4 branches per node for <a href="https://en.wikipedia.org/wiki/Quadtree"><code>quadtree</code></a>s, and 8 branches per node for <a href="https://en.wikipedia.org/wiki/Octree"><code>octree</code></a>s</li>
                 </ul>
             </li>
         </ul>
         <hr />
         <div class="daily_post_content_image_container">
-            <img class="daily_post_content_image" src="./img/placeholder.png" alt="placeholder image" />
-            <img class="daily_post_content_image" src="./img/placeholder.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/20241112_tiling_textures.png" alt="texture tiling diagram and notes from notebook" />
+            <img class="daily_post_content_image" src="/daily/img/20241112_uv_pipeline.png" alt="diagram to illustrate the similarities in the model transformation pipeline to uv mapping changes" />
+            <img class="daily_post_content_image" src="/daily/img/20241112_draw_queue_and_oct_trees.png" alt="screenshot of our notes for the draw scheduling queue and octree ideas" />
         </div>
     </li>
-    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
-    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>in amongst this we explored the idea of having different parts of the program being responsible for their own actions and what that might look like</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <hr />
+            <div class="daily_post_content_image_container">
+                <img class="daily_post_content_image" src="/daily/img/20241112_rendering_architecture.png" alt="rough block diagram of an app's rendering architecture" />
+            </div>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">transcription for this is found below</li>
+            <hr />
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p><code>mesh maker</code></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">create points in geometric shapes</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">extrusions between</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">creates face bindings</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p><code>texture maker</code></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">fetching images</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">managing shared image space</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using offscreen canvas/render buffers to generate textures</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p><code>normals maker</code></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">generating face normals using cross products</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">creating vertex normals from face normals</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p><code>lighting maker</code></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using buffers to calculate as post process</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">managing light information</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p><code>scene maker</code></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">handles locations/interactions/updates to objects</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">handles viewport interfacing</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">camera management</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p><code>post processing maker</code></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">manages draw mode</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">manages draw destination</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">manages viewport shaders</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>it's worth noting that for the past two days we kept trying to click the images to make them bigger. some ideas on what to do for the images:</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we should also explore having some top layer, full screen div, which starts as hidden, and is shown when we're fullscreen viewing an image</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this top layer should contain an image element which takes up most of the screen</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the div should have a mostly transparent background, to obscure the web page behind the image</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it would then also hide the div if the <code>escape</code> key is pressed, the user clicks on the background (not the image), or the user clicks a big close box that shows up when the mouse is hovering the image</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could then have big left and right arrows that also show up to change to previous or next image (greying out the left arrow at the start or the right arrow at the end), which could also be controlled with the <code>left</code> and <code>right</code> keys on the keyboard </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">buttons should be entirely transparent when the mouse is not hovering the image or after 1-3 seconds of no mouse movement (when hovering)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">buttons should be semi transparent by default when they're shown</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">and the buttons should be fully opaque when mouse is hovering a button</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
 </ul>

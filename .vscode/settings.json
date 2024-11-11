@@ -4,6 +4,8 @@
         "canopys",
         "icosphere",
         "NURBS",
+        "octree",
+        "quadtree",
         "zier"
     ],
     "cSpell.language": "en,en-GB",
