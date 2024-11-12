@@ -10,7 +10,7 @@ void main() {
   vec2 fragment_quad_location = vec2( mod(v_vertex_xy_id.x,1.0), mod(v_vertex_xy_id.y,1.0) );
 
   // assign it to the colour channel
-  gl_FragColor = vec4( fragment_quad_location.x, fragment_quad_location.y, , 1.0);
+  gl_FragColor = vec4( fragment_quad_location.x, fragment_quad_location.y, 0.0, 1.0);
 }
 `;
 
