@@ -27,7 +27,7 @@ const TAU = 2.0*Math.PI;
 let fps = 40;
 var timeBetweenFrames = 1000.0/fps;
 //   0.0 to 1.0:     [   R,   G,   B,   A ]
-var canvasClearColour = [ 0.2, 0.2, 0.2, 1.0 ];
+var canvasClearColour = [ 0.1, 0.1, 0.1, 1.0 ];
 
 
 // ------------------------------------------------

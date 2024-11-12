@@ -56,6 +56,7 @@ class Camera {
         if(aspectRatio != this.aspect ){
             // ...
             this.aspect = aspectRatio;
+            // this.buildViewMatrix();
             this.buildProjectionMatrix();
             // console.log("rebuilt projection matrix");
         }
@@ -67,6 +68,11 @@ class Camera {
 
     getViewMatrix(){
         return this.viewMatrix;
+    }
+
+    set_offset(new_offset_float_array){
+        this.offset = new_offset_float_array;
+        this.buildViewMatrix();
     }
 
     // ############################################################################################
