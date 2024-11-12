@@ -7,7 +7,8 @@ uniform sampler2D u_texture;
 uniform vec2 u_texture_size;
 uniform vec2 u_uv_pixel_size;
 
-
+float bucket_y_size = 3.0;
+float y_shift_pixels = 1.0;
 void main() {
 
   // prepare the frag value as black
@@ -15,12 +16,22 @@ void main() {
 
   // get the pixel coordinate inside view space
   vec2 pixel_coord =  vec2( floor(u_texture_size.x * v_texcoord.x), floor(u_texture_size.y * v_texcoord.y) );
+  
+  float pixel_coord_x_evens = mod(pixel_coord.x,6.0);
+  vec2 texcoord_using = vec2(v_texcoord.x, v_texcoord.y);
+  // evens
+  if(pixel_coord_x_evens<2.9){
+    // shift the y value by half a bucket
+    pixel_coord = vec2(pixel_coord.x, pixel_coord.y + y_shift_pixels);
+    texcoord_using = vec2(v_texcoord.x, v_texcoord.y + y_shift_pixels*u_uv_pixel_size.y);
+
+  }
 
   // get the bucket uv mapping size
   // buckets are just the size of our pixelation we're doing
-  vec2 bucket_uv = vec2( floor(mod(pixel_coord.x,3.0)), floor(mod(pixel_coord.y,3.0)) );
+  vec2 bucket_uv = vec2( floor(mod(pixel_coord.x,3.0)), floor(mod(pixel_coord.y,bucket_y_size)) );
 
-  vec2 channel_uv = vec2( mod(u_texture_size.x * v_texcoord.x,1.0), mod(u_texture_size.y * v_texcoord.y,3.0) );
+  vec2 channel_uv = vec2( mod(u_texture_size.x * texcoord_using.x,1.0), mod(u_texture_size.y * texcoord_using.y,bucket_y_size) );
 
   // uv correction
   vec2 uv_correction = vec2(0.0, bucket_uv.y * u_uv_pixel_size.y);
@@ -35,7 +46,7 @@ void main() {
   // check for not the bars
   else {
     // remove the bucket amount from the texture uv mapping
-    vec2 channel_uv = vec2(v_texcoord.x - uv_correction.x, v_texcoord.y - uv_correction.y);
+    vec2 channel_uv = vec2(texcoord_using.x - uv_correction.x, texcoord_using.y - uv_correction.y);
     vec2 uv_mapping_0 = vec2( channel_uv.x, channel_uv.y );
     vec2 uv_mapping_1 = vec2( channel_uv.x, channel_uv.y+u_uv_pixel_size.y );
     vec2 uv_mapping_2 = vec2( channel_uv.x, channel_uv.y+(2.0*u_uv_pixel_size.y) );
