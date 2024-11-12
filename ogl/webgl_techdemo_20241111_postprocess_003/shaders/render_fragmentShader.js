@@ -47,9 +47,9 @@ void main() {
   else {
     // remove the bucket amount from the texture uv mapping
     vec2 channel_uv = vec2(texcoord_using.x - uv_correction.x, texcoord_using.y - uv_correction.y);
-    vec2 uv_mapping_0 = vec2( channel_uv.x, channel_uv.y );
-    vec2 uv_mapping_1 = vec2( channel_uv.x, channel_uv.y+u_uv_pixel_size.y );
-    vec2 uv_mapping_2 = vec2( channel_uv.x, channel_uv.y+(2.0*u_uv_pixel_size.y) );
+    vec2 uv_mapping_0 = vec2( channel_uv.x, channel_uv.y-(u_uv_pixel_size.y) );
+    vec2 uv_mapping_1 = vec2( channel_uv.x, channel_uv.y );
+    vec2 uv_mapping_2 = vec2( channel_uv.x, channel_uv.y+(u_uv_pixel_size.y) );
     // get the true colours
     vec4 true_texture_colour_0 = texture2D(u_texture, uv_mapping_0);
     vec4 true_texture_colour_1 = texture2D(u_texture, uv_mapping_1);
