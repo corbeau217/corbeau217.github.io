@@ -1,44 +1,83 @@
 <ul class="daily_textbody_list">
     <li class="daily_textbody_list_elem">
         <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
+        <p>some of the ideas for the day</p>
         <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-        </ul>
-    </li>
-    <li class="daily_textbody_list_elem">
-        <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
-        <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-        </ul>
-    </li>
-    <li class="daily_textbody_list_elem">
-        <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
-        <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
-                <p>lorem ipsum</p>
+                <p>layering effects and how they mesh with each other (like building blocks or jigsaw pieces they should be standardised so we can layer them easier)</p>
                 <ul class="daily_textbody_list daily_textbody_sublist">
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then having a visualiser using html + css to show layered cards which then can be expanded to show the stages</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">maybe there's arrows to show what a pixel maps from</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">visualising this could help with explaining, personal understanding, and it'd look kinda cool</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">can also have it be render buffers to then show each stage of the render pipeline</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">currently only the posts page is constructed, but we should extend this to the other pages as well, and or, making something for interpreting markdown as html code</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a visualiser for uv maps and maybe having a page to help with creating them, where you can click and drag points, then it'll spit out the code</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">some sort of shape viewer to preview our shapes with a diffuse shader doing shading by face</li>
+
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"></li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>quick idea about how brickwork on the sidewalk is constructed in the order of</p>
+                <ol class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">perlin noise</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">ceramic effect</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">coloured ceramic</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">tile shape</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">tile imperfections</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">tile pattern</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">pattern changes (missing tiles, modifications, overgrowth, litter, spills)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">terrain render buffer</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">bump mapped texture applied to surface</li>
+                </ol>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>side-note:</p>
+                <ol class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the whole time ordered-lists just ✨ works ✨ with our stylings??</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">also we should look into replacing <code>:sparkles:</code> with the emoji, but not when it's in a code block like that</li>
+                </ol>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we had a brief though experiment on what if we used canvas elements as a one shot (single frame) application to generate our images (can then show as another card on the page), which we just do one frame then <code>flush()</code></li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>another idea was to focus on modularising / cleaning up the <code>OpenGL</code> project code bases so we're minimising redundant code</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">after the page construction and tagging, we could move the old code bases to a page within our <code>tech demo</code> section, to highlight changes in the files, and help explain the choices we made</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having a card with code blocks of the different files and the file tree structure diagram</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">maybe a cheeky uml diagram or two to visualise what the program runs</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">something like a file's git diff change view thingy in <code>vs code</code>, with side by side chunks of code</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we were very close to tunnel visioning the tagging system, but page construction seems the most important for now</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>details about today's images</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the first is a photo of some reflective tape that we saw on the morning coffee trip, which seemed like a cool effect to do</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">next is a very rushed diagram of a magic spell effect much like those in the mcu dr strange movies (dr strange movies are my favourite in the mcu)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">after that we have a quick sketch of how pixels map to each other between post processing effects</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>last is a couple of diagrams for the structuring of tech demo pages</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the first thought was to just have it as a mess of cards then hope for the best, but we'd need to work on tiling cards properly to do this neatly (right now it's just a row based flex box)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then after that was to just have a <code>major</code> card for the specific "post" the content is for, then inside that we have <code>minor</code> cards, which are things like the canvas element, text elements, and any supplemental cards for screenshots/textures/diagrams etc</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this view would of course have the overflow clipped, as it is right now, but we might also wrap the bottom with an always shown footer (likely would feel cramped though)</li>
                 </ul>
             </li>
         </ul>
         <hr />
         <div class="daily_post_content_image_container">
-            <img class="daily_post_content_image" src="./img/placeholder.png" alt="placeholder image" />
-            <img class="daily_post_content_image" src="./img/placeholder.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/20241113_reflective_tape.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/20241113_magic_effect.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/20241113_effect_layering.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/20241113_free_for_all_structuring.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/20241113_major_minor_cards.png" alt="placeholder image" />
         </div>
     </li>
-    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
-    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
 </ul>
