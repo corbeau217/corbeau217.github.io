@@ -1,5 +1,6 @@
 
 import { Perlin_01 } from "./objects/perlin_01.js";
+import { Perlin_02 } from "./objects/perlin_02.js";
 
 class Scene {
 
@@ -8,11 +9,10 @@ class Scene {
     // ############################################################################################
 
     // ...
-    constructor( gl_context, aspectRatio ){
-        // .. local references to gl and program info
-        this.gl_context = gl_context;
+    constructor( gl_01, gl_02 ){
 
-        this.perlin_01 = new Perlin_01( this.gl_context );
+        this.perlin_01 = new Perlin_01( gl_01 );
+        this.perlin_02 = new Perlin_02( gl_02 );
     }
 
     // ############################################################################################
@@ -20,7 +20,7 @@ class Scene {
     // ############################################################################################
     
     update( deltaTime ){
-        this.perlin_01.update(deltaTime);
+        // dont currently have any update functions
     }
     
     // ############################################################################################
@@ -29,6 +29,7 @@ class Scene {
 
     draw(){
         this.perlin_01.draw();
+        this.perlin_02.draw();
     }
 }
 

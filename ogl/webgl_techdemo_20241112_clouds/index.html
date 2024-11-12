@@ -69,11 +69,34 @@
             <section class="sectioned_content_outer">
                 <div class="sectioned_content_inner">
                     <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/webgl_techdemo_icon.png" alt="[...]" /></div>
+                    <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">perlin 02</h3></div>
+                    <div class="sectioned_content_body">
+                        <div class="webgl_techdemo_container">
+                            <hr />
+                            <canvas id="webgl_canvas_perlin_02" width="640" height="480"><code>meant to be a canvas element here, if you're seeing this then it doesn't work on your device sorry</code></canvas>
+                            <hr />
+                            <p class="brief_heading_elem">about:</p>
+                            <p class="brief_textbody_elem"><i>WebGL is rude about drawing things as lines</i></p>
+                            <p class="brief_textbody_elem"><i>we'd need to completely redo our vertex binding order to show this better</i></p>
+                            <p class="brief_textbody_elem"><i>(this means finding an <a href="https://en.wikipedia.org/wiki/Eulerian_path"><code>Eulerian path</code></a> to not miss bits)</i></p>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- ============================================= -->
+            <!-- ... -->
+            <section class="sectioned_content_outer">
+                <div class="sectioned_content_inner">
+                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/webgl_techdemo_icon.png" alt="[...]" /></div>
                     <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">perlin 01</h3></div>
                     <div class="sectioned_content_body">
                         <div class="webgl_techdemo_container">
                             <hr />
                             <canvas id="webgl_canvas_perlin_01" width="640" height="480"><code>meant to be a canvas element here, if you're seeing this then it doesn't work on your device sorry</code></canvas>
+                            <hr />
+                            <p class="brief_heading_elem">about:</p>
+                            <p class="brief_textbody_elem"><i>this is to show the cell uv mappings visually</i></p>
                             <hr />
                         </div>
                     </div>
@@ -89,7 +112,9 @@
                         <div class="techdemo_brief">
                             <hr />
                             <p class="brief_heading_elem">Summary:</p>
-                            <p class="brief_textbody_elem"><i>made a 2x2 cell grid to just get the initial structure ready but we need 3x3 or 4x4 for any worthwhile examples</i></p>
+                            <p class="brief_textbody_elem"><i>made a 4x4 cell grid to just get the initial structure ready</i></p>
+                            <p class="brief_textbody_elem"><i><code>perlin 01</code> -> to show the uv mapping of each quad</i></p>
+                            <p class="brief_textbody_elem"><i><code>perlin 02</code> -> to show the wire frame</i></p>
                             <hr />
                         </div>
                     </div>

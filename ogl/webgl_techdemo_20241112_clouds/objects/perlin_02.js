@@ -1,21 +1,8 @@
-import { FRAGMENT_SHADER_SRC } from "../shaders/perlin_01_fragmentShader.js";
-import { VERTEX_SHADER_SRC } from "../shaders/perlin_01_vertexShader.js";
+import { FRAGMENT_SHADER_SRC } from "/ogl/common/shaders/minimal_fragmentShader.js";
+import { VERTEX_SHADER_SRC } from "/ogl/common/shaders/minimal_vertexShader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 
-const POSITION_MINIMUMS = {
-    x: -1.0,
-    y: -1.0,
-};
-const POSITION_MAXIMUMS = {
-    x: 1.0,
-    y: 1.0,
-};
-const MODEL_SPACE_DIMENSIONS = {
-    x: POSITION_MAXIMUMS.x - POSITION_MINIMUMS.x,
-    y: POSITION_MAXIMUMS.y - POSITION_MINIMUMS.y,
-};
-
-class Perlin_01 {
+class Perlin_02 {
 
     // ############################################################################################
     // ############################################################################################
@@ -105,38 +92,6 @@ class Perlin_01 {
              1.0, -1.0, 0.0, 1.0,  // v24
         ];
 
-        this.vertex_xy_id = [
-            0.0, 4.0, // v0
-            0.0, 3.0, // v1
-            0.0, 2.0, // v2
-            0.0, 1.0, // v3
-            0.0, 0.0, // v4
-
-            1.0, 4.0, // v5
-            1.0, 3.0, // v6
-            1.0, 2.0, // v7
-            1.0, 1.0, // v8
-            1.0, 0.0, // v9
-
-            2.0, 4.0, // v10
-            2.0, 3.0, // v11
-            2.0, 2.0, // v12
-            2.0, 1.0, // v13
-            2.0, 0.0, // v14
-
-            3.0, 4.0, // v15
-            3.0, 3.0, // v16
-            3.0, 2.0, // v17
-            3.0, 1.0, // v18
-            3.0, 0.0, // v19
-
-            4.0, 4.0, // v20
-            4.0, 3.0, // v21
-            4.0, 2.0, // v22
-            4.0, 1.0, // v23
-            4.0, 0.0, // v24
-        ];
-
         // for some reason it's clockwise or our xy plane is reversed somehow
         //  we could do this with a loop but we're feeling lazy and it was faster with multi-cursor
         this.face_binding_data = [
@@ -169,12 +124,14 @@ class Perlin_01 {
         this.faceCount = 32;
 
         // ==========================================
-        // === cell count
+        // === prepare colour
 
-        this.cell_count = {
-            x: 4.0,
-            y: 4.0,
-        };
+        this.colour = {
+            r: 0.25, 
+            g: 0.25, 
+            b: 1.0, 
+            a: 1.0, 
+        }
 
         // ==========================================
         // === bind the shape
@@ -208,18 +165,6 @@ class Perlin_01 {
             new Uint16Array(this.face_binding_data),
             this.gl_context.STATIC_DRAW
         );
-        
-        // ==========================================
-        // === prepare id mappings
-
-        this.vertex_xy_id_buffer = this.gl_context.createBuffer();
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.vertex_xy_id_buffer);
-    
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.vertex_xy_id),
-          this.gl_context.STATIC_DRAW,
-        );
 
         // ==========================================
         // ==========================================
@@ -243,7 +188,7 @@ class Perlin_01 {
         // ----------------------------------------------------------------------------------------
 
         // the size of our space
-        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_vertex_xy_count") , this.cell_count.x, this.cell_count.y );
+        this.gl_context.uniform4f( this.gl_context.getUniformLocation(this.shader, "u_colour") , this.colour.r, this.colour.g, this.colour.b, this.colour.a );
 
         // ----------------------------------------------------------------------------------------
 
@@ -283,33 +228,13 @@ class Perlin_01 {
         );
         // allow the vertex position attribute to exist
         this.gl_context.enableVertexAttribArray(vertex_position_gpu_location);
-      
-        // ----------------------------------------------------------------------------------------
-        // --- prepare the texture data
-
-        let a_vertex_xy_id_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_xy_id");
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.vertex_xy_id_buffer);
-    
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.vertex_xy_id),
-          this.gl_context.STATIC_DRAW,
-        );
-        this.gl_context.vertexAttribPointer(
-            a_vertex_xy_id_location,
-            2,
-            this.gl_context.FLOAT,
-            false, // TODO: try this with true to see the result
-            0,
-            0,
-        );
-        this.gl_context.enableVertexAttribArray(a_vertex_xy_id_location);
 
         // ----------------------------------------------------------------------------------------
         // --- do the drawing
       
         //                 ( mode, numElements, datatype, offset )
-        this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        // this.gl_context.drawElements(this.gl_context.LINE_STRIP, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.LINE_STRIP, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
       
         // ----------------------------------------------------------------------------------------
         // --- cleanup our shader context
@@ -323,4 +248,4 @@ class Perlin_01 {
 
 }
 
-export { Perlin_01 };
+export { Perlin_02 };
