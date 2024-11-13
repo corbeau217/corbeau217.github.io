@@ -1,6 +1,6 @@
 class Canvas_App {
     // ...
-    constructor(canvas_name, canvas_clear_colour, fps){
+    constructor(canvas_name, canvas_clear_colour){
         // save the name of the canvas
         this.canvas_name = canvas_name;
 
@@ -12,11 +12,8 @@ class Canvas_App {
 
         // save our clear colour
         this.canvas_clear_colour = canvas_clear_colour;
-        
-        // save our desired fps
-        this.fps = fps;
-        this.time_between_frames = 1000.0/this.fps;
 
+        // prepare time
         this.old_time = Date.now();
     }
     // prepares for drawing
@@ -33,6 +30,9 @@ class Canvas_App {
         this.gl_context.enable(this.gl_context.BLEND);
         this.gl_context.blendFunc(this.gl_context.SRC_ALPHA, this.gl_context.ONE_MINUS_SRC_ALPHA);
         // this.gl_context.blendFunc(this.gl_context.ONE, this.gl_context.ONE_MINUS_SRC_ALPHA);
+
+        // give back reference
+        return this;
     }
     frame_update( new_time ){
         // ... generate delta time
@@ -46,9 +46,15 @@ class Canvas_App {
             // then draw
             this.scene_obj.draw();
         }
+        
+        // give back reference
+        return this;
     }
     assign_scene_object(scene_obj){
         this.scene_obj = scene_obj;
+        
+        // give back reference
+        return this;
     }
     get_gl_context(){
         return this.gl_context;

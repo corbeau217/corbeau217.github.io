@@ -141,20 +141,40 @@ function app_main() {
     // ======================================================================
     // ======== prepare the canvas stuffs
 
-    // so cursed, but it's perlin objects passed by need
-    let context_updater_01 = prepare_context_updater("webgl_canvas_perlin_01", (gl)=>{let perlin_obj = new Perlin_01(gl); return perlin_obj;});
-    let context_updater_02 = prepare_context_updater("webgl_canvas_perlin_02", (gl)=>{let perlin_obj = new Perlin_02(gl); return perlin_obj;});
-    let context_updater_03 = prepare_context_updater("webgl_canvas_perlin_03", (gl)=>{let perlin_obj = new Perlin_03(gl); return perlin_obj;});
-    let context_updater_04 = prepare_context_updater("webgl_canvas_perlin_04", (gl)=>{let perlin_obj = new Perlin_04(gl); return perlin_obj;});
-    let context_updater_05 = prepare_context_updater("webgl_canvas_perlin_05", (gl)=>{let perlin_obj = new Perlin_05(gl); return perlin_obj;});
-    // let context_updater_06 = prepare_context_updater("webgl_canvas_perlin_06", (gl)=>{let perlin_obj = new Perlin_06(gl); return perlin_obj;});
-
     //   0.0 to 1.0:     [   R,   G,   B,   A ]
     let canvas_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
 
-    // make app
-    let app_06 = new Canvas_App("webgl_canvas_perlin_06", canvas_clear_colour, fps);
-    app_06.assign_scene_object( new Scene( app_06.get_gl_context(), new Perlin_06( app_06.get_gl_context() ) ) );
+    // make apps
+
+    // perlin 01
+    let app_01 = new Canvas_App("webgl_canvas_perlin_01", canvas_clear_colour);
+    app_01.prepare_context()
+        .assign_scene_object( new Scene( app_01.get_gl_context(), new Perlin_01( app_01.get_gl_context() ) ) );
+
+    // perlin 02
+    let app_02 = new Canvas_App("webgl_canvas_perlin_02", canvas_clear_colour);
+    app_02.prepare_context()
+        .assign_scene_object( new Scene( app_02.get_gl_context(), new Perlin_02( app_02.get_gl_context() ) ) );
+
+    // perlin 03
+    let app_03 = new Canvas_App("webgl_canvas_perlin_03", canvas_clear_colour);
+    app_03.prepare_context()
+        .assign_scene_object( new Scene( app_03.get_gl_context(), new Perlin_03( app_03.get_gl_context() ) ) );
+
+    // perlin 04
+    let app_04 = new Canvas_App("webgl_canvas_perlin_04", canvas_clear_colour);
+    app_04.prepare_context()
+        .assign_scene_object( new Scene( app_04.get_gl_context(), new Perlin_04( app_04.get_gl_context() ) ) );
+
+    // perlin 05
+    let app_05 = new Canvas_App("webgl_canvas_perlin_05", canvas_clear_colour);
+    app_05.prepare_context()
+        .assign_scene_object( new Scene( app_05.get_gl_context(), new Perlin_05( app_05.get_gl_context() ) ) );
+
+    // perlin 06
+    let app_06 = new Canvas_App("webgl_canvas_perlin_06", canvas_clear_colour);
+    app_06.prepare_context()
+        .assign_scene_object( new Scene( app_06.get_gl_context(), new Perlin_06( app_06.get_gl_context() ) ) );
 
     // ======================================================================
     // ======================================================================
@@ -165,12 +185,11 @@ function app_main() {
             function () {
                 requestAnimationFrame(
                         (t) => {
-                            context_updater_01( t );
-                            context_updater_02( t );
-                            context_updater_03( t );
-                            context_updater_04( t );
-                            context_updater_05( t );
-                            // context_updater_06( t );
+                            app_01.frame_update( t );
+                            app_02.frame_update( t );
+                            app_03.frame_update( t );
+                            app_04.frame_update( t );
+                            app_05.frame_update( t );
                             app_06.frame_update( t );
                         }
                     );
