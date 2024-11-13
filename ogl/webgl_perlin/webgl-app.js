@@ -154,9 +154,7 @@ function app_main() {
 
     // make app
     let app_06 = new Canvas_App("webgl_canvas_perlin_06", canvas_clear_colour, fps);
-    let perlin_06 = new Perlin_06( app_06.get_gl_context() );
-    let scene_06 = new Scene( app_06.get_gl_context(), perlin_06 );
-    app_06.assign_scene_object( scene_06 );
+    app_06.assign_scene_object( new Scene( app_06.get_gl_context(), new Perlin_06( app_06.get_gl_context() ) ) );
 
     // ======================================================================
     // ======================================================================
