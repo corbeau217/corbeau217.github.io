@@ -49,11 +49,17 @@ void main() {
   vec2 quad_xy_id = vec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y) );
 
   // oh my god??
-  ivec2 quad_xy_id_int = ivec2(floor(v_vertex_xy_id.x), floor(v_vertex_xy_id).y);
+  ivec2 bottom_left_corner_index = ivec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y) );
+  ivec2 bottom_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y) );
+  ivec2 top_left_corner_index = ivec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y+1.0) );
+  ivec2 top_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y+1.0) );
 
   // get the index from 0-24
   // then get the vectors
-  vec2 bottom_left_vector = get_perlin_vector(quad_xy_id_int);
+  vec2 bottom_left_corner_vector = get_perlin_vector( bottom_left_corner_index );
+  vec2 bottom_right_corner_vector = get_perlin_vector( bottom_right_corner_index );
+  vec2 top_left_corner_vector = get_perlin_vector( top_left_corner_index );
+  vec2 top_right_corner_vector = get_perlin_vector( top_right_corner_index );
 
 
   // where in the quad it is
@@ -61,7 +67,7 @@ void main() {
 
   // assign it to the colour channel
   //   but have it from 0.0 to 1.0 instead of -1.0 to 1.0
-  gl_FragColor = vec4( (bottom_left_vector.x+1.0)/2.0, (bottom_left_vector.y+1.0)/2.0, 0.0, 1.0);
+  gl_FragColor = vec4( (bottom_left_corner_vector.x+1.0)/2.0, (bottom_left_corner_vector.y+1.0)/2.0, 0.0, 1.0);
 }
 `;
 
