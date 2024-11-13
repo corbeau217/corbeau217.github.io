@@ -84,12 +84,16 @@ void main() {
   float top_left_dot = dot( top_left_to_fragment_vector, top_left_corner_vector );
   float top_right_dot = dot( top_right_to_fragment_vector, top_right_corner_vector );
 
-  // prepare the value to use
-  float using_dot = bottom_left_dot;
+  // interpolate top and bottom over x axis
+  float bottom_dot_interpolation = mix(bottom_left_dot, bottom_right_dot, fragment_quad_location.x);
+  float top_dot_interpolation = mix(top_left_dot, top_right_dot, fragment_quad_location.x);
+
+  // interpolate the y
+  float interpolated_dot = mix(bottom_dot_interpolation, top_dot_interpolation, fragment_quad_location.y);
 
   // assign something to colour channel
   //  just using bottom left to start
-  gl_FragColor = vec4( using_dot, using_dot, using_dot, 1.0);
+  gl_FragColor = vec4( interpolated_dot, interpolated_dot, interpolated_dot, 1.0);
 }
 `;
 
