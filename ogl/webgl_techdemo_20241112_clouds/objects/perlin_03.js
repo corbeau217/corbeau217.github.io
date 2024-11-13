@@ -310,6 +310,7 @@ class Perlin_03 {
       
         //                 ( mode, numElements, datatype, offset )
         this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.POINT, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
       
         // ----------------------------------------------------------------------------------------
         // --- cleanup our shader context

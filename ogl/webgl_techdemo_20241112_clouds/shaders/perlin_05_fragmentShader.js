@@ -48,14 +48,13 @@ void main() {
   // get the bottom left
   vec2 quad_xy_id = vec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y) );
 
-  // oh my god??
+  // corner indexing
   ivec2 bottom_left_corner_index = ivec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y) );
   ivec2 bottom_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y) );
   ivec2 top_left_corner_index = ivec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y+1.0) );
   ivec2 top_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y+1.0) );
 
-  // get the index from 0-24
-  // then get the vectors
+  // corner vectors
   vec2 bottom_left_corner_vector = get_perlin_vector( bottom_left_corner_index );
   vec2 bottom_right_corner_vector = get_perlin_vector( bottom_right_corner_index );
   vec2 top_left_corner_vector = get_perlin_vector( top_left_corner_index );
@@ -63,11 +62,46 @@ void main() {
 
 
   // where in the quad it is
-  // vec2 fragment_quad_location = vec2( v_vertex_xy_id.x - quad_xy_id.x, v_vertex_xy_id.y - quad_xy_id.y );
+  vec2 fragment_quad_location = vec2( v_vertex_xy_id.x - quad_xy_id.x, v_vertex_xy_id.y - quad_xy_id.y );
 
-  // assign it to the colour channel
-  //   but have it from 0.0 to 1.0 instead of -1.0 to 1.0
-  gl_FragColor = vec4( (bottom_left_corner_vector.x+1.0)/2.0, (bottom_left_corner_vector.y+1.0)/2.0, 0.0, 1.0);
+
+  // positions of the corners
+  vec2 bottom_left_position = vec2( quad_xy_id.x, quad_xy_id.y );
+  vec2 bottom_right_position = vec2( quad_xy_id.x+1.0, quad_xy_id.y );
+  vec2 top_left_position = vec2( quad_xy_id.x, quad_xy_id.y+1.0 );
+  vec2 top_right_position = vec2( quad_xy_id.x+1.0, quad_xy_id.y+1.0 );
+
+  // difference to corners
+  vec2 bottom_left_to_fragment_vector = v_vertex_xy_id - bottom_left_position;
+  vec2 bottom_right_to_fragment_vector = v_vertex_xy_id - bottom_right_position;
+  vec2 top_left_to_fragment_vector = v_vertex_xy_id - top_left_position;
+  vec2 top_right_to_fragment_vector = v_vertex_xy_id - top_right_position;
+
+  // get the dot products
+  //    probably need to clamp our vectors??
+  float bottom_left_dot = dot( bottom_left_to_fragment_vector, bottom_left_corner_vector );
+  float bottom_right_dot = dot( bottom_right_to_fragment_vector, bottom_right_corner_vector );
+  float top_left_dot = dot( top_left_to_fragment_vector, top_left_corner_vector );
+  float top_right_dot = dot( top_right_to_fragment_vector, top_right_corner_vector );
+
+  // check we're along the edges of a quad?
+  if(fragment_quad_location.x < 0.02 || fragment_quad_location.x >= 0.98 || fragment_quad_location.y < 0.02 || fragment_quad_location.y >= 0.98){
+    gl_FragColor = vec4( 0.0, 0.0, 0.8, 1.0 );
+  }
+  else {
+    // prepare the value to use
+    float using_dot = 0.0;
+    
+    // check where we are in the quad
+    if( fragment_quad_location.x < 0.5 && fragment_quad_location.y < 0.5 ){ using_dot = bottom_left_dot; }
+    else if( fragment_quad_location.x >= 0.5 && fragment_quad_location.y < 0.5 ){ using_dot = bottom_right_dot; }
+    else if( fragment_quad_location.x < 0.5 && fragment_quad_location.y >= 0.5 ){ using_dot = top_left_dot; }
+    else { using_dot = top_right_dot; }
+  
+    // assign something to colour channel
+    //  just using bottom left to start
+    gl_FragColor = vec4( using_dot, using_dot, using_dot, 1.0);
+  }
 }
 `;
 
