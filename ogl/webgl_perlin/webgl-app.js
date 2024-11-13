@@ -25,16 +25,6 @@ window.addEventListener(
 
 // ------------------------------------------------
 // ------------------------------------------------
-// ------- settings
-
-// just needed to be before the main call?
-let fps = 30;
-var timeBetweenFrames = 1000.0/fps;
-//   0.0 to 1.0:     [   R,   G,   B,   A ]
-var canvasClearColour = [ 0.1, 0.1, 0.1, 1.0 ];
-
-// ------------------------------------------------
-// ------------------------------------------------
 
 var oldTime;
 
@@ -64,8 +54,8 @@ function gl_context_init(canvas_id){
 // ############################################################################################
 
 // so we can just use this function to ready up each context
-function prepare_context(gl_current_context){
-    gl_current_context.clearColor(canvasClearColour[0], canvasClearColour[1], canvasClearColour[2], canvasClearColour[3]); // clear to black
+function prepare_context(gl_current_context, canvas_clear_colour){
+    gl_current_context.clearColor(canvas_clear_colour[0], canvas_clear_colour[1], canvas_clear_colour[2], canvas_clear_colour[3]); // clear to black
     gl_current_context.clearDepth(1.0); // clear everything
 
     gl_current_context.enable(gl_current_context.DEPTH_TEST); // enable depth testing
@@ -77,16 +67,6 @@ function prepare_context(gl_current_context){
     gl_current_context.enable(gl_current_context.BLEND);
     gl_current_context.blendFunc(gl_current_context.SRC_ALPHA, gl_current_context.ONE_MINUS_SRC_ALPHA);
     // gl_current_context.blendFunc(gl_current_context.ONE, gl_current_context.ONE_MINUS_SRC_ALPHA);
-}
-
-function canvas_init(gl_current_context, perlin_obj){
-    prepare_context(gl_current_context);
-
-    let scene_obj = new Scene( gl_current_context, perlin_obj );
-
-    oldTime = Date.now();
-
-    return scene_obj
 }
 
 // ############################################################################################
@@ -106,6 +86,19 @@ function frameUpdate( current_scene, newTime ){
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
+
+
+function canvas_init(gl_current_context, perlin_obj){
+    //   0.0 to 1.0:     [   R,   G,   B,   A ]
+    let canvas_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
+    prepare_context(gl_current_context, canvas_clear_colour);
+
+    let scene_obj = new Scene( gl_current_context, perlin_obj );
+
+    oldTime = Date.now();
+
+    return scene_obj
+}
 
 function prepare_context_updater(gl_canvas_id, perlin_constructor){
 
@@ -132,6 +125,15 @@ function prepare_context_updater(gl_canvas_id, perlin_constructor){
 
 // entry point
 function app_main() {
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare settings
+
+    // just needed to be before the main call?
+    let fps = 30;
+    var timeBetweenFrames = 1000.0/fps;
 
     // ======================================================================
     // ======================================================================
