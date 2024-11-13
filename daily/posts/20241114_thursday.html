@@ -1,44 +1,76 @@
 <ul class="daily_textbody_list">
     <li class="daily_textbody_list_elem">
         <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
+        <p>cloud shadows and tree generation is the main focus today, so we'll quickly talk about the cloud ideas</p>
         <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">regarding cloud generation, we thought to have a 3D <a href="https://en.wikipedia.org/wiki/Perlin_noise"><code>perlin noise</code></a> system generate a cloud, then we would render it using a view/perspective matrix at where ever the point/directional light source is</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this cloud could be then rendered to a buffer where the colour is the position of the visible fragment point (red->x, green->y, blue->z)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then this could be rerendered as a silhouette to a buffer for the "shadow" projection texture (like that idea we had for textured light cones, but inverted) and use it to mask whether we do diffuse lighting or just ambient</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">webgl 1 seems to have <a href="https://webglfundamentals.org/webgl/lessons/webgl-qna-how-to-use-the-stencil-buffer.html"><code>stencil buffers</code></a>, so we might be able to use them</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could do a couple layers of gaussian blurring on the silhouette texture to make it less crispy, and get the slight <a href="https://en.wikipedia.org/wiki/Double-slit_experiment"><code>"bendy light"</code></a> effect in our shadows</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">regarding the cloud position buffer, once rendered, we can then use it to determine (during the regular camera perspective) if a point matches the "visible to light source" point for the location</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this allows our clouds to be rendered over time through a few draw calls, and we can also "bucket" the depth to group up parts of the cloud into layers</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">would likely need both the light source perspective of the clouds, and the user camera perspective of the clouds to generate the final visible texture used by the sky box/cloud layer models</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this principle should be useful for any transparent objects which use noise to render their insides (things like murky water or soup or dust storm etc)</li>
         </ul>
     </li>
     <li class="daily_textbody_list_elem">
         <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
+        <p>the tree ideas</p>
         <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-        </ul>
-    </li>
-    <li class="daily_textbody_list_elem">
-        <hr class="hr_list_elem_seperating" />
-        <p>lorem ipsum</p>
-        <ul class="daily_textbody_list daily_textbody_sublist">
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
             <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
-                <p>lorem ipsum</p>
+                <p>immediately our first instinct was to reach for layers of 1 dimensional perlin noise</p>
                 <ul class="daily_textbody_list daily_textbody_sublist">
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
-                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">generating these goofy waves, we prepare a bunch of these for the number of 'branch ends' (expensive, so maybe just the main branches)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">these are used to offset the x-axis of each point along that path from trunk to branch end, repeated for z-axis in 3D tree generation</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">when a tree is yet to diverge its layers (to have a branch start), we average the perlin value of all the wave layers which contribute to the branch at that point</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the more branches this tree has, the more likely it'll be 0 offset on which ever axis near the base, due the way we're generating our vectors</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could use more layers of perlin noise or some sort of predictable / pseudo-random / <a href="https://en.wikipedia.org/wiki/Hash_function"><code>hashing</code></a> algorithm to determine when branches should split</li>
                 </ul>
             </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>the above seems somewhat computationally intensive, so we then thought up just using some weird looking <a href="https://en.wikipedia.org/wiki/Binary_search"><code>binary search</code></a> algorithm for determining branching</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">literally generating a list of <a href="https://en.wikipedia.org/wiki/List_of_random_number_generators"><code>random numbers</code></a></li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">sorting those numbers</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then using some form of binary search on the numbers, recording the path it took to get whichever number to use as the path the branch takes</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this one is hard to put into words or a diagram, but the principle is we could change the "binary" part of the binary searching (since we dont care about the result, but about the journey)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">changing this could be something like a hashing algorithm to determine the way we're subdividing numbers, possibly either halving the numbers sometimes (for normal binary style), or doing something goofy with it</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the numbers in the list might be used as offsets or positions for branches, or vectors for location (begging the idea of using some form of quadtree style accessing / data since this is a tree)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could also just have a roughly / lazily <a href="https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree"><code>balanced tree</code></a> structure holding the data we give it, and then that structure is what's used to build the tree rather than using a modified search (approximately balanced binary/quaternary<sup>[<a href="https://en.wikipedia.org/wiki/Quaternary_numeral_system"><code>1</code></a>][<a href="https://encyclopedia.pub/entry/34788"><code>2</code></a>]</sup> search tree)</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we also found something called space colonization algorithm<sup>[<a href="https://ciphrd.com/2019/09/11/generating-a-3d-growing-tree-using-a-space-colonization-algorithm/"><code>1</code></a>][<a href="https://www.zemris.fer.hr/~zeljkam/radovi/19_Mipro_Nuic.pdf"><code>2</code></a>]</sup>, which we thought up maybe generating, then we pick it up by some random point, and then stretch it by that point in some direction with a "2 steps forward, 1 step back", to make it look like it grew then gravity resisted, and then flip it the right way up (could also limit the length of a branch so the ends are different heights)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>another that seems common to use is <a href="https://en.wikipedia.org/wiki/L-system"><code>L-Systems</code></a></p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">very similar to a <a href="https://en.wikipedia.org/wiki/Formal_grammar"><code>formal grammar</code></a>, which is very fun and means we can hijack grammar systems like <a href="https://en.wikipedia.org/wiki/Regular_expression"><code>regex</code></a> or <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree"><code>syntax trees</code></a></li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">how ever they are generated using steps of parallel processes (during a step, we apply our rules to the entire thing, before reapplying, in a breadth first traversal, which is much more like trees)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">them being parallel in the way they work means we can model it like it's a <a href="https://en.wikipedia.org/wiki/Sequential_logic"><code>sequential logic circuit</code></a> with state machines, or some form of block cipher, to use cryptography schemes</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then each step could be using a render buffer to handle it, so that we just calculate each stage once, then reuse it the allocated regions would be progressively larger and larger and would end up looking like the <a href="https://en.wikipedia.org/wiki/Golden_spiral"><code>golden spiral</code></a></li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could limit the levels as how many times the trees diverge that way we don't have to suffer over them becoming too complex</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the resulting information could be encoded in such a way that the vectors are hashed to become new vectors (in place of the production rule we're using), or some sort of genetics looking string of characters which determines the vector/matrix information</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">since we're using golden spiral for our generation algorithm in space, we still have some space left in our square (powers of 2 are desired for webgl 1 textures or it cries?), so we can use this for computing matrices/normals/etc</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this is the buying into the idea that the future is directly dependant on the present moment</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">L-Systems lets us use so many other adjacent toolkits and fits in with our skill-set strengths so we'll likely use this</li>
         </ul>
-        <hr />
-        <div class="daily_post_content_image_container">
-            <img class="daily_post_content_image" src="/img/placeholder.png" alt="placeholder image" />
-            <img class="daily_post_content_image" src="/img/placeholder.png" alt="placeholder image" />
-        </div>
     </li>
-    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
-    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>there was an idea to continue on from last week's canopy idea, where the canopy creates the branches</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">rather than exponential operations, it's logarithmic operations, making it more and more efficient as we go</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we then use the canopy density with a hashing algorithm of some kind to generate a point cloud, which then those points inform how the next point is likely to generate</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">buys into the idea that we are the sum total of our past circumstances</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem"><p>lastly we could mix the two trains of thoughts together in a spooky derailment of freight trains and use the cloud perspective from light source + bucketing the depth to create the layers of canopies, which then it's by cloud clump being "un-obstructed", to then be chosen for the next branch direction (maybe this idea is very real and possible, but it might be reserved for hyper realistic, once off, unchanging tree structures) </p></li>
+    <li class="daily_textbody_list_elem"><p>no pictures today, only algorithm theory</p></li>
+    <li class="daily_textbody_list_elem"><p>is refraction not just the thing slowing down at the front but not the back? so does not the tree slow down as it emerges into the world in much the same way as if it were entering a new medium</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
 </ul>

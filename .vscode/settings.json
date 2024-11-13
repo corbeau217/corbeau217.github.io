@@ -8,6 +8,7 @@
         "octree",
         "perlin",
         "quadtree",
+        "toolkits",
         "zier"
     ],
     "cSpell.language": "en,en-GB",
