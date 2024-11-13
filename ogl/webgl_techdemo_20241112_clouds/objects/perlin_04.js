@@ -226,18 +226,6 @@ class Perlin_04 {
           new Float32Array(this.vertex_xy_id),
           this.gl_context.STATIC_DRAW,
         );
-        
-        // ==========================================
-        // === prepare vector mappings
-
-        this.vertex_perlin_vectors_buffer = this.gl_context.createBuffer();
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.vertex_perlin_vectors_buffer);
-    
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.vertex_perlin_vectors),
-          this.gl_context.STATIC_DRAW,
-        );
 
         // ==========================================
         // ==========================================
@@ -289,8 +277,9 @@ class Perlin_04 {
     regenerate_perlin_vectors(){
         // run through every vertex
         for (let vertex_index = 0; vertex_index < this.vertex_count; vertex_index++) {
+            const double_index = vertex_index*2;
             // how to access the current vector in our overall array
-            const vector_index = { x: vertex_index*2, y: vertex_index*2+1, };
+            const vector_index = { x: double_index, y: double_index+1, };
             
             // roll a random vector
             const replacement_vector = this.random_unit_vector();
@@ -320,9 +309,8 @@ class Perlin_04 {
 
         // the size of our space
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_quad_xy_count") , this.cell_count.x, this.cell_count.y );
-
+        
         // ----------------------------------------------------------------------------------------
-
 
     
         // select the indexBuffer as one to apply
@@ -383,24 +371,8 @@ class Perlin_04 {
 
         // ----------------------------------------------------------------------------------------
         // --- give vectors
-
-        let a_vertex_perlin_vectors_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_perlin_vectors");
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.vertex_perlin_vectors_buffer);
-    
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.vertex_perlin_vectors),
-          this.gl_context.STATIC_DRAW,
-        );
-        this.gl_context.vertexAttribPointer(
-            a_vertex_perlin_vectors_location,
-            2,
-            this.gl_context.FLOAT,
-            false, // TODO: try this with true to see the result
-            0,
-            0,
-        );
-        this.gl_context.enableVertexAttribArray(a_vertex_perlin_vectors_location);
+        
+        this.gl_context.uniform2fv( this.gl_context.getUniformLocation(this.shader, "u_perlin_vectors") , new Float32Array(this.vertex_perlin_vectors) );
 
         // ----------------------------------------------------------------------------------------
         // --- do the drawing
