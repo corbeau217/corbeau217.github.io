@@ -1,7 +1,4 @@
 
-import { Perlin_01 } from "./objects/perlin_01.js";
-import { Perlin_02 } from "./objects/perlin_02.js";
-
 class Scene {
 
     // ############################################################################################
@@ -9,10 +6,9 @@ class Scene {
     // ############################################################################################
 
     // ...
-    constructor( gl_01, gl_02 ){
+    constructor( gl_context, perlin_obj){
 
-        this.perlin_01 = new Perlin_01( gl_01 );
-        this.perlin_02 = new Perlin_02( gl_02 );
+        this.perlin = perlin_obj;
     }
 
     // ############################################################################################
@@ -28,8 +24,7 @@ class Scene {
     // ############################################################################################
 
     draw(){
-        this.perlin_01.draw();
-        this.perlin_02.draw();
+        this.perlin.draw();
     }
 }
 
