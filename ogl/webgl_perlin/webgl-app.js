@@ -24,106 +24,6 @@ window.addEventListener(
 // ############################################################################################
 // ############################################################################################
 
-// ------------------------------------------------
-// ------------------------------------------------
-
-var oldTime;
-
-// ------------------------------------------------
-// ------------------------------------------------
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-function getCanvasElement(canvas_name){
-    return document.querySelector(`#${canvas_name}`);
-}
-
-function gl_context_init(canvas_id){
-    // weird way to grab the canvas element, shouldnt we getElementById?
-    let canvas_obj = getCanvasElement(canvas_id);
-    
-    // init the GL context
-    let gl_context_obj = canvas_obj.getContext("webgl");
-    // giv it
-    return gl_context_obj;
-}
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-// so we can just use this function to ready up each context
-function prepare_context(gl_current_context, canvas_clear_colour){
-    gl_current_context.clearColor(canvas_clear_colour[0], canvas_clear_colour[1], canvas_clear_colour[2], canvas_clear_colour[3]); // clear to black
-    gl_current_context.clearDepth(1.0); // clear everything
-
-    gl_current_context.enable(gl_current_context.DEPTH_TEST); // enable depth testing
-    gl_current_context.depthFunc(gl_current_context.LEQUAL); // near things obscure far things
-    
-    gl_current_context.enable(gl_current_context.CULL_FACE);
-    gl_current_context.cullFace(gl_current_context.FRONT);
-    
-    gl_current_context.enable(gl_current_context.BLEND);
-    gl_current_context.blendFunc(gl_current_context.SRC_ALPHA, gl_current_context.ONE_MINUS_SRC_ALPHA);
-    // gl_current_context.blendFunc(gl_current_context.ONE, gl_current_context.ONE_MINUS_SRC_ALPHA);
-}
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-function frameUpdate( current_scene, newTime ){
-    // ... generate delta time
-    const deltaTime = (newTime - oldTime)/1000.0;
-    oldTime = newTime;
-    // do update
-    current_scene.update(deltaTime);
-    // then draw
-    current_scene.draw();
-}
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
-
-function canvas_init(gl_current_context, perlin_obj){
-    //   0.0 to 1.0:     [   R,   G,   B,   A ]
-    let canvas_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
-    prepare_context(gl_current_context, canvas_clear_colour);
-
-    let scene_obj = new Scene( gl_current_context, perlin_obj );
-
-    oldTime = Date.now();
-
-    return scene_obj
-}
-
-function prepare_context_updater(gl_canvas_id, perlin_constructor){
-
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
-    // ======== prepare the canvas stuffs
-
-    let current_gl_context = gl_context_init(gl_canvas_id);
-
-    // only continue if webGL is available and working
-    if( null === current_gl_context ){ alert( `unable to init webGL for #${gl_canvas_id}. your device may not support it` ); }
-    // if( null === gl_context_03 ){ alert( "unable to init webGL for perlin 03. your device may not support it" ); }
-
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
-    // ======== initialise things
-    let perlin_obj = perlin_constructor(current_gl_context);
-    let scene_obj = canvas_init(current_gl_context, perlin_obj );
-
-    return (t) => frameUpdate( scene_obj, t );
-}
-
 // entry point
 function app_main() {
 
@@ -202,8 +102,6 @@ function app_main() {
     // ======================================================================
     // ======================================================================
 }
-
-
 
 // ############################################################################################
 // ############################################################################################
