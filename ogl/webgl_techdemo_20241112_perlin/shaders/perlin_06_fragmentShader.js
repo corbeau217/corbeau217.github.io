@@ -84,24 +84,12 @@ void main() {
   float top_left_dot = dot( top_left_to_fragment_vector, top_left_corner_vector );
   float top_right_dot = dot( top_right_to_fragment_vector, top_right_corner_vector );
 
-  // check we're along the edges of a quad?
-  if(fragment_quad_location.x < 0.02 || fragment_quad_location.x >= 0.98 || fragment_quad_location.y < 0.02 || fragment_quad_location.y >= 0.98){
-    gl_FragColor = vec4( 0.0, 0.0, 0.8, 1.0 );
-  }
-  else {
-    // prepare the value to use
-    float using_dot = 0.0;
-    
-    // check where we are in the quad
-    if( fragment_quad_location.x < 0.5 && fragment_quad_location.y < 0.5 ){ using_dot = bottom_left_dot; }
-    else if( fragment_quad_location.x >= 0.5 && fragment_quad_location.y < 0.5 ){ using_dot = bottom_right_dot; }
-    else if( fragment_quad_location.x < 0.5 && fragment_quad_location.y >= 0.5 ){ using_dot = top_left_dot; }
-    else { using_dot = top_right_dot; }
-  
-    // assign something to colour channel
-    //  just using bottom left to start
-    gl_FragColor = vec4( using_dot, using_dot, using_dot, 1.0);
-  }
+  // prepare the value to use
+  float using_dot = bottom_left_dot;
+
+  // assign something to colour channel
+  //  just using bottom left to start
+  gl_FragColor = vec4( using_dot, using_dot, using_dot, 1.0);
 }
 `;
 
