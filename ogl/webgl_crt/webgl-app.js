@@ -1,5 +1,5 @@
 import { Canvas_App } from "/ogl/common/canvas_app.js";
-import { Render_Space } from "./objects/render_space.js";
+import { Render_Space_03 } from "./objects/render_space_03.js";
 import { Scene } from "./scene.js";
 
 // ############################################################################################
@@ -38,7 +38,7 @@ function app_main() {
     // ======== prepare the canvas stuffs
 
     let app_03 = new Canvas_App("webgl_crt_03", canvasClearColour);
-    let render_space_03 = new Render_Space( app_03.get_gl_context() );
+    let render_space_03 = new Render_Space_03( app_03.get_gl_context() );
     let scene_03 = new Scene( app_03.get_gl_context(), render_space_03.get_render_aspect() );
     app_03.prepare_context()
         .assign_scene_object( scene_03 )

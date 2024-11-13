@@ -2,7 +2,7 @@ import { FRAGMENT_SHADER_SRC } from "../shaders/render_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/render_vertexShader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 
-class Render_Space {
+class Render_Space_03 {
 
     // ############################################################################################
     // ############################################################################################
@@ -306,4 +306,4 @@ class Render_Space {
 
 }
 
-export { Render_Space };
+export { Render_Space_03 };
