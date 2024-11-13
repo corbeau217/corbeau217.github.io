@@ -34,9 +34,6 @@ class Canvas_App {
         this.gl_context.blendFunc(this.gl_context.SRC_ALPHA, this.gl_context.ONE_MINUS_SRC_ALPHA);
         // this.gl_context.blendFunc(this.gl_context.ONE, this.gl_context.ONE_MINUS_SRC_ALPHA);
     }
-    assign_scene_object(scene_obj){
-        this.scene_obj = scene_obj;
-    }
     frame_update( new_time ){
         // ... generate delta time
         const delta_time = (new_time - this.old_time)/1000.0;
@@ -49,6 +46,12 @@ class Canvas_App {
             // then draw
             this.scene_obj.draw();
         }
+    }
+    assign_scene_object(scene_obj){
+        this.scene_obj = scene_obj;
+    }
+    get_gl_context(){
+        return this.gl_context;
     }
 }
 

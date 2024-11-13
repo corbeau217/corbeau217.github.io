@@ -1,4 +1,5 @@
 
+import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Perlin_01 } from "./objects/perlin_01.js";
 import { Perlin_02 } from "./objects/perlin_02.js";
 import { Perlin_03 } from "./objects/perlin_03.js";
@@ -146,7 +147,16 @@ function app_main() {
     let context_updater_03 = prepare_context_updater("webgl_canvas_perlin_03", (gl)=>{let perlin_obj = new Perlin_03(gl); return perlin_obj;});
     let context_updater_04 = prepare_context_updater("webgl_canvas_perlin_04", (gl)=>{let perlin_obj = new Perlin_04(gl); return perlin_obj;});
     let context_updater_05 = prepare_context_updater("webgl_canvas_perlin_05", (gl)=>{let perlin_obj = new Perlin_05(gl); return perlin_obj;});
-    let context_updater_06 = prepare_context_updater("webgl_canvas_perlin_06", (gl)=>{let perlin_obj = new Perlin_06(gl); return perlin_obj;});
+    // let context_updater_06 = prepare_context_updater("webgl_canvas_perlin_06", (gl)=>{let perlin_obj = new Perlin_06(gl); return perlin_obj;});
+
+    //   0.0 to 1.0:     [   R,   G,   B,   A ]
+    let canvas_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
+
+    // make app
+    let app_06 = new Canvas_App("webgl_canvas_perlin_06", canvas_clear_colour, fps);
+    let perlin_06 = new Perlin_06( app_06.get_gl_context() );
+    let scene_06 = new Scene( app_06.get_gl_context(), perlin_06 );
+    app_06.assign_scene_object( scene_06 );
 
     // ======================================================================
     // ======================================================================
@@ -162,7 +172,8 @@ function app_main() {
                             context_updater_03( t );
                             context_updater_04( t );
                             context_updater_05( t );
-                            context_updater_06( t );
+                            // context_updater_06( t );
+                            app_06.frame_update( t );
                         }
                     );
             },
