@@ -3,6 +3,7 @@ import { Perlin_01 } from "./objects/perlin_01.js";
 import { Perlin_02 } from "./objects/perlin_02.js";
 import { Perlin_03 } from "./objects/perlin_03.js";
 import { Perlin_04 } from "./objects/perlin_04.js";
+import { Perlin_05 } from "./objects/perlin_05.js";
 import { Scene } from "./scene.js";
 
 // ############################################################################################
@@ -141,6 +142,7 @@ function app_main() {
     let context_updater_02 = prepare_context_updater("webgl_canvas_perlin_02", (gl)=>{let perlin_obj = new Perlin_02(gl); return perlin_obj;});
     let context_updater_03 = prepare_context_updater("webgl_canvas_perlin_03", (gl)=>{let perlin_obj = new Perlin_03(gl); return perlin_obj;});
     let context_updater_04 = prepare_context_updater("webgl_canvas_perlin_04", (gl)=>{let perlin_obj = new Perlin_04(gl); return perlin_obj;});
+    let context_updater_05 = prepare_context_updater("webgl_canvas_perlin_05", (gl)=>{let perlin_obj = new Perlin_05(gl); return perlin_obj;});
 
     // ======================================================================
     // ======================================================================
@@ -155,6 +157,7 @@ function app_main() {
                             context_updater_02( t );
                             context_updater_03( t );
                             context_updater_04( t );
+                            context_updater_05( t );
                         }
                     );
             },
