@@ -55,7 +55,7 @@ var oldTime;
 // ############################################################################################
 
 function getCanvasElement(){
-    return document.querySelector("#webgl_canvas_primary");
+    return document.querySelector("#webgl_crt_01");
 }
 
 function gl_context_init(){
