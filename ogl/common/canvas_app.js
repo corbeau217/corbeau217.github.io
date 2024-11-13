@@ -15,6 +15,9 @@ class Canvas_App {
 
         // prepare time
         this.old_time = Date.now();
+
+        // how we determine it's safe to update
+        this.safe_to_update = ()=>{ return this.scene_obj!=null; };
     }
     // prepares for drawing
     prepare_context(){
@@ -40,24 +43,47 @@ class Canvas_App {
         this.old_time = new_time;
 
         // have scene? 
-        if(this.scene_obj!=null){
+        if(this.safe_to_update()){
             // do update
-            this.scene_obj.update(delta_time);
+            this.content_update(delta_time);
             // then draw
-            this.scene_obj.draw();
+            this.content_draw();
         }
         
         // give back reference
         return this;
     }
     assign_scene_object(scene_obj){
+        // save it
         this.scene_obj = scene_obj;
+
+        // default update functional interfaces
+        this.content_update = (t) => { this.scene_obj.update(t); };
+        this.content_draw = () => { this.scene_obj.draw(); };
         
         // give back reference
         return this;
     }
     get_gl_context(){
         return this.gl_context;
+    }
+    set_content_update_function(new_update_function){
+        // replace our functional interface
+        this.content_update = new_update_function;
+        // give back reference
+        return this;
+    }
+    set_content_draw_function(new_draw_function){
+        // replace our functional interface
+        this.content_draw = new_draw_function;
+        // give back reference
+        return this;
+    }
+    set_safe_to_update_function(new_safety_test_function){
+        // replace our functional interface
+        this.safe_to_update = new_safety_test_function;
+        // give back reference
+        return this;
     }
 }
 
