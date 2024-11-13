@@ -5,7 +5,6 @@ attribute vec2 a_vertex_xy_id;
 varying highp vec2 v_vertex_xy_id;
 
 void main(){
-    gl_PointSize = 15.0;
     gl_Position = a_vertex_position;
 
     // raw and wriggling
