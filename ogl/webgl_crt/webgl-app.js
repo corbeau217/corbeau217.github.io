@@ -1,4 +1,5 @@
 import { Canvas_App } from "/ogl/common/canvas_app.js";
+import { Render_Space_02 } from "./objects/render_space_02.js";
 import { Render_Space_03 } from "./objects/render_space_03.js";
 import { Scene } from "./scene.js";
 
@@ -35,7 +36,34 @@ function app_main() {
     // ======================================================================
     // ======================================================================
     // ======================================================================
-    // ======== prepare the canvas stuffs
+    // ======== prepare the canvas 02
+
+    let app_02 = new Canvas_App("webgl_crt_02", canvasClearColour);
+    let render_space_02 = new Render_Space_02( app_02.get_gl_context() );
+    let scene_02 = new Scene( app_02.get_gl_context(), render_space_02.get_render_aspect() );
+    app_02.prepare_context()
+        .assign_scene_object( scene_02 )
+        .set_content_update_function(
+            (delta_time) => {
+                render_space_02.update( delta_time );
+                scene_02.update( delta_time, render_space_02.get_render_aspect());
+            }
+        )
+        .set_content_draw_function(
+            () => {
+                // handle switching frame buffer
+                render_space_02.prepare_render_space();
+                // draw the scene
+                scene_02.draw();
+                // draw the render space
+                render_space_02.draw();
+            }
+        );
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare the canvas 03
 
     let app_03 = new Canvas_App("webgl_crt_03", canvasClearColour);
     let render_space_03 = new Render_Space_03( app_03.get_gl_context() );
@@ -69,7 +97,10 @@ function app_main() {
     setInterval(
             function () {
                 requestAnimationFrame(
-                        (t) => app_03.frame_update( t )
+                        (t) => {
+                            app_02.frame_update( t );
+                            app_03.frame_update( t );
+                        }
                     );
             },
             timeBetweenFrames
