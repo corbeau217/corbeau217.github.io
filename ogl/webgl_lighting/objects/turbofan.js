@@ -78,11 +78,11 @@ export class TurboFan {
         // ==========================================
         // ==========================================
 
-        mat4.scale(
-            this.modelMatrix,
-            this.modelMatrix,
-            [0.3, 0.3, 0.3]
-        );
+        // mat4.scale(
+        //     this.modelMatrix,
+        //     this.modelMatrix,
+        //     [0.3, 0.3, 0.3]
+        // );
 
         // ==========================================
         // ==========================================
@@ -107,7 +107,7 @@ export class TurboFan {
     // ############################################################################################
     // ############################################################################################
 
-    draw(){
+    draw(cameraViewMatrix, cameraProjectionMatrix){
 
         // ----------------------------------------------------------------------------------------
         // --- prepare our shader
@@ -124,6 +124,11 @@ export class TurboFan {
         // --- prepare our positions
 
         let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "aVertexPosition");
+
+      
+        // set the shader uniforms
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, cameraProjectionMatrix );
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix"), false, cameraViewMatrix );
 
         // 0 = use type and numComponents above
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.positionBuffer);

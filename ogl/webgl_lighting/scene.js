@@ -18,7 +18,7 @@ class Scene {
         this.turbofan = new TurboFan( this.gl_context );
         this.camera = new Camera( this.gl_context,aspectRatio );
 
-        this.camera.set_offset([ -0.0, -0.0, -11.3 ]);
+        this.camera.set_offset([ -0.0, -0.0, -6.3 ]);
     }
 
     update( deltaTime, aspectRatio ){
