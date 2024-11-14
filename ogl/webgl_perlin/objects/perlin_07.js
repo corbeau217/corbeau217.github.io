@@ -20,8 +20,8 @@ class Perlin_07 {
 
         // sizing of the grid
         this.grid_size = {
-            x: 5.0,
-            y: 5.0,
+            x: 6.0,
+            y: 6.0,
         }
 
         // how many vectors
@@ -115,37 +115,13 @@ class Perlin_07 {
 
     clear_perlin_vectors(){
         // all unit vectors
-        this.vertex_perlin_vectors = [
-            1.0, 0.0, // v0
-            1.0, 0.0, // v1
-            1.0, 0.0, // v2
-            1.0, 0.0, // v3
-            1.0, 0.0, // v4
-
-            1.0, 0.0, // v5
-            1.0, 0.0, // v6
-            1.0, 0.0, // v7
-            1.0, 0.0, // v8
-            1.0, 0.0, // v9
-
-            1.0, 0.0, // v10
-            1.0, 0.0, // v11
-            1.0, 0.0, // v12
-            1.0, 0.0, // v13
-            1.0, 0.0, // v14
-
-            1.0, 0.0, // v15
-            1.0, 0.0, // v16
-            1.0, 0.0, // v17
-            1.0, 0.0, // v18
-            1.0, 0.0, // v19
-
-            1.0, 0.0, // v20
-            1.0, 0.0, // v21
-            1.0, 0.0, // v22
-            1.0, 0.0, // v23
-            1.0, 0.0, // v24
-        ];
+        this.vertex_perlin_vectors = [];
+        for (let index = 0; index < this.corner_count; index++) {
+            // X
+            this.vertex_perlin_vectors.push(1.0);
+            // Y
+            this.vertex_perlin_vectors.push(0.0);
+        }
     }
     random_unit_vector(){
         // shouldnt be using trig but oh well

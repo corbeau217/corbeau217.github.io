@@ -1,10 +1,10 @@
 const FRAGMENT_SHADER_SRC = `
 precision highp float;
 
-#define VERTEX_COUNT 25
+#define VERTEX_COUNT 36
 
 uniform vec2 u_quad_xy_count;
-uniform vec2 u_perlin_vectors[25];
+uniform vec2 u_perlin_vectors[VERTEX_COUNT];
 
 varying highp vec2 v_vertex_xy_id;
 
@@ -44,18 +44,18 @@ vec2 get_perlin_vector(in ivec2 vertex_index){
   else if(index == 21) { return u_perlin_vectors[21]; }
   else if(index == 22) { return u_perlin_vectors[22]; }
   else if(index == 23) { return u_perlin_vectors[23]; }
-  // else if(index == 24) { return u_perlin_vectors[24]; }
-  // else if(index == 25) { return u_perlin_vectors[25]; }
-  // else if(index == 26) { return u_perlin_vectors[26]; }
-  // else if(index == 27) { return u_perlin_vectors[27]; }
-  // else if(index == 28) { return u_perlin_vectors[28]; }
-  // else if(index == 29) { return u_perlin_vectors[29]; }
-  // // ...
-  // else if(index == 30) { return u_perlin_vectors[30]; }
-  // else if(index == 31) { return u_perlin_vectors[31]; }
-  // else if(index == 32) { return u_perlin_vectors[32]; }
-  // else if(index == 33) { return u_perlin_vectors[33]; }
-  // else if(index == 34) { return u_perlin_vectors[34]; }
+  else if(index == 24) { return u_perlin_vectors[24]; }
+  else if(index == 25) { return u_perlin_vectors[25]; }
+  else if(index == 26) { return u_perlin_vectors[26]; }
+  else if(index == 27) { return u_perlin_vectors[27]; }
+  else if(index == 28) { return u_perlin_vectors[28]; }
+  else if(index == 29) { return u_perlin_vectors[29]; }
+  // ...
+  else if(index == 30) { return u_perlin_vectors[30]; }
+  else if(index == 31) { return u_perlin_vectors[31]; }
+  else if(index == 32) { return u_perlin_vectors[32]; }
+  else if(index == 33) { return u_perlin_vectors[33]; }
+  else if(index == 34) { return u_perlin_vectors[34]; }
   // else if(index == 35) { return u_perlin_vectors[35]; }
   // else if(index == 36) { return u_perlin_vectors[36]; }
   // else if(index == 37) { return u_perlin_vectors[37]; }
@@ -167,10 +167,10 @@ void main() {
   ivec2 top_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y+1.0) );
 
   // corner vectors
-  vec2 bottom_left_corner_vector = normalize(get_perlin_vector( bottom_left_corner_index ));
-  vec2 bottom_right_corner_vector = normalize(get_perlin_vector( bottom_right_corner_index ));
-  vec2 top_left_corner_vector = normalize(get_perlin_vector( top_left_corner_index ));
-  vec2 top_right_corner_vector = normalize(get_perlin_vector( top_right_corner_index ));
+  vec2 bottom_left_corner_vector = normalize( get_perlin_vector( bottom_left_corner_index ) );
+  vec2 bottom_right_corner_vector = normalize( get_perlin_vector( bottom_right_corner_index ) );
+  vec2 top_left_corner_vector = normalize( get_perlin_vector( top_left_corner_index ) );
+  vec2 top_right_corner_vector = normalize( get_perlin_vector( top_right_corner_index ) );
 
 
   // where in the quad it is
