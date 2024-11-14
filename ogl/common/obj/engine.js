@@ -1,4 +1,10 @@
-import { circle_points_radius, tesselate_between_indices_lists } from "../util/geometry";
+import {
+    circle_points,
+    circle_points_radius,
+    tesselate_between_indices_lists,
+    tesselate_indices_index_to_list,
+    tesselate_indices_list_to_index,
+} from "../util/geometry.js";
 
 
 export class Engine_Shape {
@@ -12,7 +18,7 @@ export class Engine_Shape {
         // ==========================================
         // prepare shape references
         
-        this.vertexValues = [];
+        this.vertices = [];
         this.bindings = [];
 
         this.circle_point_count = 12;
@@ -67,12 +73,13 @@ export class Engine_Shape {
         // could be more efficient but it's easier to read right now
 
         // all rings we have data for
-        for (let ring_index = 0; ring_index < this.ring_radius_list.length; ring_index++) {
+        for (let ring_index = 1; ring_index < this.ring_radius_list.length-2; ring_index++) {
             // current ring information
             const ring_data = this.ring_radius_list[ring_index];
             
             // get a list of vertices for the ring
-            let current_ring_xy_points = circle_points_radius(this.circle_point_count, ring_data.radius);
+            // let current_ring_xy_points = circle_points_radius(this.circle_point_count, ring_data.radius);
+            let current_ring_xy_points = circle_points(this.circle_point_count);
             
             // for the current ring we want to generate all the vertices for it
             for (let i = 0; i < current_ring_xy_points.length; i++) {
@@ -101,14 +108,14 @@ export class Engine_Shape {
 
         // first point is on its own, then we do the rings
 
-        // for all the circles we're doing
-        let right_list = [];
-        // number of points on a circle
-        for(let i = 0; i < this.circle_point_count; i++){
-            let right_index = this.circle_point_count + i;
-            right_list.push( right_index );
-        }
-        indices_list_of_lists.push( tesselate_indices_list_to_index( 0, right_list ) );
+        // // for all the circles we're doing
+        // let right_list = [];
+        // // number of points on a circle
+        // for(let i = 0; i < this.circle_point_count; i++){
+        //     let right_index = this.circle_point_count + i;
+        //     right_list.push( right_index );
+        // }
+        // indices_list_of_lists.push( tesselate_indices_index_to_list( 0, right_list ) );
 
         // also ignoring the last element
         // for all the circles we're doing
@@ -126,14 +133,14 @@ export class Engine_Shape {
         }
 
 
-        // for all the circles we're doing
-        let left_list = [];
-        // number of points on a circle
-        for(let i = 0; i < this.circle_point_count; i++){
-            let left_index = ((this.ring_radius_list.length-2)*this.circle_point_count) + i;
-            left_list.push( left_index );
-        }
-        indices_list_of_lists.push( tesselate_indices_list_to_index( left_list, (this.circle_point_count*(this.ring_radius_list.length-2)) ) );
+        // // for all the circles we're doing
+        // let left_list = [];
+        // // number of points on a circle
+        // for(let i = 0; i < this.circle_point_count; i++){
+        //     let left_index = ((this.ring_radius_list.length-2)*this.circle_point_count) + i;
+        //     left_list.push( left_index );
+        // }
+        // indices_list_of_lists.push( tesselate_indices_list_to_index( left_list, (this.circle_point_count*(this.ring_radius_list.length-2)) ) );
 
         // now we go through each list and fill our bindings list iwth it
         for (let i = 0; i < indices_list_of_lists.length; i++) {
@@ -151,7 +158,7 @@ export class Engine_Shape {
     // ############################################################################################
    
     get_vertices(){
-        return this.vertexValues;
+        return this.vertices;
     }
     get_indices(){
         return this.bindings;

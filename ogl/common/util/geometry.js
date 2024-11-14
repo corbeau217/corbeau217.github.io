@@ -11,10 +11,10 @@ const TAU = 2.0 * Math.PI;
 export function circle_points_radius(number_of_points, radius_of_circle){
     let resulting_points = [];
     let angle_between_points = (1.0/number_of_points)*TAU;
-    if(radius_of_circle == 0.0){
-        // raw point
-        return [0.0, 0.0];
-    }
+    // if(radius_of_circle == 0.0){
+    //     // raw point
+    //     return [0.0, 0.0];
+    // }
     // find the points
     for (let current_index = 0; current_index < number_of_points; current_index++) {
         const theta = angle_between_points * current_index;
@@ -123,12 +123,12 @@ export function tesselate_indices_list_to_index(index_list_left, index_to_fan){
     return resulting_indices_list;
 }
 
-export function tesselate_indices_list_to_index(index_to_fan, index_list_right){
+export function tesselate_indices_index_to_list(index_to_fan, index_list_right){
     // index array in groups of three
     let resulting_indices_list = [];
 
     // all indices
-    for (let current_index = 0; current_index < index_list_left.length; current_index++) {
+    for (let current_index = 0; current_index < index_list_right.length; current_index++) {
         // prepare shorthand references, using modulo to wrap around
         const right_current = index_list_right[current_index];
         const right_next =    index_list_right[(current_index+1)%index_list_right.length];
