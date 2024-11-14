@@ -6,6 +6,7 @@ import { Perlin_03 } from "./objects/perlin_03.js";
 import { Perlin_04 } from "./objects/perlin_04.js";
 import { Perlin_05 } from "./objects/perlin_05.js";
 import { Perlin_06 } from "./objects/perlin_06.js";
+import { Perlin_07 } from "./objects/perlin_07.js";
 import { Scene } from "./scene.js";
 
 // ############################################################################################
@@ -75,6 +76,11 @@ function app_main() {
     let app_06 = new Canvas_App("webgl_canvas_perlin_06", canvas_clear_colour);
     app_06.prepare_context()
         .assign_scene_object( new Scene( app_06.get_gl_context(), new Perlin_06( app_06.get_gl_context() ) ) );
+    
+    // perlin 07
+    let app_07 = new Canvas_App("webgl_canvas_perlin_07", canvas_clear_colour);
+    app_07.prepare_context()
+        .assign_scene_object( new Scene( app_07.get_gl_context(), new Perlin_07( app_07.get_gl_context() ) ) );
 
     // ======================================================================
     // ======================================================================
@@ -91,6 +97,7 @@ function app_main() {
                             app_04.frame_update( t );
                             app_05.frame_update( t );
                             app_06.frame_update( t );
+                            app_07.frame_update( t );
                         }
                     );
             },
