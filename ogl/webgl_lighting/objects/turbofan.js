@@ -125,6 +125,18 @@ export class TurboFan {
 
         let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "aVertexPosition");
 
+
+
+        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        
+        // indices = generateBindings();
+    
+        // allocate space on gpu of the number of indices
+        this.gl_context.bufferData(
+            this.gl_context.ELEMENT_ARRAY_BUFFER,
+            new Uint16Array(this.bindings),
+            this.gl_context.STATIC_DRAW
+        );
       
         // set the shader uniforms
         this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, cameraProjectionMatrix );
@@ -152,14 +164,15 @@ export class TurboFan {
         // --- do the drawing
       
         //                 ( mode, numElements, datatype, offset )
-        this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
-        this.gl_context.drawElements(this.gl_context.LINES_LOOP, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        // this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.LINE_STRIP, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.POINTS, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
       
         // ----------------------------------------------------------------------------------------
         // --- cleanup our shader context
         
         // this.gl_context.disableVertexAttribArray(vertexPosition_location);
+        this.gl_context.disableVertexAttribArray(vertexPosition_location);  
     }
 
     // ############################################################################################

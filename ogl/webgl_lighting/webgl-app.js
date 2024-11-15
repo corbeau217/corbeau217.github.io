@@ -38,11 +38,12 @@ function app_main() {
     // ======== prepare the canvas 02
     let app_01 = new Canvas_App("webgl_engine_01", canvasClearColour);
     let scene_01 = new Scene( app_01.get_gl_context(), aspectRatio );
-    app_01.prepare_context()
+    app_01
         .assign_scene_object( scene_01 )
         .set_content_update_function(
             (delta_time) => {
                 scene_01.update( delta_time, aspectRatio );
+                app_01.prepare_context();
             }
         )
         .set_content_draw_function(
