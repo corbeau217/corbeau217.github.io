@@ -153,7 +153,7 @@ export function tesselate_indices_index_to_list(index_to_fan, index_list_right){
         const right_next =    index_list_right[(current_index+1)%index_list_right.length];
 
         // triangle is:
-        //  left[i], index_to_fan, left[i+1] 
+        //  index_to_fan, right[i], right[i+1] 
         resulting_indices_list.push( index_to_fan );
         resulting_indices_list.push( right_current );
         resulting_indices_list.push( right_next );

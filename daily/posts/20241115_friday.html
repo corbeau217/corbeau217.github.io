@@ -1,0 +1,54 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>today we got a much needed sleep in, and threw the whole rhythm into question</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">thoughts were about jet streams/plasma jets and how they're done in a shader</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">could use some stretch parabola to decide if we use the effect texture or not</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">probably just yoink that idea that older games do with just a criss cross of planes with the effect on it to make it look dense</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">that or just use a billboard and enough glow to handle the roundedness</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">otherwise we could just simulate some "exists in shape" in the fragment shader, but this is likely really slow</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>few ideas following on from previous days that didn't have a place in their respective days</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">fire mesh, which is a bunch of bezier curves/nurbs and have some domain warping on it or something</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">clouds are some advancing spheres which then have the perlin noise as the top most layer to choose their shape</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">regarding clouds, the spheres would determine the density a light ray passes through or where would be lit up in explosions</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>we started working on a turbofan engine model but either some of the geometry functions aren't working correctly or their usage, or the problem might be somewhere else</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">very likely it's some issue with our tesselation/extrusions that is causing the issue</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>to resolve this we tried to use the points/lines draw mode but it's not giving any information about what's wrong, so our options are</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">remake it using better diagrams to help explain what's wrong</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">create some unit testing for our geometry functions (this could be an additional card on the same page or a different page using tick emojis)</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">move on to finally making a vehicle model from our really old sketches to re-hype about model making and restore confidence in our abilities</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the mentioned model diagrams can be found below, taken from the very ambitious project regarding traffic lights, which we were doing using <a href="https://en.wikipedia.org/wiki/Software_engineering#Workload"><code>software engineering</code></a> design principles and burnt out in the design phase (very much highlighting our preference for <a href="https://en.wikipedia.org/wiki/Systems_development_life_cycle"><code>SDLC</code></a>, particularly <a href="https://en.wikipedia.org/wiki/Iterative_design"><code>iterative style</code></a> of design)</li>
+                </ul>
+            </li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_A.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_B.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_C.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_D.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_E.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_F.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_G.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/daily/img/modeldiagram_05062024_vehicle_H.png" alt="placeholder image" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem"><p>not much else to say today, it was a rather lazy day as we needed to catch up on sleep</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>

@@ -9,6 +9,7 @@
         "perlin",
         "quadtree",
         "toolkits",
+        "yoink",
         "zier"
     ],
     "cSpell.language": "en,en-GB",
