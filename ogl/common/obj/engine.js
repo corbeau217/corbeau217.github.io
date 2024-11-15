@@ -84,11 +84,14 @@ export class Engine_Shape {
             
             // for the current ring we want to generate all the vertices for it
             for (let i = 0; i < current_ring_xy_points.length; i++) {
-                let vert_index = i*2;
+                let circle_data = {
+                    x: current_ring_xy_points[ i*2 ],
+                    y: current_ring_xy_points[ i*2+1 ],
+                };
                 // x value
-                this.vertices.push( ring_data.radius * current_ring_xy_points[ vert_index ]   );
+                this.vertices.push( ring_data.radius * circle_data.x );
                 // y value
-                this.vertices.push( ring_data.radius * current_ring_xy_points[ vert_index ]+1 );
+                this.vertices.push( ring_data.radius * circle_data.y );
                 // z value
                 this.vertices.push( ring_data.position_z );
                 // w value
