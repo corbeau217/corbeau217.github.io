@@ -1,6 +1,6 @@
 import { FRAGMENT_SHADER_SRC } from "../shaders/render_02_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/render_02_vertexShader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program, gather_shaders } from "/ogl/common/shaders/shader_engine.js";
 
 class Render_Space_02 {
 
@@ -12,8 +12,11 @@ class Render_Space_02 {
     constructor( gl_context ){
         // local reference to opengl context
         this.gl_context = gl_context;
-        // make the shader for this can
+
+        // // make the shader for this can
         this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
+        this.shader = gather_shaders(this.gl_context, "/ogl/webgl_crt/shaders/render_02_vertexShader.glsl", "/ogl/webgl_crt/shaders/render_02_fragmentShader.glsl");
+
 
         // ==========================================
         // === prepare viewport information

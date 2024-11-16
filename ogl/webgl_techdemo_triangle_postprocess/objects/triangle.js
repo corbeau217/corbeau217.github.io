@@ -1,6 +1,6 @@
 import { FRAGMENT_SHADER_SRC } from "../shaders/triangle_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/triangle_vertexShader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program,gather_shaders } from "/ogl/common/shaders/shader_engine.js";
 
 const TAU = 2.0*Math.PI;
 class Triangle {
@@ -14,7 +14,8 @@ class Triangle {
         // local reference to opengl context
         this.gl_context = gl_context;
         // make the shader for this can
-        this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
+        // this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
+        this.shader = gather_shaders(this.gl_context, "/ogl/webgl_crt/shaders/triangle_vertexShader.glsl", "/ogl/webgl_crt/shaders/triangle_fragmentShader.glsl");
 
         // ==========================================
         // === prepare model changing variables

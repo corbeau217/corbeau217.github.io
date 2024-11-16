@@ -58,6 +58,83 @@ function loadShader( gl_context, type, source){
 // ############################################################################################
 
 
+async function fetch_shader_code(path_to_fetch){
+    const resp = await fetch(path_to_fetch);
+    const text = await resp.text();
+    return text;
+}
+
+function gather_vert_shader_source(gl_context, vert_path_to_fetch, provide_vertex_shader){
+    let vert_shader;
+    fetch_shader_code(vert_path_to_fetch)
+        .then(
+            (code_string) => {
+                vert_shader = loadShader(gl_context, gl_context.VERTEX_SHADER, code_string);
+                console.log(code_string);
+            },
+            (code_string)=>{vert_shader = null;}
+        ).catch(console.error)
+        .finally(()=>{provide_vertex_shader(vert_shader)});
+}
+function gather_frag_shader_source(gl_context, frag_path_to_fetch, provide_fragment_shader){
+    let frag_shader;
+    fetch_shader_code(frag_path_to_fetch)
+        .then(
+            (code_string) => {
+                frag_shader = loadShader(gl_context, gl_context.FRAGMENT_SHADER, code_string);
+            },
+            (code_string)=>{frag_shader = null;}
+        ).catch(console.error)
+        .finally(()=>{provide_fragment_shader(frag_shader)});
+    // return frag_shader;
+}
+export function gather_shaders(gl_context, vert_path_to_fetch, frag_path_to_fetch){
+    let vert_shader, frag_shader;
+    gather_vert_shader_source(gl_context, vert_path_to_fetch, (vert_code)=>{vert_shader = vert_code;});
+    gather_frag_shader_source(gl_context, frag_path_to_fetch, (frag_code)=>{frag_shader = frag_code;});
+
+    // prepare program
+    let shaderProgram = gl_context.createProgram();
+
+    // need to be sure that we loaded our shaders before continuing
+    // TODO: get this to work somehow
+
+    // attach the shaders now?
+    gl_context.attachShader(shaderProgram, vert_shader);
+    gl_context.attachShader(shaderProgram, frag_shader);
+    gl_context.linkProgram(shaderProgram);
+
+    // if creating the shader program failed tell the user about it
+    if( !gl_context.getProgramParameter(shaderProgram, gl_context.LINK_STATUS) ){
+        console.log(
+            `unable to init the shader program: ${gl_context.getProgramInfoLog( // this is vry cool tbh, i likey
+                shaderProgram, // another comma??? @mdn-tutorial pls why r u like this
+            )}`, // why the comma @mdn-tutorial??
+        );
+        // give them junk
+        return null;
+    }
+
+    // now that it's linked, detach the prepared content
+    gl_context.detachShader(shaderProgram, vert_shader);
+    gl_context.detachShader(shaderProgram, frag_shader);
+
+    // and delete it
+    gl_context.deleteShader(vert_shader);
+    gl_context.deleteShader(frag_shader);
+
+    // happy handoff now
+    return shaderProgram;
+
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+
+
+
 
 
 // init a shader program, so WebGL knows how to draw our data
