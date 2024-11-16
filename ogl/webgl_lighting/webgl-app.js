@@ -1,5 +1,6 @@
 import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "./scene.js";
+import { Scene_Car } from "./scene_car.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -35,7 +36,7 @@ function app_main() {
     // ======================================================================
     // ======================================================================
     // ======================================================================
-    // ======== prepare the canvas 02
+    // ======== prepare the canvas 01
     let app_01 = new Canvas_App("webgl_engine_01", canvasClearColour);
     let scene_01 = new Scene( app_01.get_gl_context(), aspectRatio );
     app_01
@@ -54,6 +55,29 @@ function app_main() {
                 scene_01.draw();
             }
         );
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare the canvas 02
+    let app_02 = new Canvas_App("webgl_vehicle_01", canvasClearColour);
+    let scene_02 = new Scene_Car( app_02.get_gl_context(), aspectRatio );
+    app_02
+        .assign_scene_object( scene_02 )
+        .set_content_update_function(
+            (delta_time) => {
+                scene_02.update( delta_time, aspectRatio );
+                app_02.prepare_context();
+            }
+        )
+        .set_content_draw_function(
+            () => {
+                // Clear the canvas AND the depth buffer.
+                app_02.get_gl_context().clear(app_02.get_gl_context().COLOR_BUFFER_BIT | app_02.get_gl_context().DEPTH_BUFFER_BIT);
+                // draw the scene
+                scene_02.draw();
+            }
+        );
     // ======================================================================
     // ======================================================================
     // ======================================================================
@@ -66,6 +90,7 @@ function app_main() {
                 requestAnimationFrame(
                         (t) => {
                             app_01.frame_update( t );
+                            app_02.frame_update( t );
                         }
                     );
             },
