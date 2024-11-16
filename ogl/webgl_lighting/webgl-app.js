@@ -1,6 +1,7 @@
 import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "./scene.js";
 import { Scene_Car } from "./scene_car.js";
+import { Scene_Sphere } from "./scene_sphere.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -78,6 +79,29 @@ function app_main() {
                 scene_02.draw();
             }
         );
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare the canvas 02
+    let app_03 = new Canvas_App("webgl_sphere_01", canvasClearColour);
+    let scene_03 = new Scene_Sphere( app_03.get_gl_context(), aspectRatio );
+    app_03
+        .assign_scene_object( scene_03 )
+        .set_content_update_function(
+            (delta_time) => {
+                scene_03.update( delta_time, aspectRatio );
+                app_03.prepare_context();
+            }
+        )
+        .set_content_draw_function(
+            () => {
+                // Clear the canvas AND the depth buffer.
+                app_03.get_gl_context().clear(app_03.get_gl_context().COLOR_BUFFER_BIT | app_03.get_gl_context().DEPTH_BUFFER_BIT);
+                // draw the scene
+                scene_03.draw();
+            }
+        );
     // ======================================================================
     // ======================================================================
     // ======================================================================
@@ -91,6 +115,7 @@ function app_main() {
                         (t) => {
                             app_01.frame_update( t );
                             app_02.frame_update( t );
+                            app_03.frame_update( t );
                         }
                     );
             },
