@@ -1,6 +1,7 @@
 import { VERTEX_SHADER_SRC } from "../shaders/vehicle_vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/vehicle_fragmentShader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js"
+import { generate_normals } from "/ogl/common/util/geometry.js";
 import { Vehicle_Shape } from "/ogl/common/obj/vehicle.js"
 
 
@@ -33,6 +34,9 @@ export class Vehicle {
         // === generate the bindings
 
         this.bindings = this.shape.get_bindings();
+
+        // and the normals 
+        this.normals = generate_normals(this.vertices, this.bindings);
 
         // ==========================================
         // === prepare face count

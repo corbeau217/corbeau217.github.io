@@ -179,16 +179,75 @@ export function concatenate_arrays(left_array, right_array){
 // ############################################################################################
 // ############################################################################################
 
-// converts list of vector2f points to a float list
-export function vector2f_list_to_float_list(vector2f_list){
-    let result = [];
-    for (let index = 0; index < vector2f_list.length; index++) {
-        const current_element = vector2f_list[index];
-        result.push(current_element.x);
-        result.push(current_element.y);
-    }
-    return result;
+export function cross_product(vector_a, vector_b){
+    return {
+        x: ((vector_a.y*vector_b.z)-(vector_a.z*vector_b.y)),
+        y: ((vector_a.z*vector_b.x)-(vector_a.x*vector_b.z)),
+        z: ((vector_a.x*vector_b.y)-(vector_a.y*vector_b.x)),
+    };
 }
+
+// generate a normal for the face
+export function get_face_normal(first_vertex, second_vertex, third_vertex){
+    // get difference vectors
+    const vector_a = {
+        x: second_vertex.x - first_vertex.x,
+        y: second_vertex.y - first_vertex.y,
+        z: second_vertex.z - first_vertex.z,
+    };
+    const vector_b = {
+        x: third_vertex.x - second_vertex.x,
+        y: third_vertex.y - second_vertex.y,
+        z: third_vertex.z - second_vertex.z,
+    };
+    // do cross product
+    const cross = cross_product(vector_a, vector_b);
+    // make a vector from the result
+    return {
+        x: cross.x,
+        y: cross.y,
+        z: cross.z,
+        w: 0.0, // vector not point
+    };
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+// assumes that we're using array of floats and bindings with 4 values per vertex, and 3 bindings per triangle
+export function generate_normals(vertex_list, binding_list){
+    let normals = [];
+    // all bindings are grouped in 3s for a triangle, so jump 3 at a time
+    for (let binding_index = 0; binding_index < binding_list.length; binding_index += 3) {
+        // gather the face bindings
+        const face_bindings = [
+            binding_list[binding_index],
+            binding_list[binding_index+1],
+            binding_list[binding_index+2],
+        ];
+        // since we're dealing with values per vertex
+        const vertex_indices = [
+            face_bindings[0]*4,
+            face_bindings[1]*4,
+            face_bindings[2]*4,
+        ];
+        // now get the vertex data
+        const face_vertices = [
+            { x:vertex_list[vertex_indices[0]], y:vertex_list[vertex_indices[0]+1], z:vertex_list[vertex_indices[0]+2], w:vertex_list[vertex_indices[0]+3] },
+            { x:vertex_list[vertex_indices[1]], y:vertex_list[vertex_indices[1]+1], z:vertex_list[vertex_indices[1]+2], w:vertex_list[vertex_indices[1]+3] },
+            { x:vertex_list[vertex_indices[2]], y:vertex_list[vertex_indices[2]+1], z:vertex_list[vertex_indices[2]+2], w:vertex_list[vertex_indices[2]+3] },
+        ];
+        // now get the normal for the face
+        const face_normal = get_face_normal(face_vertices[0], face_vertices[1], face_vertices[2]);
+
+        // do it 3 times for each of the bindings of the face
+        normals.push(face_normal.x); normals.push(face_normal.y); normals.push(face_normal.z); normals.push(face_normal.w);
+        normals.push(face_normal.x); normals.push(face_normal.y); normals.push(face_normal.z); normals.push(face_normal.w);
+        normals.push(face_normal.x); normals.push(face_normal.y); normals.push(face_normal.z); normals.push(face_normal.w);
+    }
+}
+
 
 // ############################################################################################
 // ############################################################################################
