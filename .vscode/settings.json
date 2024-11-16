@@ -2,6 +2,7 @@
     "cSpell.words": [
         "bookicon",
         "canopys",
+        "GLSL",
         "icosphere",
         "lerp",
         "NURBS",
@@ -9,6 +10,8 @@
         "perlin",
         "quadtree",
         "toolkits",
+        "voronoi",
+        "worley",
         "yoink",
         "zier"
     ],
