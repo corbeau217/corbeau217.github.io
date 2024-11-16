@@ -41,7 +41,7 @@ export class Vehicle {
         // ==========================================
         // === prepare face count
 
-        this.faceCount = 36;
+        this.faceCount = this.shape.get_face_count();
 
         // ==========================================
     

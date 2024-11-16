@@ -189,4 +189,5 @@ export class Vehicle_Shape {
     }
     get_vertices(){ return this.vertices; }
     get_bindings(){ return this.bindings; }
+    get_face_count(){ return 36; }
 }

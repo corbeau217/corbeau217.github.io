@@ -42,7 +42,7 @@ export class Sphere {
         // === prepare face count
 
         // TODO: determine this
-        this.faceCount = 3;
+        this.faceCount = this.shape.get_face_count();
 
         // ==========================================
     
