@@ -15,10 +15,12 @@ void main(){
     gl_Position = pos;
     
     // broken
-    // v_normal = a_normal;
-
+    // vec3 normal_source = normalize(a_normal.xyz);
     // honestly just use this
-    vec4 normal_vec = vec4(a_vertex_position.xyz,0.0);
+    vec3 normal_source = normalize(a_vertex_position.xyz);
+
+    // make it a vec4 for use with our matrix
+    vec4 normal_vec = vec4( normal_source, 0.0 );
     v_normal = u_normal_matrix * normal_vec;
 }
 `;

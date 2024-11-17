@@ -13,11 +13,9 @@ vec4 shape_colour = vec4(0.9,0.5,0.2,1.0);
 
 void main() {
 
-  float lambertian = max(dot(v_normal, light_direction_vec), 0.0);
+  float light_lambert = max( dot(v_normal, light_direction_vec) , 0.0);
 
-  float light_intensity = percent_diffuse*lambertian;
-
-
+  float light_intensity = min( (ambient+light_lambert), 1.0);
 
   gl_FragColor = vec4(light_intensity*shape_colour.x, light_intensity*shape_colour.y, light_intensity*shape_colour.z, 1.0);
 }
