@@ -1,5 +1,7 @@
 import {
-    unit_sphere_float_vertices
+    unit_sphere_float_vertices,
+    unit_sphere_bindings,
+    unit_sphere_face_count,
 } from "/ogl/common/util/geometry.js";
 export class Sphere_Shape {
     // ...
@@ -25,5 +27,5 @@ export class Sphere_Shape {
     }
     get_vertices(){ return this.vertices; }
     get_bindings(){ return this.bindings; }
-    get_face_count(){ return 3; }
+    get_face_count(){ return unit_sphere_face_count(); }
 }

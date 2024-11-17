@@ -106,8 +106,8 @@ export function unit_sphere_points_vector4f(){
     // --- 2nd highest layer ---
     let platter_y = unit_circle_vectors[2].y;
     let platter_radius = unit_circle_vectors[2].x;
-    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
-        const current_platter_point = unit_circle_points[platter_point];
+    for (let platter_point = 0; platter_point < unit_circle_vectors.length; platter_point++) {
+        const current_platter_point = unit_circle_vectors[platter_point];
         // uses the radius of the unit circle x axis
         //  and put the platter over x and z axis so y is perpendicular
         points.push({
@@ -120,8 +120,8 @@ export function unit_sphere_points_vector4f(){
     // --- 3rd highest layer ---
     platter_y = unit_circle_vectors[1].y;
     platter_radius = unit_circle_vectors[1].x;
-    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
-        const current_platter_point = unit_circle_points[platter_point];
+    for (let platter_point = 0; platter_point < unit_circle_vectors.length; platter_point++) {
+        const current_platter_point = unit_circle_vectors[platter_point];
         // uses the radius of the unit circle x axis
         //  and put the platter over x and z axis so y is perpendicular
         points.push({
@@ -134,8 +134,8 @@ export function unit_sphere_points_vector4f(){
     // --- middle layer ---
     platter_y = unit_circle_vectors[0].y;
     platter_radius = unit_circle_vectors[0].x;
-    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
-        const current_platter_point = unit_circle_points[platter_point];
+    for (let platter_point = 0; platter_point < unit_circle_vectors.length; platter_point++) {
+        const current_platter_point = unit_circle_vectors[platter_point];
         // uses the radius of the unit circle x axis
         //  and put the platter over x and z axis so y is perpendicular
         points.push({
@@ -148,8 +148,8 @@ export function unit_sphere_points_vector4f(){
     // --- 3rd lowest layer ---
     platter_y = unit_circle_vectors[11].y;
     platter_radius = unit_circle_vectors[11].x;
-    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
-        const current_platter_point = unit_circle_points[platter_point];
+    for (let platter_point = 0; platter_point < unit_circle_vectors.length; platter_point++) {
+        const current_platter_point = unit_circle_vectors[platter_point];
         // uses the radius of the unit circle x axis
         //  and put the platter over x and z axis so y is perpendicular
         points.push({
@@ -162,8 +162,8 @@ export function unit_sphere_points_vector4f(){
     // --- 2nd lowest layer ---
     platter_y = unit_circle_vectors[10].y;
     platter_radius = unit_circle_vectors[10].x;
-    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
-        const current_platter_point = unit_circle_points[platter_point];
+    for (let platter_point = 0; platter_point < unit_circle_vectors.length; platter_point++) {
+        const current_platter_point = unit_circle_vectors[platter_point];
         // uses the radius of the unit circle x axis
         //  and put the platter over x and z axis so y is perpendicular
         points.push({
@@ -181,6 +181,8 @@ export function unit_sphere_points_vector4f(){
         z: 0.0,
         w: 1.0, // always 1.0 for saying it's a point in space
     });
+
+    return points;
 }
 
 export function unit_sphere_float_vertices(){
@@ -203,6 +205,19 @@ export function unit_sphere_float_vertices(){
 // ############################################################################################
 // ############################################################################################
 
+export function unit_sphere_face_count(){
+    let plate_count = 5;
+    let point_count = 12;
+    
+    let edges_per_plate = point_count-1;
+    let plate_connections = plate_count-1;
+    let faces_per_plate_connection = 2*edges_per_plate;
+
+    let top_faces = edges_per_plate;
+    let bottom_faces = edges_per_plate;
+
+    return top_faces + (plate_connections)*(faces_per_plate_connection) + bottom_faces;
+}
 export function unit_sphere_bindings(is_clockwise_winding){
     let bindings = [];
     // important information about our plates
@@ -231,7 +246,7 @@ export function unit_sphere_bindings(is_clockwise_winding){
         if(is_clockwise_winding){
             // triangle
             bindings.push(top_plate_current_index);
-            bindings.push(bottom_index);
+            bindings.push(top_index);
             bindings.push(top_plate_next_index);
         }
         // --- anticlockwise ---
@@ -239,7 +254,7 @@ export function unit_sphere_bindings(is_clockwise_winding){
             // triangle
             bindings.push(top_plate_current_index);
             bindings.push(top_plate_next_index);
-            bindings.push(bottom_index);
+            bindings.push(top_index);
         }
         // ---- ---- ---- ---- ---- ---- ---- ----
     }
@@ -314,6 +329,7 @@ export function unit_sphere_bindings(is_clockwise_winding){
         // ---- ---- ---- ---- ---- ---- ---- ----
     }
 
+    return bindings;
 }
 
 
@@ -496,6 +512,7 @@ export function generate_normals(vertex_list, binding_list){
         normals.push(face_normal.x); normals.push(face_normal.y); normals.push(face_normal.z); normals.push(face_normal.w);
         normals.push(face_normal.x); normals.push(face_normal.y); normals.push(face_normal.z); normals.push(face_normal.w);
     }
+    return normals;
 }
 
 

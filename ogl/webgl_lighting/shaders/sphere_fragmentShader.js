@@ -1,8 +1,10 @@
 const FRAGMENT_SHADER_SRC = `
 precision highp float;
 
+varying highp vec4 v_normal;
+
 void main() {
-  gl_FragColor = vec4(0.8, 0.4, 0.1, 1);
+  gl_FragColor = vec4(v_normal.x, v_normal.y, v_normal.z, 1);
 }
 `;
 

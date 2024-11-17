@@ -3,7 +3,11 @@ import { FRAGMENT_SHADER_SRC } from "../shaders/sphere_fragmentShader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js"
 import { generate_normals } from "/ogl/common/util/geometry.js";
 import { Sphere_Shape } from "/ogl/common/obj/sphere_shape.js"
-
+import {
+    unit_sphere_float_vertices,
+    unit_sphere_bindings,
+    unit_sphere_face_count,
+} from "/ogl/common/util/geometry.js";
 
 const TAU = 2.0*Math.PI;
 
@@ -28,12 +32,12 @@ export class Sphere {
         // ==========================================
         // === generate the vertices
 
-        this.vertices = this.shape.get_vertices();
+        this.vertices = unit_sphere_float_vertices();
 
         // ==========================================
         // === generate the bindings
 
-        this.bindings = this.shape.get_bindings();
+        this.bindings = unit_sphere_bindings(false);
 
         // and the normals 
         this.normals = generate_normals(this.vertices, this.bindings);
@@ -42,7 +46,7 @@ export class Sphere {
         // === prepare face count
 
         // TODO: determine this
-        this.faceCount = this.shape.get_face_count();
+        this.faceCount = unit_sphere_face_count();
 
         // ==========================================
     
@@ -75,6 +79,26 @@ export class Sphere {
             new Uint16Array(this.bindings),
             this.gl_context.STATIC_DRAW
         );
+
+        // ==========================================
+
+
+        // create a buffer for the shape's positions.
+        this.normalBuffer = this.gl_context.createBuffer();
+    
+        // selec the vertexBuffer as one to apply
+        //  buffer opers to from now on
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normalBuffer);
+    
+    
+        // allocate space on gpu of the number of vertices
+        this.gl_context.bufferData(
+            this.gl_context.ARRAY_BUFFER,
+            new Float32Array(this.normals),
+            this.gl_context.STATIC_DRAW
+        );
+
+
 
         // ==========================================
         // ==========================================
@@ -127,6 +151,7 @@ export class Sphere {
         // --- prepare our positions
 
         let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
+        let vertexNormal_location = this.gl_context.getAttribLocation(this.shader, "a_normal");
 
 
 
@@ -162,12 +187,34 @@ export class Sphere {
         );
         // allow the vertex position attribute to exist
         this.gl_context.enableVertexAttribArray(vertexPosition_location);
+
+
+        // ----------------------------------------------------------------------------------------
+
+
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normalBuffer);
+        this.gl_context.vertexAttribPointer(
+            vertexNormal_location,
+            // components per vertex
+            4,
+            // the data in the buffer is 32bit floats
+            this.gl_context.FLOAT,
+            // don't normalize
+            false,
+            // how many bytes to get from one set of values to the next
+            0,
+            // how many bytes inside the buffer to start from
+            0
+        );
+        // allow the vertex normal attribute to exist
+        this.gl_context.enableVertexAttribArray(vertexNormal_location);
       
+        // console.log(this.vertices.length);
         // ----------------------------------------------------------------------------------------
         // --- do the drawing
       
         //                 ( mode, numElements, datatype, offset )
-        // this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.LINE_STRIP, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.POINTS, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
       
@@ -176,6 +223,7 @@ export class Sphere {
         
         // this.gl_context.disableVertexAttribArray(vertexPosition_location);
         this.gl_context.disableVertexAttribArray(vertexPosition_location);  
+        // this.gl_context.disableVertexAttribArray(vertexNormal_location);  
     }
 
     // ############################################################################################
