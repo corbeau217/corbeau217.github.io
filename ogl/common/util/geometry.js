@@ -446,10 +446,20 @@ export function concatenate_arrays(left_array, right_array){
 // ############################################################################################
 
 export function cross_product(vector_a, vector_b){
+    let a = vector_a.x;
+    let b = vector_a.y;
+    let c = vector_a.z;
+    let d = vector_b.x;
+    let e = vector_b.y;
+    let f = vector_b.z;
+
+    //  x  y  z  x  y
+    //  a  b  c  a  b
+    //  d  e  f  d  e
     return {
-        x: ((vector_a.y*vector_b.z)-(vector_a.z*vector_b.y)),
-        y: ((vector_a.z*vector_b.x)-(vector_a.x*vector_b.z)),
-        z: ((vector_a.x*vector_b.y)-(vector_a.y*vector_b.x)),
+        x: (b*f-c*e),
+        y: (c*d-a*f),
+        z: (a*e-b*d),
     };
 }
 

@@ -27,6 +27,8 @@ export class Sphere {
         // model to world matrix
         this.modelMatrix = mat4.create();
 
+        
+
         this.y_rotation_per_second = 0.1;
 
         // ==========================================
@@ -128,6 +130,17 @@ export class Sphere {
             this.modelMatrix,
             y_rotation_factor,
         );
+
+
+        this.normal_matrix = mat4.create();
+        mat4.invert(
+            this.normal_matrix,
+            this.modelMatrix,
+        );
+        mat4.transpose(
+            this.normal_matrix,
+            this.normal_matrix,
+        );
     }
 
     // ############################################################################################
@@ -146,12 +159,12 @@ export class Sphere {
         // --- provide model matrix
 
         this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.modelMatrix );
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_normal_matrix"), false, this.normal_matrix );
 
         // ----------------------------------------------------------------------------------------
         // --- prepare our positions
 
         let vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
-        let vertexNormal_location = this.gl_context.getAttribLocation(this.shader, "a_normal");
 
 
 
@@ -192,22 +205,23 @@ export class Sphere {
         // ----------------------------------------------------------------------------------------
 
 
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normalBuffer);
-        this.gl_context.vertexAttribPointer(
-            vertexNormal_location,
-            // components per vertex
-            4,
-            // the data in the buffer is 32bit floats
-            this.gl_context.FLOAT,
-            // don't normalize
-            false,
-            // how many bytes to get from one set of values to the next
-            0,
-            // how many bytes inside the buffer to start from
-            0
-        );
-        // allow the vertex normal attribute to exist
-        this.gl_context.enableVertexAttribArray(vertexNormal_location);
+        // let vertexNormal_location = this.gl_context.getAttribLocation(this.shader, "a_normal");
+        // this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normalBuffer);
+        // this.gl_context.vertexAttribPointer(
+        //     vertexNormal_location,
+        //     // components per vertex
+        //     4,
+        //     // the data in the buffer is 32bit floats
+        //     this.gl_context.FLOAT,
+        //     // don't normalize
+        //     false,
+        //     // how many bytes to get from one set of values to the next
+        //     0,
+        //     // how many bytes inside the buffer to start from
+        //     0
+        // );
+        // // allow the vertex normal attribute to exist
+        // this.gl_context.enableVertexAttribArray(vertexNormal_location);
       
         // console.log(this.vertices.length);
         // ----------------------------------------------------------------------------------------

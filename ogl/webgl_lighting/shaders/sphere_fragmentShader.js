@@ -3,8 +3,23 @@ precision highp float;
 
 varying highp vec4 v_normal;
 
+float ambient = 0.1;
+float percent_diffuse = (1.0-ambient);
+vec3 light_source_vec = vec3( -2.0, 5.0, 4.0 );
+vec4 light_direction_vec = vec4( normalize(light_source_vec), 0.0 );
+
+vec4 shape_colour = vec4(0.9,0.5,0.2,1.0);
+
+
 void main() {
-  gl_FragColor = vec4(v_normal.x, v_normal.y, v_normal.z, 1);
+
+  float lambertian = max(dot(v_normal, light_direction_vec), 0.0);
+
+  float light_intensity = percent_diffuse*lambertian;
+
+
+
+  gl_FragColor = vec4(light_intensity*shape_colour.x, light_intensity*shape_colour.y, light_intensity*shape_colour.z, 1.0);
 }
 `;
 
