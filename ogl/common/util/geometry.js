@@ -203,6 +203,124 @@ export function unit_sphere_float_vertices(){
 // ############################################################################################
 // ############################################################################################
 
+export function unit_sphere_bindings(is_clockwise_winding){
+    let bindings = [];
+    // important information about our plates
+    let plate_count = 5;
+    let point_count = 12;
+    let number_vertices = plate_count * point_count + 2; 
+    // first point is the top most
+    let top_index = 0;
+    // last point is the bottom most
+    let bottom_index = number_vertices-1;
+    // to skip the top indext
+    let plate_start_offset = 1;
+    // where the last plate starts
+    let bottom_plate_start_offset = ((plate_count-1)*point_count) + plate_start_offset;
+
+    // do the faces connecting first plate to the top vertex
+    // each point on the plate
+    for (let point_index = 0; point_index < point_count; point_index++) {
+        // ---- ---- ---- ---- ---- ---- ---- ----
+        // bottom left
+        const top_plate_current_index = plate_start_offset + point_index;
+        // bottom right
+        const top_plate_next_index = plate_start_offset + ((point_index+1)%point_count);
+        // ---- ---- ---- ---- ---- ---- ---- ----
+        // --- clockwise ---
+        if(is_clockwise_winding){
+            // triangle
+            bindings.push(top_plate_current_index);
+            bindings.push(bottom_index);
+            bindings.push(top_plate_next_index);
+        }
+        // --- anticlockwise ---
+        else{ 
+            // triangle
+            bindings.push(top_plate_current_index);
+            bindings.push(top_plate_next_index);
+            bindings.push(bottom_index);
+        }
+        // ---- ---- ---- ---- ---- ---- ---- ----
+    }
+
+
+    // do each plate, skipping last, since edges are the number of vertices minus 1
+    //  |E| = |V| - 1
+    for (let plate_index = 0; plate_index < plate_count-1; plate_index++) {
+        // what point we start going around a plate
+        const current_plate_start_index = (plate_index * point_count) + plate_start_offset;
+        const next_plate_start_index = ((plate_index+1) * point_count) + plate_start_offset;
+        // each point on the plate
+        for (let point_index = 0; point_index < point_count; point_index++) {
+            // ---- ---- ---- ---- ---- ---- ---- ----
+            // top left
+            const current_plate_current_index = current_plate_start_index + point_index;
+            // top right, wrapped around to 0 when we're at the last point
+            const current_plate_next_index = current_plate_start_index + ((point_index+1)%point_count);
+            // bottom left
+            const next_plate_current_index = next_plate_start_index + point_index;
+            // bottom right
+            const next_plate_next_index = next_plate_start_index + ((point_index+1)%point_count);
+            // ---- ---- ---- ---- ---- ---- ---- ----
+            // --- clockwise ---
+            if(is_clockwise_winding){
+                // triangle 1
+                bindings.push(current_plate_current_index);
+                bindings.push(current_plate_next_index);
+                bindings.push(next_plate_next_index);
+                // triangle 2
+                bindings.push(current_plate_current_index);
+                bindings.push(next_plate_next_index);
+                bindings.push(next_plate_current_index);
+            }
+            // --- anticlockwise ---
+            else {
+                // triangle 1
+                bindings.push(current_plate_current_index);
+                bindings.push(next_plate_next_index);
+                bindings.push(current_plate_next_index);
+                // triangle 2
+                bindings.push(current_plate_current_index);
+                bindings.push(next_plate_current_index);
+                bindings.push(next_plate_next_index);
+            }
+            // ---- ---- ---- ---- ---- ---- ---- ----
+        }
+    }
+    // do the faces connecting last plate to the bottom vertex
+    // each point on the plate
+    for (let point_index = 0; point_index < point_count; point_index++) {
+        // ---- ---- ---- ---- ---- ---- ---- ----
+        // top left
+        const bottom_plate_current_index = (bottom_plate_start_offset) + point_index;
+        // top right
+        const bottom_plate_next_index = (bottom_plate_start_offset) + ((point_index+1)%point_count);
+        // ---- ---- ---- ---- ---- ---- ---- ----
+        // --- clockwise ---
+        if(is_clockwise_winding){
+            // triangle
+            bindings.push(bottom_plate_current_index);
+            bindings.push(bottom_plate_next_index);
+            bindings.push(bottom_index);
+        }
+        // --- anticlockwise ---
+        else {
+            // triangle
+            bindings.push(bottom_plate_current_index);
+            bindings.push(bottom_index);
+            bindings.push(bottom_plate_next_index);
+        }
+        // ---- ---- ---- ---- ---- ---- ---- ----
+    }
+
+}
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
 /**
  *    |     \    |
  *    |       \  |

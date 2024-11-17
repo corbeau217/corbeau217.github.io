@@ -21,17 +21,7 @@ export class Sphere_Shape {
     generate_bindings(){
         // get our bindings depending on our winding order
         //  diagrams were for anticlockwise winding order
-        this.bindings = (this.winding_clockwise)? this.clock_wise_bindings() : this.anti_clock_wise_bindings();
-    }
-    clock_wise_bindings(){
-        return [
-            // ..
-        ];
-    }
-    anti_clock_wise_bindings(){
-        return [
-            // ...
-        ];
+        this.bindings = unit_sphere_bindings(this.winding_clockwise);
     }
     get_vertices(){ return this.vertices; }
     get_bindings(){ return this.bindings; }
