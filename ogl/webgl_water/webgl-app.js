@@ -76,21 +76,6 @@ function generate_app_instance( canvas_element_name, canvas_clear_colour, Scene_
 // ############################################################################################
 // ############################################################################################
 
-function add_object_to_scene( app_id, object_to_add, object_update_function, object_draw_function ){
-    // adding an object to the specific app we've made
-    app_list[app_id]
-        .scene_instance
-            .add_object(
-                object_to_add,
-                object_update_function,
-                object_draw_function,
-            );
-}
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
 
 // entry point
 function app_main() {
