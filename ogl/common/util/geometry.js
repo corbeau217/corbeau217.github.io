@@ -66,6 +66,138 @@ export function unit_circle_points(){
         sqrt_of_3/2.0, -0.5,
     ];
 }
+export function unit_circle_points_vector2f(){
+    // const sqrt_of_2 = 1.41421356237;
+    const sqrt_of_3 = 1.73205080757;
+    return [
+        { x: 1.0,            y: 0.0,            }, // 0
+        { x: sqrt_of_3/2.0,  y: 0.5,            }, // 1
+        { x: 0.5,            y: sqrt_of_3/2.0,  }, // 2
+        { x: 0.0,            y: 1.0,            }, // 3
+        { x: -0.5,           y: sqrt_of_3/2.0,  }, // 4
+        { x: -sqrt_of_3/2.0, y: 0.5,            }, // 5
+        { x: -1.0,           y: 0.0,            }, // 6
+        { x: -sqrt_of_3/2.0, y: -0.5,           }, // 7
+        { x: -0.5,           y: -sqrt_of_3/2.0, }, // 8
+        { x: 0.0,            y: -1.0,           }, // 9
+        { x: 0.5,            y: -sqrt_of_3/2.0, }, // 10
+        { x: sqrt_of_3/2.0,  y: -0.5,           }, // 11
+    ];
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+export function unit_sphere_points_vector4f(){
+    // get the points of our main platter
+    let unit_circle_vectors = unit_circle_points_vector2f();
+    // then we turn them into actual points
+    // as how many plates there are stacked on top of each other
+    let points = [];
+    // top most point first
+    points.push({
+        x: 0.0,
+        y: 1.0,
+        z: 0.0,
+        w: 1.0, // always 1.0 for saying it's a point in space
+    });
+
+    // --- 2nd highest layer ---
+    let platter_y = unit_circle_vectors[2].y;
+    let platter_radius = unit_circle_vectors[2].x;
+    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
+        const current_platter_point = unit_circle_points[platter_point];
+        // uses the radius of the unit circle x axis
+        //  and put the platter over x and z axis so y is perpendicular
+        points.push({
+            x: platter_radius * current_platter_point.x,
+            y: platter_y,
+            z: platter_radius * current_platter_point.y,
+            w: 1.0,
+        });
+    }
+    // --- 3rd highest layer ---
+    platter_y = unit_circle_vectors[1].y;
+    platter_radius = unit_circle_vectors[1].x;
+    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
+        const current_platter_point = unit_circle_points[platter_point];
+        // uses the radius of the unit circle x axis
+        //  and put the platter over x and z axis so y is perpendicular
+        points.push({
+            x: platter_radius * current_platter_point.x,
+            y: platter_y,
+            z: platter_radius * current_platter_point.y,
+            w: 1.0,
+        });
+    }
+    // --- middle layer ---
+    platter_y = unit_circle_vectors[0].y;
+    platter_radius = unit_circle_vectors[0].x;
+    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
+        const current_platter_point = unit_circle_points[platter_point];
+        // uses the radius of the unit circle x axis
+        //  and put the platter over x and z axis so y is perpendicular
+        points.push({
+            x: platter_radius * current_platter_point.x,
+            y: platter_y,
+            z: platter_radius * current_platter_point.y,
+            w: 1.0,
+        });
+    }
+    // --- 3rd lowest layer ---
+    platter_y = unit_circle_vectors[11].y;
+    platter_radius = unit_circle_vectors[11].x;
+    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
+        const current_platter_point = unit_circle_points[platter_point];
+        // uses the radius of the unit circle x axis
+        //  and put the platter over x and z axis so y is perpendicular
+        points.push({
+            x: platter_radius * current_platter_point.x,
+            y: platter_y,
+            z: platter_radius * current_platter_point.y,
+            w: 1.0,
+        });
+    }
+    // --- 2nd lowest layer ---
+    platter_y = unit_circle_vectors[10].y;
+    platter_radius = unit_circle_vectors[10].x;
+    for (let platter_point = 0; platter_point < unit_circle_points.length; platter_point++) {
+        const current_platter_point = unit_circle_points[platter_point];
+        // uses the radius of the unit circle x axis
+        //  and put the platter over x and z axis so y is perpendicular
+        points.push({
+            x: platter_radius * current_platter_point.x,
+            y: platter_y,
+            z: platter_radius * current_platter_point.y,
+            w: 1.0,
+        });
+    }
+
+    // lastly add the bottom most point
+    points.push({
+        x: 0.0,
+        y: -1.0,
+        z: 0.0,
+        w: 1.0, // always 1.0 for saying it's a point in space
+    });
+}
+
+export function unit_sphere_float_vertices(){
+    // prepare vertices array
+    let vertices = [];
+    // get the vertices
+    let unit_circle_vertices = unit_sphere_points_vector4f();
+    // then we turn them into actual points
+    for (let vertex_index = 0; vertex_index < unit_circle_vertices.length; vertex_index++) {
+        const current_vertex = unit_circle_vertices[vertex_index];
+        vertices.push(current_vertex.x);
+        vertices.push(current_vertex.y);
+        vertices.push(current_vertex.z);
+        vertices.push(current_vertex.w);
+    }
+    return vertices;
+}
 
 // ############################################################################################
 // ############################################################################################

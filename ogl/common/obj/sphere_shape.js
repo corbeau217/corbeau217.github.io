@@ -1,3 +1,6 @@
+import {
+    unit_sphere_float_vertices
+} from "/ogl/common/util/geometry.js";
 export class Sphere_Shape {
     // ...
     constructor(){
@@ -13,11 +16,7 @@ export class Sphere_Shape {
         this.generate_bindings();
     }
     generate_vertices(){
-        // all vertices are:
-        //  x, y, z, w,
-        this.vertices = [
-            // ..
-        ];
+        this.vertices = unit_sphere_float_vertices();
     }
     generate_bindings(){
         // get our bindings depending on our winding order
