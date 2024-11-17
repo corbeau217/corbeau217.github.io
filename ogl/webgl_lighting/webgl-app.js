@@ -2,6 +2,7 @@ import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "./scene.js";
 import { Scene_Car } from "./scene_car.js";
 import { Scene_Sphere } from "./scene_sphere.js";
+import { Scene_Sphere_02 } from "./scene_sphere_02.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -83,7 +84,7 @@ function app_main() {
     // ======================================================================
     // ======================================================================
     // ======================================================================
-    // ======== prepare the canvas 02
+    // ======== prepare the canvas 03
     let app_03 = new Canvas_App("webgl_sphere_01", canvasClearColour);
     let scene_03 = new Scene_Sphere( app_03.get_gl_context(), aspectRatio );
     app_03
@@ -102,6 +103,29 @@ function app_main() {
                 scene_03.draw();
             }
         );
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare the canvas 04
+    let app_04 = new Canvas_App("webgl_sphere_02", canvasClearColour);
+    let scene_04 = new Scene_Sphere_02( app_04.get_gl_context(), aspectRatio );
+    app_04
+        .assign_scene_object( scene_04 )
+        .set_content_update_function(
+            (delta_time) => {
+                scene_04.update( delta_time, aspectRatio );
+                app_04.prepare_context();
+            }
+        )
+        .set_content_draw_function(
+            () => {
+                // Clear the canvas AND the depth buffer.
+                app_04.get_gl_context().clear(app_04.get_gl_context().COLOR_BUFFER_BIT | app_04.get_gl_context().DEPTH_BUFFER_BIT);
+                // draw the scene
+                scene_04.draw();
+            }
+        );
     // ======================================================================
     // ======================================================================
     // ======================================================================
@@ -116,6 +140,7 @@ function app_main() {
                             app_01.frame_update( t );
                             app_02.frame_update( t );
                             app_03.frame_update( t );
+                            app_04.frame_update( t );
                         }
                     );
             },
