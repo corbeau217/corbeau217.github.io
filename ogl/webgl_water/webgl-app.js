@@ -2,6 +2,7 @@ import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "/ogl/common/scene.js";
 import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
+import { Water_03 } from "./objects/water_03.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -100,6 +101,7 @@ function app_main() {
     
     let app_01 = generate_app_instance( "webgl_water_01", canvasClearColour, Scene );
     let app_02 = generate_app_instance( "webgl_water_02", canvasClearColour, Scene );
+    let app_03 = generate_app_instance( "webgl_water_03", canvasClearColour, Scene );
 
     // ======================================================================
     // ======================================================================
@@ -125,6 +127,20 @@ function app_main() {
     // prepare the scene
     app_02.scene_instance
         .add_object( water_02, water_02.update, water_02.draw )
+        .set_camera_offset( -0.0, -0.0, -3.3);
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare -- water -- 03
+
+    // get our context
+    let gl_03 = app_03.app_instance.get_gl_context();
+    // make the water object
+    let water_03 = new Water_03(gl_03);
+    // prepare the scene
+    app_03.scene_instance
+        .add_object( water_03, water_03.update, water_03.draw )
         .set_camera_offset( -0.0, -0.0, -3.3);
 
     // ======================================================================
