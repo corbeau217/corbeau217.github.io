@@ -1,8 +1,8 @@
-import { FRAGMENT_SHADER_SRC } from "../shaders/perlin_07_fragmentShader.js";
-import { VERTEX_SHADER_SRC } from "../shaders/perlin_07_vertexShader.js";
+import { FRAGMENT_SHADER_SRC } from "../shaders/perlin_08_fragmentShader.js";
+import { VERTEX_SHADER_SRC } from "../shaders/perlin_08_vertexShader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 
-export class Perlin_07 {
+export class Perlin_08 {
 
     // ############################################################################################
     // ############################################################################################

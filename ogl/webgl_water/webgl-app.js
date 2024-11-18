@@ -3,7 +3,7 @@ import { Scene } from "/ogl/common/scene.js";
 import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
 // import { Water_03 } from "./objects/water_03.js";
-import { Perlin_07 } from "./objects/perlin_07.js";
+import { Perlin_08 } from "./objects/perlin_08.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -138,7 +138,7 @@ function app_main() {
     // get our context
     let gl_03 = app_03.app_instance.get_gl_context();
     // make the water object
-    let perlin_object = new Perlin_07(gl_03);
+    let perlin_object = new Perlin_08(gl_03);
     // prepare the scene
     app_03.scene_instance
         .add_object(
