@@ -1,6 +1,7 @@
 import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "/ogl/common/scene.js";
 import { Water } from "./objects/water.js";
+import { Water_02 } from "./objects/water_02.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -95,29 +96,36 @@ function app_main() {
     // ======================================================================
     // ======================================================================
     // ======================================================================
-    // ======== prepare our apps
+    // ======== build the app instances
+    
+    let app_01 = generate_app_instance( "webgl_water_01", canvasClearColour, Scene );
+    let app_02 = generate_app_instance( "webgl_water_02", canvasClearColour, Scene );
 
-    let app_01 = generate_app_instance(
-            // canvas name
-            "webgl_water_01",
-            // background colour
-            canvasClearColour,
-            // the scene type of being a generic one
-            Scene
-        );
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare -- water -- 01
+
+    // get our context
     let gl_01 = app_01.app_instance.get_gl_context();
     let water_01 = new Water(gl_01);
-    app_01.scene_instance.add_object(
-            water_01,
-            water_01.update,
-            water_01.draw,
-            // ( delta_time )=>{ water_01.update( delta_time ) },
-            // ( cam_view, cam_proj ) => { water_01.draw( cam_view, cam_proj ) },
-        )
+    app_01.scene_instance
+        .add_object( water_01, water_01.update, water_01.draw )
         .set_camera_offset( -0.0, -0.75, -2.3);
 
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+    // ======== prepare -- water -- 02
 
-
+    // get our context
+    let gl_02 = app_02.app_instance.get_gl_context();
+    // make the water object
+    let water_02 = new Water_02(gl_02);
+    // prepare the scene
+    app_02.scene_instance
+        .add_object( water_02, water_02.update, water_02.draw )
+        .set_camera_offset( -0.0, -0.75, -2.3);
 
     // ======================================================================
     // ======================================================================
