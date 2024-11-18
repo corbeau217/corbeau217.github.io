@@ -1,10 +1,10 @@
 
 function get_corner_difference_vectors( quad_pos ){
     return {
-        top_left:     vec2.fromValues( quad_pos.x,     quad_pos.y-1.0 ),
-        bottom_left:  vec2.fromValues( quad_pos.x,     quad_pos.y     ),
-        top_right:    vec2.fromValues( quad_pos.x-1.0, quad_pos.y-1.0 ),
-        bottom_right: vec2.fromValues( quad_pos.x-1.0, quad_pos.y     ),
+        top_left:     vec2.fromValues( quad_pos[0],     quad_pos[1]-1.0 ),
+        bottom_left:  vec2.fromValues( quad_pos[0],     quad_pos[1]     ),
+        top_right:    vec2.fromValues( quad_pos[0]-1.0, quad_pos[1]-1.0 ),
+        bottom_right: vec2.fromValues( quad_pos[0]-1.0, quad_pos[1]     ),
     }
 }
 function get_clamped_vectors( corner_difference_vectors ){
@@ -53,9 +53,9 @@ function get_dot_products( corner_gradients, corner_difference_vectors ){
     };
 }
 function get_interpolation_of_dots( dot_products, quad_location ){
-    let top_interpolation = (1.0-quad_location.x)*dot_products.top_left + (quad_location.x)*dot_products.top_right;
-    let bottom_interpolation = (1.0-quad_location.x)*dot_products.bottom_left + (quad_location.x)*dot_products.bottom_right;
-    return (1.0-quad_location.y)*bottom_interpolation + (quad_location.y)*top_interpolation;
+    let top_interpolation = (1.0-quad_location[0])*dot_products.top_left + (quad_location[0])*dot_products.top_right;
+    let bottom_interpolation = (1.0-quad_location[0])*dot_products.bottom_left + (quad_location[0])*dot_products.bottom_right;
+    return (1.0-quad_location[1])*bottom_interpolation + (quad_location[1])*top_interpolation;
 }
 
 
@@ -71,6 +71,7 @@ export class Perlin_Noise_Machine {
         };
         
         this.initialise_data();
+
     }
 
     // ###########################################
@@ -98,11 +99,16 @@ export class Perlin_Noise_Machine {
     // ###########################################
 
     corner_gradients( quad_reference ){
+        let top_left_x_index     = Math.floor(quad_reference.x  ); let top_left_y_index     = Math.floor(quad_reference.y+1);
+        let bottom_left_x_index  = Math.floor(quad_reference.x  ); let bottom_left_y_index  = Math.floor(quad_reference.y  );
+        let top_right_x_index    = Math.floor(quad_reference.x+1); let top_right_y_index    = Math.floor(quad_reference.y+1);
+        let bottom_right_x_index = Math.floor(quad_reference.x+1); let bottom_right_y_index = Math.floor(quad_reference.y  );
+
         return {
-            top_left:     this.gradients[quad_reference.x  ][quad_reference.y+1],
-            bottom_left:  this.gradients[quad_reference.x  ][quad_reference.y  ],
-            top_right:    this.gradients[quad_reference.x+1][quad_reference.y+1],
-            bottom_right: this.gradients[quad_reference.x+1][quad_reference.y  ],
+            top_left:     this.gradients[ top_left_x_index     ][ top_left_y_index     ],
+            bottom_left:  this.gradients[ bottom_left_x_index  ][ bottom_left_y_index  ],
+            top_right:    this.gradients[ top_right_x_index    ][ top_right_y_index    ],
+            bottom_right: this.gradients[ bottom_right_x_index ][ bottom_right_y_index ],
         };
     }
 
@@ -120,6 +126,7 @@ export class Perlin_Noise_Machine {
             x: Math.floor(point_x_mapping),
             y: Math.floor(point_y_mapping),
         };
+
         let quad_position = vec2.fromValues( point_x_mapping - quad_reference.x, point_y_mapping - quad_reference.y );
         // ...
         let corner_gradients = this.corner_gradients( quad_reference );
@@ -135,7 +142,33 @@ export class Perlin_Noise_Machine {
     // ###########################################
 
     gather_noise_values_as_float_array( point_count_x, point_count_y ){
-        // TODO: implement
+
+        let total_number_of_points = point_count_x * point_count_y;
+        let quad_size = vec2.fromValues(
+            this.cell_count.x/(point_count_x),
+            this.cell_count.y/(point_count_y),
+        );
+
+        // the data we send back
+        //  noise will just replace the y value of the vectors
+        let resulting_point_values = [];
+
+        // all columns
+        for (let point_x_index = 0; point_x_index < point_count_x-1; point_x_index++) {
+            const point_x_value = point_x_index * quad_size[0];
+            // all positions in a column
+            for (let point_y_index = 0; point_y_index < point_count_y-1; point_y_index++) {
+                const point_y_value = point_y_index * quad_size[1];
+
+                // ---- ends up with the noise value on y axis ----
+                resulting_point_values.push( 0.0 );
+                resulting_point_values.push( this.fetch_point_value( point_x_value, point_y_value ) );
+                resulting_point_values.push( 0.0 );
+                // ------------------------------------------------
+            }
+        }
+        
+        return resulting_point_values;
     }
 
     // ###########################################
