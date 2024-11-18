@@ -718,9 +718,9 @@ export function generate_normals_for_explode_vertices( vertices, number_of_trian
         // --------------------------------------------------------
         // --------------------------------
 
-        const  first_start = ((triangle_index*4)  );
-        const second_start = ((triangle_index*4)+1);
-        const  third_start = ((triangle_index*4)+2);
+        const  first_start = (((triangle_index*3)+0)*4);
+        const second_start = (((triangle_index*3)+1)*4);
+        const  third_start = (((triangle_index*3)+2)*4);
         
         // --------------------------------
 
@@ -747,7 +747,7 @@ export function generate_normals_for_explode_vertices( vertices, number_of_trian
         
         // --------------------------------
 
-        const cross_vec3 = cross_product( vector_a, vector_b );
+        const cross_vec3 = cross_product( vector_b, vector_a );
 
         // --------------------------------
         // --------------------------------------------------------
@@ -756,10 +756,9 @@ export function generate_normals_for_explode_vertices( vertices, number_of_trian
 
 
         // 3 times to do all vertices of the current face
-        //      w is 0.0 because it's a vector
-        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);  vertex_normals.push( 0.0 );
-        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);  vertex_normals.push( 0.0 );
-        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);  vertex_normals.push( 0.0 );
+        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);
+        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);
+        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);
         
         // --------------------------------------------------------
         // --------------------------------------------------------
