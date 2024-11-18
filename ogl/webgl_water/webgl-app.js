@@ -157,11 +157,11 @@ function app_main() {
     app_03.scene_instance
         .add_object(
                 perlin_renderer,
-                (t)=>{ perlin_renderer.update(t); },
-                (view, project)=>{ perlin_renderer.draw(); }
+                perlin_renderer.update,
+                perlin_renderer.draw
         )
         .set_camera_offset( -0.0, -0.0, -3.3);
-    // // get our context
+    // get our context
     // let gl_03 = app_03.app_instance.get_gl_context();
     // // make the water object
     // let water_object = new Water_03(gl_03);

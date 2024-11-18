@@ -208,6 +208,6 @@ void main() {
 
   // assign something to colour channel
   //  just using bottom left to start
-  gl_FragColor = vec4( interpolated_dot, interpolated_dot, interpolated_dot, 1.0);
+  gl_FragColor = vec4( interpolated_dot, 0.0, interpolated_dot, 1.0);
 }
 `;

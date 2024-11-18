@@ -11,8 +11,8 @@ export class Perlin_Renderer {
         this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
         
         this.render_dimensions = {
-            x: 640,
-            y: 480,
+            x: 32,
+            y: 24,
         };
         this.viewport_dimensions = {
             x: 640,
@@ -24,8 +24,8 @@ export class Perlin_Renderer {
         // === prepare the perlin object data
 
         this.perlin_object = perlin_object;
-        this.perlin_update = perlin_update_function;
-        this.perlin_draw = perlin_draw_function;
+        this.perlin_update_function = perlin_update_function;
+        this.perlin_draw_function = perlin_draw_function;
 
         // ==========================================
         // ==========================================
@@ -57,7 +57,7 @@ export class Perlin_Renderer {
 
         this.vertexValues = [
             // v0
-            -1.0,  1.0, 0.0, 1.0,
+            -0.5, 0.5, 0.0, 1.0,
             // v1
             -1.0, -1.0, 0.0, 1.0,
             // v2
@@ -200,15 +200,20 @@ export class Perlin_Renderer {
     // ############################################################################################
 
     prepare_render_space(){
+        // start up our shader
+        this.gl_context.useProgram(this.shader);
+        this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
+
         // render to our targetTexture by binding the framebuffer
         this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, this.frame_buffer);
+        
+        // attach the texture as the first color attachment
+        this.gl_context.framebufferTexture2D( this.gl_context.FRAMEBUFFER, this.gl_context.COLOR_ATTACHMENT0,
+            this.gl_context.TEXTURE_2D, this.render_target_texture, 0 );
     
         // Tell WebGL how to convert from clip space to pixels
         this.gl_context.viewport(0, 0, this.render_dimensions.x, this.render_dimensions.y);
     
-        // Clear the canvas AND the depth buffer.
-        // this.gl_context.clearColor(0, 0, 1, 1);   // clear to blue
-        this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
     }
     prepare_canvas_space(){
         // render to the canvas
@@ -231,7 +236,7 @@ export class Perlin_Renderer {
     // ############################################################################################
 
     update( delta_time ){
-        this.perlin_update.apply( this.perlin_object, [delta_time] );
+        this.perlin_update_function.apply( this.perlin_object, [delta_time] );
     }
 
     // ############################################################################################
@@ -240,13 +245,12 @@ export class Perlin_Renderer {
 
     draw(){
         this.prepare_render_space();
-        // this.perlin_draw.apply( this.perlin_object );
-        this.perlin_draw.apply( this.perlin_object, [] );
+        this.perlin_draw_function.apply( this.perlin_object, [] );
         this.prepare_canvas_space();
 
         this.prepare_uniforms();
         this.enable_vertex_attributes();
-        this.bind_render_texture();
+        // this.bind_render_texture();
 
         this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
 
@@ -277,6 +281,7 @@ export class Perlin_Renderer {
         this.gl_context.enableVertexAttribArray(this.vertexPosition_location);
     }
     disable_vertex_attributes(){
+        this.gl_context.disableVertexAttribArray(this.a_texcoord_location);
         this.gl_context.disableVertexAttribArray(this.vertexPosition_location);
     }
 

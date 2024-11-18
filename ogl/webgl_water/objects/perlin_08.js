@@ -50,8 +50,8 @@ export class Perlin_08 {
 
         // sizing of the grid
         this.grid_size = {
-            x: 3.0,
-            y: 3.0,
+            x: 9.0,
+            y: 9.0,
         }
 
         // how many vectors

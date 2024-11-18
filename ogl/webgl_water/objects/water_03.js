@@ -22,18 +22,6 @@ export class Water_03 extends Water_02 {
                 this.perlin_object.draw
             );
     }
-    
-    // ###########################################
-    // ###########################################
-
-    enable_attributes(){
-        super.enable_attributes();
-        // ...
-    }
-    disable_attributes(){
-        super.disable_attributes();
-        // ...
-    }
 
     // ###########################################
     // ###########################################
@@ -42,12 +30,8 @@ export class Water_03 extends Water_02 {
         super.update( delta_time );
         
         // draw the perlin renderer before our next draw
-        // this.perlin_render.draw();
-        this.perlin_object.draw();
-    }
-
-    draw( camera_view_matrix, camera_projection_matrix ){
-        super.draw(camera_view_matrix, camera_projection_matrix);
+        this.perlin_render.draw();
+        // this.perlin_object.draw();
     }
 
     // ###########################################
