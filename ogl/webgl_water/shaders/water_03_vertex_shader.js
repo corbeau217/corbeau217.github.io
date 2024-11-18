@@ -1,7 +1,5 @@
 export const VERTEX_SHADER_SRC = `
-
 // --- shape matrices ---
-
 // (model -> world -> camera -> NDC) matrix
 uniform mat4 u_mvp_matrix;
 // transposed inverse of (model -> world -> camera) matrix
