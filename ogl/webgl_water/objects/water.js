@@ -1,3 +1,4 @@
+import { Planar_Shape } from "../../common/obj/planar_shape.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/water_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_vertex_shader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
@@ -35,10 +36,15 @@ export class Water {
         this.gl_context = gl_context;
         // gather our shader
         this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
-
+        
         // settings
         this.column_count = 7;
         this.row_count = 7;
+
+        // the shape to use
+        //  we're saying false for clockwise winding
+        //  we're saying false for xz axis for now
+        this.shape = new Planar_Shape( this.column_count, this.row_count, true, false );
 
         // create our mesh
         this.generate_mesh();
@@ -55,10 +61,10 @@ export class Water {
 
     generate_mesh(){
         // raw shape
-        this.vertices = generate_plane_vertices_as_floats( this.column_count, this.row_count );
-        this.indices = generate_plane_bindings( this.column_count, this.row_count );
-        this.vertex_references = generate_plane_vertex_references_as_floats( this.column_count, this.row_count );
-        this.face_count = generate_plane_face_count( this.column_count, this.row_count );
+        this.vertices = this.shape.get_vertices();
+        this.indices = this.shape.get_bindings();
+        this.vertex_references = this.shape.get_vertex_references();
+        this.face_count = this.shape.get_face_count();
     }
     initialise_mesh_buffers(){
         this.vertex_buffer = this.gl_context.createBuffer();
@@ -140,7 +146,7 @@ export class Water {
     // ###########################################
 
     prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
-        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_divisions") , this.column_count, this.row_count );
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count") , this.column_count, this.row_count );
 
         // TODO: this?
         // this.gl_context.uniform4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix") , camera_view_matrix );
@@ -151,7 +157,7 @@ export class Water {
     // ###########################################
 
     enable_attributes(){
-
+        
         this.gl_context.enableVertexAttribArray(this.vertex_position_location);
         this.gl_context.enableVertexAttribArray(this.vertex_reference_location);
     }
