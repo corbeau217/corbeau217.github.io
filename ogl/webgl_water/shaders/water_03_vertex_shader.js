@@ -1,16 +1,16 @@
 export const VERTEX_SHADER_SRC = `
 
+// --- shape data ---
+// uniform vec2 u_mesh_quad_count;
+
+// uniform sampler2D u_perlin_data;
+
 // --- shape matrices ---
 
 // (model -> world -> camera -> NDC) matrix
 uniform mat4 u_mvp_matrix;
 // transposed inverse of (model -> world -> camera) matrix
 uniform mat3 u_normal_matrix;
-
-// --- shape data ---
-uniform vec2 u_mesh_quad_count;
-uniform sampler2D u_perlin_data;
-
 
 // --- location data ---
 attribute vec4 a_vertex_position;
@@ -27,6 +27,14 @@ void main(){
     // ---- general settings
 
     gl_PointSize = 10.0;
+
+    // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // ---- location changing
+
+    // vec2 uv_mapping = a_vertex_reference / u_mesh_quad_count;
+
+    // vec4 sampled_data = texture2D(u_perlin_data, uv_mapping);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------

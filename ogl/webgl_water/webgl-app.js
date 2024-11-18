@@ -2,8 +2,9 @@ import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "/ogl/common/scene.js";
 import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
-// import { Water_03 } from "./objects/water_03.js";
+import { Water_03 } from "./objects/water_03.js";
 import { Perlin_08 } from "./objects/perlin_08.js";
+import { Perlin_Renderer } from "./objects/perlin_renderer.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -135,18 +136,39 @@ function app_main() {
     // ======================================================================
     // ======== prepare -- water -- 03
 
+    // // get our context
+    // let gl_03 = app_03.app_instance.get_gl_context();
+    // // make the water object
+    // let perlin_object = new Perlin_08(gl_03);
+    // // prepare the scene
+    // app_03.scene_instance
+    //     .add_object(
+    //             perlin_object,
+    //             (t)=>{ perlin_object.update(t); },
+    //             (view, project)=>{ perlin_object.draw(); }
+    //     )
+    //     .set_camera_offset( -0.0, -0.0, -3.3);
     // get our context
     let gl_03 = app_03.app_instance.get_gl_context();
     // make the water object
     let perlin_object = new Perlin_08(gl_03);
+    let perlin_renderer = new Perlin_Renderer( gl_03, perlin_object, perlin_object.update, perlin_object.draw );
     // prepare the scene
     app_03.scene_instance
         .add_object(
-                perlin_object,
-                (t)=>{ perlin_object.update(t); },
-                (view, project)=>{ perlin_object.draw(); }
+                perlin_renderer,
+                (t)=>{ perlin_renderer.update(t); },
+                (view, project)=>{ perlin_renderer.draw(); }
         )
         .set_camera_offset( -0.0, -0.0, -3.3);
+    // // get our context
+    // let gl_03 = app_03.app_instance.get_gl_context();
+    // // make the water object
+    // let water_object = new Water_03(gl_03);
+    // // prepare the scene
+    // app_03.scene_instance
+    //     .add_object( water_object, water_object.update, water_object.draw )
+    //     .set_camera_offset( -0.0, -0.0, -3.3);
 
     // ======================================================================
     // ======================================================================

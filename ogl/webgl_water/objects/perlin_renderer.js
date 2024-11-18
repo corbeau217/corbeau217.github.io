@@ -3,16 +3,15 @@ export class Perlin_Renderer {
         // ==========================================
         // ==========================================
         // ==== basic information
-
         this.gl_context = gl_context;
         
         this.render_dimensions = {
-            x: 128,
-            y: 128,
+            x: 640,
+            y: 480,
         };
         this.viewport_dimensions = {
-            x: gl_context.canvas.width,
-            y: gl_context.canvas.height,
+            x: 640,
+            y: 480,
         };
 
         // ==========================================
@@ -87,12 +86,11 @@ export class Perlin_Renderer {
     prepare_canvas_space(){
         // render to the canvas
         this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, null);
-
-        // ready the texture we just rendered to
-        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.render_target_texture);
      
         // Tell WebGL how to convert from clip space to pixels
         this.gl_context.viewport(0, 0, this.viewport_dimensions.x, this.viewport_dimensions.y);
+
+        this.bind_render_texture();
      
         // Clear the canvas AND the depth buffer.
         // this.gl_context.clearColor(1, 1, 1, 1);   // clear to white
@@ -115,8 +113,18 @@ export class Perlin_Renderer {
 
     draw(){
         this.prepare_render_space();
+        // this.perlin_draw.apply( this.perlin_object );
         this.perlin_draw.apply( this.perlin_object, [] );
         this.prepare_canvas_space();
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    bind_render_texture(){
+        // ready the texture we just rendered to
+        this.gl_context.bindTexture(this.gl_context.TEXTURE_2D, this.render_target_texture);
     }
 
     // ############################################################################################

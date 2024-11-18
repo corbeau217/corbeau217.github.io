@@ -1,4 +1,4 @@
-const VERTEX_SHADER_SRC = `
+export const VERTEX_SHADER_SRC = `
 attribute vec4 a_vertex_position;
 attribute vec2 a_vertex_reference;
 
@@ -11,5 +11,3 @@ void main(){
     v_vertex_reference = a_vertex_reference;
 }
 `;
-
-export { VERTEX_SHADER_SRC };

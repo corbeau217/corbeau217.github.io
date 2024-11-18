@@ -15,6 +15,7 @@ export class Water_02 extends Water {
         super( gl_context );
 
         // replace with a better shader
+        this.gl_context.deleteProgram(this.shader);
         this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
 
         this.model_matrix = mat4.create();

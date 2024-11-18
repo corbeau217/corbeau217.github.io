@@ -1,4 +1,4 @@
-const FRAGMENT_SHADER_SRC = `
+export const FRAGMENT_SHADER_SRC = `
 precision highp float;
 
 #define VERTEX_COUNT 36
@@ -211,5 +211,3 @@ void main() {
   gl_FragColor = vec4( interpolated_dot, interpolated_dot, interpolated_dot, 1.0);
 }
 `;
-
-export { FRAGMENT_SHADER_SRC };
