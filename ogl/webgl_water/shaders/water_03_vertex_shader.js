@@ -18,6 +18,7 @@ attribute vec3 a_noise;
 
 // --- fragment variables ---
 varying highp vec3 v_normal;
+varying highp vec3 v_noise;
 
 void main(){
     // ---------------------------------------------------------
@@ -31,12 +32,13 @@ void main(){
     // ---- location information
 
     // then prepare the point location
+    // gl_Position = u_mvp_matrix * vec4((a_vertex_position.xyz + a_noise), 1.0);
     gl_Position = u_mvp_matrix * a_vertex_position;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
     // ---- varyings for fragment shader
-    
+    v_noise = a_noise;
     v_normal = u_normal_matrix * normalize(a_normal.xyz);
 
     // ---------------------------------------------------------

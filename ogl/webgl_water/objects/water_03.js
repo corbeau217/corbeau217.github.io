@@ -1,5 +1,5 @@
 import { Water_02 } from "./water_02.js";
-import { FRAGMENT_SHADER_SRC } from "../shaders/water_02_fragment_shader.js";
+import { FRAGMENT_SHADER_SRC } from "../shaders/water_03_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_03_vertex_shader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 import { Perlin_Noise_Machine } from "./perlin_noise_machine.js";
