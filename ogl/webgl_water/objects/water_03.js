@@ -6,6 +6,62 @@ import { Perlin_Noise_Machine } from "./perlin_noise_machine.js";
 
 const SQRT_OF_3 = 1.73205080757;
 
+
+function rebuild_noise_values( vertex_bindings, noise_data ){
+    let new_noise_data = [];
+
+    let triangle_count = vertex_bindings.length / 3;
+
+    // separate out the information for all triangles
+    for (let triangle_index = 0; triangle_index < triangle_count; triangle_index++) {
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // --- gather information about the binding
+        
+        const binding_start = triangle_index*3;
+
+        // get the indices to use for our vertex data
+        const first_old_vertex_index = vertex_bindings[binding_start+0];
+        const second_old_vertex_index = vertex_bindings[binding_start+1];
+        const third_old_vertex_index = vertex_bindings[binding_start+2];
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+
+        // get the vertices (they're in groups of 3)
+        const first_vertex = {
+            x: noise_data[( first_old_vertex_index*3)  ],
+            y: noise_data[( first_old_vertex_index*3)+1],
+            z: noise_data[( first_old_vertex_index*3)+2],
+        };
+        const second_vertex = {
+            x: noise_data[(second_old_vertex_index*3)  ],
+            y: noise_data[(second_old_vertex_index*3)+1],
+            z: noise_data[(second_old_vertex_index*3)+2],
+        };
+        const third_vertex = {
+            x: noise_data[( third_old_vertex_index*3)  ],
+            y: noise_data[( third_old_vertex_index*3)+1],
+            z: noise_data[( third_old_vertex_index*3)+2],
+        };
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        
+        // add to new data
+        new_noise_data.push(first_vertex.x);  new_noise_data.push(first_vertex.y);  new_noise_data.push(first_vertex.z);
+        new_noise_data.push(second_vertex.x);  new_noise_data.push(second_vertex.y);  new_noise_data.push(second_vertex.z);
+        new_noise_data.push(third_vertex.x);  new_noise_data.push(third_vertex.y);  new_noise_data.push(third_vertex.z);
+        
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+    }
+    
+
+    return new_noise_data;
+}
+
+
 export class Water_03 extends Water_02 {
     constructor( gl_context ){
         super( gl_context );
@@ -37,6 +93,7 @@ export class Water_03 extends Water_02 {
     prepare_noise_handle(){
         this.noise_machine = new Perlin_Noise_Machine( 3, 3 );
         this.noise = this.noise_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
+        this.noise = rebuild_noise_values( this.shape.bindings, this.noise );
     }
     
     // ###########################################
