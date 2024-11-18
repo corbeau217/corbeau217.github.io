@@ -1,4 +1,103 @@
 
+import { cross_product } from "/ogl/common/util/geometry.js";
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+export function generate_normals_for_explode_vertices( vertices, noise, number_of_triangles ){
+    // prepare array
+    let vertex_normals = [];
+
+    // every triangle
+    for (let triangle_index = 0; triangle_index < number_of_triangles; triangle_index++) {
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        const triangle_offset = triangle_index*3;
+        // --------------------------------
+
+        const  first_vertices_start = ((triangle_offset+0)*4);
+        const second_vertices_start = ((triangle_offset+1)*4);
+        const  third_vertices_start = ((triangle_offset+2)*4);
+
+        const  first_noise_start = ((triangle_offset+0)*3);
+        const second_noise_start = ((triangle_offset+1)*3);
+        const  third_noise_start = ((triangle_offset+2)*3);
+        
+        // --------------------------------
+
+        const first_vertex_vec3 =  { x: vertices[first_vertices_start],  y: vertices[first_vertices_start+1],  z: vertices[first_vertices_start+2]  };
+        const first_noise_vec3 =  { x: noise[first_noise_start],  y: noise[first_noise_start+1],  z: noise[first_noise_start+2]  };
+        const first_vec3 =  { x: first_vertex_vec3.x + first_noise_vec3.x,  y: first_vertex_vec3.y + first_noise_vec3.y,  z: first_vertex_vec3.z + first_noise_vec3.z  };
+
+        const second_vertex_vec3 =  { x: vertices[second_vertices_start],  y: vertices[second_vertices_start+1],  z: vertices[second_vertices_start+2]  };
+        const second_noise_vec3 =  { x: noise[second_noise_start],  y: noise[second_noise_start+1],  z: noise[second_noise_start+2]  };
+        const second_vec3 =  { x: second_vertex_vec3.x + second_noise_vec3.x,  y: second_vertex_vec3.y + second_noise_vec3.y,  z: second_vertex_vec3.z + second_noise_vec3.z  };
+
+        const third_vertex_vec3 =  { x: vertices[third_vertices_start],  y: vertices[third_vertices_start+1],  z: vertices[third_vertices_start+2]  };
+        const third_noise_vec3 =  { x: noise[third_noise_start],  y: noise[third_noise_start+1],  z: noise[third_noise_start+2]  };
+        const third_vec3 =  { x: third_vertex_vec3.x + third_noise_vec3.x,  y: third_vertex_vec3.y + third_noise_vec3.y,  z: third_vertex_vec3.z + third_noise_vec3.z  };
+        
+        // --------------------------------
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // --------------------------------
+        
+        // get difference vectors
+        let vector_a = vec3.fromValues(
+            second_vec3.x - first_vec3.x,
+            second_vec3.y - first_vec3.y,
+            second_vec3.z - first_vec3.z,
+        );
+        let vector_b = vec3.fromValues(
+            third_vec3.x - second_vec3.x,
+            third_vec3.y - second_vec3.y,
+            third_vec3.z - second_vec3.z,
+        );
+
+        // (static) normalize(out, a) → {vec3}
+        // Normalize a vec3 
+        // ...
+        vec3.normalize( vector_a, vector_a );
+        vec3.normalize( vector_b, vector_b );
+        
+        // --------------------------------
+        // (static) cross(out, a, b) → {vec3}
+        // Computes the cross product of two vec3's 
+        // ...
+        let cross_vec3 = vec3.create();
+        vec3.cross( cross_vec3, vector_b, vector_a );
+
+        // (static) normalize(out, a) → {vec3}
+        // Normalize a vec3 
+        // ...
+        vec3.normalize( cross_vec3, cross_vec3 );
+
+        // --------------------------------
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // fill the normals using this
+
+
+        // 3 times to do all vertices of the current face
+        vertex_normals.push(cross_vec3[0]);  vertex_normals.push(cross_vec3[1]);  vertex_normals.push(cross_vec3[2]);
+        vertex_normals.push(cross_vec3[0]);  vertex_normals.push(cross_vec3[1]);  vertex_normals.push(cross_vec3[2]);
+        vertex_normals.push(cross_vec3[0]);  vertex_normals.push(cross_vec3[1]);  vertex_normals.push(cross_vec3[2]);
+        
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+    }
+
+
+    // return it
+    return vertex_normals;
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+
 function get_corner_difference_vectors( quad_pos ){
     return {
         top_left:     vec2.fromValues( quad_pos[0],     quad_pos[1]-1.0 ),

@@ -2,7 +2,7 @@ import { Water_02 } from "./water_02.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/water_03_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_03_vertex_shader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
-import { Perlin_Noise_Machine } from "./perlin_noise_machine.js";
+import { Perlin_Noise_Machine, generate_normals_for_explode_vertices } from "./perlin_noise_machine.js";
 
 const SQRT_OF_3 = 1.73205080757;
 
@@ -70,19 +70,38 @@ export class Water_03 extends Water_02 {
         this.gl_context.deleteProgram(this.shader);
         this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
         
+
+
+        this.y_rotation_radians = Math.PI / 12.0;
+
+
+
         this.noise = [];
         this.initialise_mesh_noise_data();
         this.prepare_noise_handle();
-        this.load_noise_buffer();
+        // loads noise, then regenerate normals
+        this.regenerate_mesh();
     }
 
     
     // ###########################################
     // ###########################################
 
+    regenerate_mesh(){
+        // load the noise information
+        this.load_noise_buffer();
+        // generate normal vectors
+        this.normals = generate_normals_for_explode_vertices( this.vertices, this.noise, this.face_count );
+        // fill the normals buffer with information
+        this.prepare_mesh_attribute_normals();
+    }
+    
+    // ###########################################
+    // ###########################################
+
     // overwriting with new function
     customise_mesh_shape(){ 
-        this.z_function = (x,y)=>{return (-1.0);};
+        this.z_function = (x,y)=>{return (-0.8);};
         this.remap_z_values();
         this.rebuild_mesh_as_exploded();
     }
@@ -94,6 +113,7 @@ export class Water_03 extends Water_02 {
         this.noise_machine = new Perlin_Noise_Machine( 3, 3 );
         this.noise = this.noise_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
         this.noise = rebuild_noise_values( this.shape.bindings, this.noise );
+        this.prepare_mesh_attribute_normals();
     }
     
     // ###########################################
@@ -176,7 +196,8 @@ export class Water_03 extends Water_02 {
         // this.load_noise_buffer();
 
         // ...
-        // TODO: rotate model matrix
+        let rotation_factor =  delta_time * this.y_rotation_radians;
+        mat4.rotateY( this.model_matrix, this.model_matrix, rotation_factor );
     }
 
     // ###########################################

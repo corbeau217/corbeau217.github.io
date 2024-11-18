@@ -32,8 +32,8 @@ void main(){
     // ---- location information
 
     // then prepare the point location
-    // gl_Position = u_mvp_matrix * vec4((a_vertex_position.xyz + a_noise), 1.0);
-    gl_Position = u_mvp_matrix * a_vertex_position;
+    gl_Position = u_mvp_matrix * vec4((a_vertex_position.xyz + a_noise), 1.0);
+    // gl_Position = u_mvp_matrix * a_vertex_position;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
