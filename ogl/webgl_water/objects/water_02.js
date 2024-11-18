@@ -8,6 +8,7 @@ import { FRAGMENT_SHADER_SRC } from "../shaders/water_02_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_02_vertex_shader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 
+const SQRT_OF_3 = 1.73205080757;
 
 export class Water_02 extends Water {
     constructor( gl_context ){
@@ -16,15 +17,51 @@ export class Water_02 extends Water {
         // replace with a better shader
         this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
 
+        this.model_matrix = mat4.create();
 
-        this.light_source_vector = { x: 0.0, y: 0.0, z: 0.0 };
+        // (static) scale(out, a, v) → {mat4}
+        this.scale = vec3.fromValues(1.5, 1.0, 1.5);
+        mat4.scale( this.model_matrix, this.model_matrix, this.scale);
+
+        this.rotation_y = 1.0*Math.PI/12.0;
+        mat4.rotateY( this.model_matrix, this.model_matrix, this.rotation_y );
+
+        this.light_source_vector = { x: 4.0, y: 3.0, z: -3.5 };
 
         this.light_ambient_intensity = { r: 0.2, g: 0.2, b: 0.2 };
 
         this.shape_colour = { r: 0.9, g: 0.5, b: 0.2, a: 1.0 };
 
 
+        this.z_function = (x,y)=>{return (-Math.cos(x) * Math.sin(y));};
+        this.remap_z_values();
+
         this.rebuild_mesh_as_exploded();
+
+    }
+
+    remap_z_values(){
+        // total number
+        let vertex_count = (this.column_count+1)*(this.row_count+1);
+
+        // to handle when it's actually y we're modifying
+        let x_index = 0;
+        let y_index = (this.shape.use_xz_axis)? 2 : 1;
+        let z_index = (this.shape.use_xz_axis)? 1 : 2;
+
+        // every vertex
+        for (let vertex_index = 0; vertex_index < vertex_count; vertex_index++) {
+            const vertices_offset = (vertex_index*4);
+            // the element to change
+            const value_to_change = vertices_offset+z_index;
+            
+            // set the value
+            this.vertices[value_to_change] = this.z_function(
+                this.vertices[vertices_offset+x_index],
+                this.vertices[vertices_offset+y_index],
+            );
+            
+        }
     }
 
     // ###########################################

@@ -36,13 +36,13 @@ void main() {
   // ---------------------------------------------------------
   // ---- determine final material colouring
   
-  vec3 final_colour = u_shape_colour.xyz;
+  vec3 final_colour = final_light * u_shape_colour.xyz;
   
   // ---------------------------------------------------------
   // ---------------------------------------------------------
   // ---- finish up
 
-  gl_FragColor = vec4( final_colour*final_light, 1.0);
+  gl_FragColor = vec4( final_colour, 1.0);
   
   // ---------------------------------------------------------
   // ---------------------------------------------------------

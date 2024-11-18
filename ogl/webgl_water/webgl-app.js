@@ -125,7 +125,7 @@ function app_main() {
     // prepare the scene
     app_02.scene_instance
         .add_object( water_02, water_02.update, water_02.draw )
-        .set_camera_offset( -0.0, -0.75, -2.3);
+        .set_camera_offset( -0.0, -0.0, -3.3);
 
     // ======================================================================
     // ======================================================================
