@@ -1,9 +1,14 @@
+import { FRAGMENT_SHADER_SRC } from "../shaders/perlin_renderer_fragment_shader.js";
+import { VERTEX_SHADER_SRC } from "../shaders/perlin_renderer_vertex_shader.js";
+import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+
 export class Perlin_Renderer {
     constructor( gl_context, perlin_object, perlin_update_function, perlin_draw_function ){
         // ==========================================
         // ==========================================
         // ==== basic information
         this.gl_context = gl_context;
+        this.shader = generate_shader_program(this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
         
         this.render_dimensions = {
             x: 640,
@@ -24,6 +29,12 @@ export class Perlin_Renderer {
 
         // ==========================================
         // ==========================================
+        // ==== prepare shape
+
+        this.construct_mesh();
+
+        // ==========================================
+        // ==========================================
         // ==== prepare texture space
 
         this.initialise_render_texture_data();
@@ -33,6 +44,122 @@ export class Perlin_Renderer {
         // ==========================================
     }
 
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    construct_mesh(){
+
+        // ==========================================
+        // ==========================================
+        // ==== mesh data
+
+        this.vertexValues = [
+            // v0
+            -1.0,  1.0, 0.0, 1.0,
+            // v1
+            -1.0, -1.0, 0.0, 1.0,
+            // v2
+            1.0,  -1.0, 0.0, 1.0,
+            // v3
+            1.0,   1.0, 0.0, 1.0,
+        ];
+
+        this.bindings = [
+            // face 0
+            0, 2, 1,
+            // face 1
+            0, 3, 2,
+        ];
+
+        this.faceCount = 2;
+
+        // ==========================================
+        // === bind the shape
+    
+        this.vertexPosition_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
+        this.a_texcoord_location = this.gl_context.getAttribLocation(this.shader, "a_texcoord");
+
+        // create a buffer for the shape's positions.
+        this.positionBuffer = this.gl_context.createBuffer();
+    
+        // selec the vertexBuffer as one to apply
+        //  buffer opers to from now on
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.positionBuffer);
+        this.gl_context.vertexAttribPointer(
+            this.vertexPosition_location,
+            // components per vertex
+            4,
+            // the data in the buffer is 32bit floats
+            this.gl_context.FLOAT,
+            // don't normalize
+            false,
+            // how many bytes to get from one set of values to the next
+            0,
+            // how many bytes inside the buffer to start from
+            0
+        );
+    
+    
+        // allocate space on gpu of the number of vertices
+        this.gl_context.bufferData(
+            this.gl_context.ARRAY_BUFFER,
+            new Float32Array(this.vertexValues),
+            this.gl_context.STATIC_DRAW
+        );
+
+        // create a buffer for the shape's indices.
+        this.indexBuffer = this.gl_context.createBuffer();
+    
+        // select the indexBuffer as one to apply
+        //  buffer opers to from now on
+        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+    
+        // allocate space on gpu of the number of indices
+        this.gl_context.bufferData(
+            this.gl_context.ELEMENT_ARRAY_BUFFER,
+            new Uint16Array(this.bindings),
+            this.gl_context.STATIC_DRAW
+        );
+        
+        // ==========================================
+        // === prepare uv mappings
+
+
+        this.uv_mappings = [
+            // v0
+            // -1.0,  1.0, 0.0, 1.0,
+            0.0, 1.0,
+            // v1
+            // -1.0, -1.0, 0.0, 1.0,
+            0.0, 0.0,
+            // v2
+            // 1.0,  -1.0, 0.0, 1.0,
+            1.0, 0.0,
+            // v3
+            // 1.0,   1.0, 0.0, 1.0,
+            1.0, 1.0,
+        ];
+
+
+        this.uv_mappings_buffer = this.gl_context.createBuffer();
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.uv_mappings_buffer);
+    
+        this.gl_context.vertexAttribPointer(
+            this.a_texcoord_location,
+            2,
+            this.gl_context.FLOAT,
+            false,
+            0,
+            0,
+        );
+        this.gl_context.bufferData(
+          this.gl_context.ARRAY_BUFFER,
+          new Float32Array(this.uv_mappings),
+          this.gl_context.STATIC_DRAW,
+        );
+    }
 
     // ############################################################################################
     // ############################################################################################
@@ -116,6 +243,41 @@ export class Perlin_Renderer {
         // this.perlin_draw.apply( this.perlin_object );
         this.perlin_draw.apply( this.perlin_object, [] );
         this.prepare_canvas_space();
+
+        this.prepare_uniforms();
+        this.enable_vertex_attributes();
+        this.bind_render_texture();
+
+        this.gl_context.drawElements(this.gl_context.TRIANGLES, this.faceCount*3, this.gl_context.UNSIGNED_SHORT, 0);
+
+        this.disable_vertex_attributes();
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    prepare_uniforms(){
+        // ----------------------------------------------------------------------------------------
+
+        // the size of our texture
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_texture_size") , this.render_dimensions.x, this.render_dimensions.y );
+        // the size of a pixel in our uv mapping
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_uv_pixel_size") , 1.0/this.render_dimensions.x, 1.0/this.render_dimensions.y );
+
+        // ----------------------------------------------------------------------------------------
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    enable_vertex_attributes(){
+        this.gl_context.enableVertexAttribArray(this.a_texcoord_location);
+        this.gl_context.enableVertexAttribArray(this.vertexPosition_location);
+    }
+    disable_vertex_attributes(){
+        this.gl_context.disableVertexAttribArray(this.vertexPosition_location);
     }
 
     // ############################################################################################
