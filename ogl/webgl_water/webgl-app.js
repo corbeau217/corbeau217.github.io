@@ -1,5 +1,6 @@
 import { Canvas_App } from "/ogl/common/canvas_app.js";
 import { Scene } from "/ogl/common/scene.js";
+import { Water } from "./objects/water.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -96,14 +97,23 @@ function app_main() {
     // ======================================================================
     // ======== prepare our apps
 
-    let scene_01 = generate_app_instance(
+    let app_01 = generate_app_instance(
             // canvas name
             "webgl_water_01",
             // background colour
             canvasClearColour,
             // the scene type of being a generic one
             Scene
-        ).scene_instance;
+        );
+    let gl_01 = app_01.app_instance.get_gl_context();
+    let water_01 = new Water(gl_01);
+    app_01.scene_instance.add_object(
+            water_01,
+            water_01.update,
+            water_01.draw,
+            // ( delta_time )=>{ water_01.update( delta_time ) },
+            // ( cam_view, cam_proj ) => { water_01.draw( cam_view, cam_proj ) },
+        );
 
 
 
