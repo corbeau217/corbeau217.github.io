@@ -17,11 +17,11 @@ export class Water_02 extends Water {
         this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
 
 
-        this.light_source_vector = {
-            x: 0.0,
-            y: 0.0,
-            z: 0.0,
-        };
+        this.light_source_vector = { x: 0.0, y: 0.0, z: 0.0 };
+
+        this.light_ambient_intensity = { r: 0.2, g: 0.2, b: 0.2 };
+
+        this.shape_colour = { r: 0.9, g: 0.5, b: 0.2, a: 1.0 };
 
 
         this.rebuild_mesh_as_exploded();
@@ -101,7 +101,10 @@ export class Water_02 extends Water {
         // --------------------------------------------------------
         
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count"), this.column_count, this.row_count );
+        this.gl_context.uniform4f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour"), this.shape_colour.r, this.shape_colour.g, this.shape_colour.b, this.shape_colour.a );
+
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_source_vector"), this.light_source_vector.x, this.light_source_vector.y, this.light_source_vector.z );
+        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_ambient_intensity"), this.light_ambient_intensity.r, this.light_ambient_intensity.g, this.light_ambient_intensity.b );
         
         // --------------------------------------------------------
         // --- build matrices
