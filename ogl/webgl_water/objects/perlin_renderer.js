@@ -64,8 +64,6 @@ export class Perlin_Renderer {
         // attach the texture as the first color attachment
         this.gl_context.framebufferTexture2D( this.gl_context.FRAMEBUFFER, this.gl_context.COLOR_ATTACHMENT0,
             this.gl_context.TEXTURE_2D, this.render_target_texture, 0 );
-
-
         
         // unbind the frame buffer for other operations
         this.gl_context.bindFramebuffer(this.gl_context.FRAMEBUFFER, null);

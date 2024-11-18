@@ -6,7 +6,7 @@ precision highp float;
 uniform vec2 u_quad_xy_count;
 uniform vec2 u_perlin_vectors[VERTEX_COUNT];
 
-varying highp vec2 v_vertex_xy_id;
+varying highp vec2 v_vertex_reference;
 
 
 
@@ -158,13 +158,13 @@ vec2 clamp_to_unit_length( vec2 v ){
 
 void main() {
   // get the bottom left
-  vec2 quad_xy_id = vec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y) );
+  vec2 quad_xy_id = vec2( floor(v_vertex_reference.x), floor(v_vertex_reference.y) );
 
   // corner indexing
-  ivec2 bottom_left_corner_index = ivec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y) );
-  ivec2 bottom_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y) );
-  ivec2 top_left_corner_index = ivec2( floor(v_vertex_xy_id.x), floor(v_vertex_xy_id.y+1.0) );
-  ivec2 top_right_corner_index = ivec2( floor(v_vertex_xy_id.x+1.0), floor(v_vertex_xy_id.y+1.0) );
+  ivec2 bottom_left_corner_index = ivec2( floor(v_vertex_reference.x), floor(v_vertex_reference.y) );
+  ivec2 bottom_right_corner_index = ivec2( floor(v_vertex_reference.x+1.0), floor(v_vertex_reference.y) );
+  ivec2 top_left_corner_index = ivec2( floor(v_vertex_reference.x), floor(v_vertex_reference.y+1.0) );
+  ivec2 top_right_corner_index = ivec2( floor(v_vertex_reference.x+1.0), floor(v_vertex_reference.y+1.0) );
 
   // corner vectors
   vec2 bottom_left_corner_vector = normalize( get_perlin_vector( bottom_left_corner_index ) );
@@ -174,7 +174,7 @@ void main() {
 
 
   // where in the quad it is
-  vec2 fragment_quad_location = vec2( v_vertex_xy_id.x - quad_xy_id.x, v_vertex_xy_id.y - quad_xy_id.y );
+  vec2 fragment_quad_location = vec2( v_vertex_reference.x - quad_xy_id.x, v_vertex_reference.y - quad_xy_id.y );
 
 
   // positions of the corners
@@ -184,10 +184,10 @@ void main() {
   vec2 top_right_position = vec2( quad_xy_id.x+1.0, quad_xy_id.y+1.0 );
 
   // difference to corners
-  vec2 bottom_left_to_fragment_vector = clamp_to_unit_length(v_vertex_xy_id - bottom_left_position);
-  vec2 bottom_right_to_fragment_vector = clamp_to_unit_length(v_vertex_xy_id - bottom_right_position);
-  vec2 top_left_to_fragment_vector = clamp_to_unit_length(v_vertex_xy_id - top_left_position);
-  vec2 top_right_to_fragment_vector = clamp_to_unit_length(v_vertex_xy_id - top_right_position);
+  vec2 bottom_left_to_fragment_vector = clamp_to_unit_length(v_vertex_reference - bottom_left_position);
+  vec2 bottom_right_to_fragment_vector = clamp_to_unit_length(v_vertex_reference - bottom_right_position);
+  vec2 top_left_to_fragment_vector = clamp_to_unit_length(v_vertex_reference - top_left_position);
+  vec2 top_right_to_fragment_vector = clamp_to_unit_length(v_vertex_reference - top_right_position);
 
   // get the dot products
   //    probably need to clamp our vectors??

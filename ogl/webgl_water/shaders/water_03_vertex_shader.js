@@ -7,6 +7,10 @@ uniform mat4 u_mvp_matrix;
 // transposed inverse of (model -> world -> camera) matrix
 uniform mat3 u_normal_matrix;
 
+// --- shape data ---
+uniform vec2 u_mesh_quad_count;
+uniform sampler2D u_perlin_data;
+
 
 // --- location data ---
 attribute vec4 a_vertex_position;
