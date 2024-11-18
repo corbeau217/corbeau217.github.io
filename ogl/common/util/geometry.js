@@ -529,3 +529,248 @@ export function generate_normals(vertex_list, binding_list){
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
+
+export function explode_mesh( vertices, indices ){
+    // prepare our data space
+    let new_data = {
+        vertices: [],
+        indices: [],
+        face_count: 0,
+    };
+    
+    let triangle_count = indices.length / 3;
+
+    // separate out the information for all triangles
+    for (let triangle_index = 0; triangle_index < triangle_count; triangle_index++) {
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // --- gather information about the binding
+        
+        const binding_start = triangle_index*3;
+
+        // get the indices to use for our vertex data
+        const first_old_vertex_index = indices[binding_start+0];
+        const second_old_vertex_index = indices[binding_start+1];
+        const third_old_vertex_index = indices[binding_start+2];
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+
+        // get the vertices (they're in groups of 4)
+        const first_vertex = {
+            x: vertices[( first_old_vertex_index*4)  ],
+            y: vertices[( first_old_vertex_index*4)+1],
+            z: vertices[( first_old_vertex_index*4)+2],
+            w: vertices[( first_old_vertex_index*4)+3],
+        };
+        const second_vertex = {
+            x: vertices[(second_old_vertex_index*4)  ],
+            y: vertices[(second_old_vertex_index*4)+1],
+            z: vertices[(second_old_vertex_index*4)+2],
+            w: vertices[(second_old_vertex_index*4)+3],
+        };
+        const third_vertex = {
+            x: vertices[( third_old_vertex_index*4)  ],
+            y: vertices[( third_old_vertex_index*4)+1],
+            z: vertices[( third_old_vertex_index*4)+2],
+            w: vertices[( third_old_vertex_index*4)+3],
+        };
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        
+        // --------------------------------
+        // add the vertices to new data
+        new_data.vertices.push(first_vertex.x);  new_data.vertices.push(first_vertex.y);  new_data.vertices.push(first_vertex.z);  new_data.vertices.push(first_vertex.w);
+        new_data.vertices.push(second_vertex.x);  new_data.vertices.push(second_vertex.y);  new_data.vertices.push(second_vertex.z);  new_data.vertices.push(second_vertex.w);
+        new_data.vertices.push(third_vertex.x);  new_data.vertices.push(third_vertex.y);  new_data.vertices.push(third_vertex.z);  new_data.vertices.push(third_vertex.w);
+        
+        // --------------------------------
+        // add the bindings to new data
+        new_data.indices.push( binding_start );  new_data.indices.push( binding_start+1 );  new_data.indices.push( binding_start+2 );
+
+        // --------------------------------
+        // increase face count
+        new_data.face_count += 1;
+        
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+    }
+
+
+    // give back the generated information
+    return new_data;
+}
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+export function explode_mesh_with_references( vertices, indices, references ){
+    // prepare our data space
+    let new_data = {
+        vertices: [],
+        indices: [],
+        references: [],
+        face_count: 0,
+    };
+    
+    let triangle_count = indices.length / 3;
+
+    // separate out the information for all triangles
+    for (let triangle_index = 0; triangle_index < triangle_count; triangle_index++) {
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // --- gather information about the binding
+        
+        const binding_start = triangle_index*3;
+
+        // get the indices to use for our vertex data
+        const first_old_vertex_index = indices[binding_start+0];
+        const second_old_vertex_index = indices[binding_start+1];
+        const third_old_vertex_index = indices[binding_start+2];
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+
+        // get the vertices (they're in groups of 4)
+        const first_vertex = {
+            x: vertices[( first_old_vertex_index*4)  ],
+            y: vertices[( first_old_vertex_index*4)+1],
+            z: vertices[( first_old_vertex_index*4)+2],
+            w: vertices[( first_old_vertex_index*4)+3],
+        };
+        const second_vertex = {
+            x: vertices[(second_old_vertex_index*4)  ],
+            y: vertices[(second_old_vertex_index*4)+1],
+            z: vertices[(second_old_vertex_index*4)+2],
+            w: vertices[(second_old_vertex_index*4)+3],
+        };
+        const third_vertex = {
+            x: vertices[( third_old_vertex_index*4)  ],
+            y: vertices[( third_old_vertex_index*4)+1],
+            z: vertices[( third_old_vertex_index*4)+2],
+            w: vertices[( third_old_vertex_index*4)+3],
+        };
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+
+        // get the vertices (they're in groups of 4)
+        const first_vertex_reference = {
+            x: references[( first_old_vertex_index*2)  ],
+            y: references[( first_old_vertex_index*2)+1],
+        };
+        const second_vertex_reference = {
+            x: references[(second_old_vertex_index*2)  ],
+            y: references[(second_old_vertex_index*2)+1],
+        };
+        const third_vertex_reference = {
+            x: references[( third_old_vertex_index*2)  ],
+            y: references[( third_old_vertex_index*2)+1],
+        };
+
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        
+        // --------------------------------
+        // add the vertices to new data
+        new_data.vertices.push(first_vertex.x);  new_data.vertices.push(first_vertex.y);  new_data.vertices.push(first_vertex.z);  new_data.vertices.push(first_vertex.w);
+        new_data.vertices.push(second_vertex.x);  new_data.vertices.push(second_vertex.y);  new_data.vertices.push(second_vertex.z);  new_data.vertices.push(second_vertex.w);
+        new_data.vertices.push(third_vertex.x);  new_data.vertices.push(third_vertex.y);  new_data.vertices.push(third_vertex.z);  new_data.vertices.push(third_vertex.w);
+        
+        // --------------------------------
+        // add the bindings to new data
+        new_data.indices.push( binding_start );  new_data.indices.push( binding_start+1 );  new_data.indices.push( binding_start+2 );
+        
+        // --------------------------------
+        // add the references to new data
+        new_data.references.push(first_vertex_reference.x);  new_data.references.push(first_vertex_reference.y);
+        new_data.references.push(second_vertex_reference.x);  new_data.references.push(second_vertex_reference.y);
+        new_data.references.push(third_vertex_reference.x);  new_data.references.push(third_vertex_reference.y);
+
+        // --------------------------------
+        // increase face count
+        new_data.face_count += 1;
+        
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+    }
+
+
+    // give back the generated information
+    return new_data;
+}
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+export function generate_normals_for_explode_vertices( vertices, number_of_triangles ){
+    // prepare array
+    let vertex_normals = [];
+
+    // every triangle
+    for (let triangle_index = 0; triangle_index < number_of_triangles; triangle_index++) {
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // --------------------------------
+
+        const  first_start = ((triangle_index*4)  );
+        const second_start = ((triangle_index*4)+1);
+        const  third_start = ((triangle_index*4)+2);
+        
+        // --------------------------------
+
+        const first_vertex_vec3 =  { x: vertices[first_start],  y: vertices[first_start+1],  z: vertices[first_start+2]  };
+        const second_vertex_vec3 = { x: vertices[second_start], y: vertices[second_start+1], z: vertices[second_start+2] };
+        const third_vertex_vec3 =  { x: vertices[third_start],  y: vertices[third_start+1],  z: vertices[third_start+2]  };
+        
+        // --------------------------------
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // --------------------------------
+        
+        // get difference vectors
+        const vector_a = {
+            x: second_vertex_vec3.x - first_vertex_vec3.x,
+            y: second_vertex_vec3.y - first_vertex_vec3.y,
+            z: second_vertex_vec3.z - first_vertex_vec3.z,
+        };
+        const vector_b = {
+            x: third_vertex_vec3.x - second_vertex_vec3.x,
+            y: third_vertex_vec3.y - second_vertex_vec3.y,
+            z: third_vertex_vec3.z - second_vertex_vec3.z,
+        };
+        
+        // --------------------------------
+
+        const cross_vec3 = cross_product( vector_a, vector_b );
+
+        // --------------------------------
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+        // fill the normals using this
+
+
+        // 3 times to do all vertices of the current face
+        //      w is 0.0 because it's a vector
+        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);  vertex_normals.push( 0.0 );
+        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);  vertex_normals.push( 0.0 );
+        vertex_normals.push(cross_vec3.x);  vertex_normals.push(cross_vec3.y);  vertex_normals.push(cross_vec3.z);  vertex_normals.push( 0.0 );
+        
+        // --------------------------------------------------------
+        // --------------------------------------------------------
+    }
+
+
+    // return it
+    return vertex_normals;
+}
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
