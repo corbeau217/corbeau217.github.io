@@ -106,8 +106,18 @@
             </li>
         </ul>
     </li>
-    <li class="daily_textbody_list_elem"><p>yet to make any diagrams for today, and we yapped for a long time so you'll need to check out the graphics page for the water demos (this post will likely be updated to announce them if done today)</p></li>
-    <li class="daily_textbody_list_elem"><p>while going through the other noise variations, it was very tempting to swap to one of the other noise variations, but we might leave it for another time to play around with them</p></li>
+    <hr />
+    <li class="daily_textbody_list_elem">diagrams haven't been made as it's just using existing diagrams today, so you'll need to check out the graphics page for the water demos</li>
+    <li class="daily_textbody_list_elem">while going through the other noise variations, it was very tempting to swap to one of the other noise variations, but we might leave it for another time to play around with them</li>
+    <hr />
+    <li class="daily_textbody_list_elem">
+        <p>we spend most of the time improving the web app code, scene code, and drawing code so as to modularise it more, and learnt some important lessons about bindings finally</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">so far it's just a planar shape that is constructed based on provided information and then is added to the scene for drawing</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">no normal vectors are made, and currently there is no noise generation</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">noise generation would be best as separately generated content then passed into the vertex shader for use</li>
+        </ul>
+    </li>
     <li class="daily_textbody_list_elem">
         <hr class="hr_list_elem_seperating" />
         <p>probably the last post</p>
