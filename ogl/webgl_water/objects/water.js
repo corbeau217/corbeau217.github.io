@@ -3,32 +3,6 @@ import { FRAGMENT_SHADER_SRC } from "../shaders/water_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_vertex_shader.js";
 import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 
-function generate_plane_vertices_as_floats(column_count, row_count){
-    // TODO: do this
-    return [
-        -0.5,  0.5, 0.0, 1.0,
-        -0.5, -0.5, 0.0, 1.0,
-         0.5, -0.5, 0.0, 1.0,
-         0.5,  0.5, 0.0, 1.0,
-    ];
-}
-function generate_plane_bindings(column_count, row_count){
-    return [
-        0, 2, 1,
-        0, 3, 2,
-    ];
-}
-function generate_plane_vertex_references_as_floats(column_count, row_count){
-    return [
-        0.0, 1.0,
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-    ];
-}
-function generate_plane_face_count(column_count, row_count){
-    return 2;
-}
 
 export class Water {
     constructor( gl_context ){
