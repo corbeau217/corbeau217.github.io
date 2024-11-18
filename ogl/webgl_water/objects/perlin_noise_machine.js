@@ -157,10 +157,10 @@ export class Perlin_Noise_Machine {
         let resulting_point_values = [];
 
         // all columns
-        for (let point_x_index = 0; point_x_index < point_count_x-1; point_x_index++) {
+        for (let point_x_index = 0; point_x_index < point_count_x; point_x_index++) {
             const point_x_value = point_x_index * quad_size[0];
             // all positions in a column
-            for (let point_y_index = 0; point_y_index < point_count_y-1; point_y_index++) {
+            for (let point_y_index = 0; point_y_index < point_count_y; point_y_index++) {
                 const point_y_value = point_y_index * quad_size[1];
 
                 // ---- ends up with the noise value on y axis ----
