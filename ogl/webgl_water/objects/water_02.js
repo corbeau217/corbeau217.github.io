@@ -32,12 +32,15 @@ export class Water_02 extends Water {
 
         this.shape_colour = { r: 0.9, g: 0.5, b: 0.2, a: 1.0 };
 
+        // defer so we can overwrite
+        this.customise_mesh_shape();
 
+    }
+    customise_mesh_shape(){
         this.z_function = (x,y)=>{return (-Math.cos(x) * Math.sin(y));};
         this.remap_z_values();
 
         this.rebuild_mesh_as_exploded();
-
     }
 
     remap_z_values(){

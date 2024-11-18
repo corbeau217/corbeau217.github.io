@@ -13,6 +13,8 @@ attribute vec4 a_vertex_position;
 attribute vec2 a_vertex_reference;
 attribute vec3 a_normal;
 
+// --- noise data ---
+attribute vec3 a_noise;
 
 // --- fragment variables ---
 varying highp vec3 v_normal;
