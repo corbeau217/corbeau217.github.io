@@ -53,8 +53,10 @@ function get_dot_products( corner_gradients, corner_difference_vectors ){
     };
 }
 function get_interpolation_of_dots( dot_products, quad_location ){
+
     let top_interpolation = (1.0-quad_location[0])*dot_products.top_left + (quad_location[0])*dot_products.top_right;
     let bottom_interpolation = (1.0-quad_location[0])*dot_products.bottom_left + (quad_location[0])*dot_products.bottom_right;
+
     return (1.0-quad_location[1])*bottom_interpolation + (quad_location[1])*top_interpolation;
 }
 
@@ -71,7 +73,7 @@ export class Perlin_Noise_Machine {
         };
         
         this.initialise_data();
-
+        this.generate_new_data();
     }
 
     // ###########################################
@@ -131,7 +133,8 @@ export class Perlin_Noise_Machine {
         // ...
         let corner_gradients = this.corner_gradients( quad_reference );
         // ...
-        let corner_difference_vectors = get_clamped_vectors( get_corner_difference_vectors( quad_position ) );
+        // let corner_difference_vectors = get_clamped_vectors( get_corner_difference_vectors( quad_position ) );
+        let corner_difference_vectors = get_corner_difference_vectors( quad_position );
         // ...
         let dot_products = get_dot_products( corner_gradients, corner_difference_vectors );
         // ...
@@ -169,6 +172,24 @@ export class Perlin_Noise_Machine {
         }
         
         return resulting_point_values;
+    }
+
+    // ###########################################
+    // ###########################################
+
+    random_unit_vector(){
+        // shouldnt be using trig but oh well
+        const random_angle = Math.random() * Math.PI * 2.0;
+        // generate it and give it
+        return vec2.fromValues( Math.cos(random_angle), Math.sin(random_angle) );
+    }
+
+    generate_new_data(){
+        for (let vertex_x_index = 0; vertex_x_index < this.gradients.length; vertex_x_index++) {
+            for (let vertex_y_index = 0; vertex_y_index < this.gradients[vertex_x_index].length; vertex_y_index++) {
+                this.gradients[vertex_x_index][vertex_y_index] = this.random_unit_vector();
+            }
+        }
     }
 
     // ###########################################

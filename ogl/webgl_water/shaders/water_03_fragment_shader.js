@@ -33,6 +33,8 @@ void main() {
   // the one we use later with our material
   vec3 final_light = vec3( clamped_light_intensity_r, clamped_light_intensity_g, clamped_light_intensity_b );
 
+  float noise_val = v_noise.y+1.0/2.0;
+
   // ---------------------------------------------------------
   // ---------------------------------------------------------
   // ---- determine final material colouring
@@ -42,7 +44,6 @@ void main() {
   // ---------------------------------------------------------
   // ---------------------------------------------------------
   // ---- finish up
-
   gl_FragColor = vec4( v_noise, 1.0);
   
   // ---------------------------------------------------------
