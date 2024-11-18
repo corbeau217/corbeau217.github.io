@@ -30,8 +30,8 @@ export class Planar_Shape {
             y: row_count,
         };
 
-        this.minimum_position = { x: -0.5, y: -0.5, };
-        this.maximum_position = { x:  0.5, y:  0.5, };
+        this.minimum_position = { x: -1.0, y: -1.0, };
+        this.maximum_position = { x:  1.0, y:  1.0, };
         this.position_range = {
             x: this.maximum_position.x - this.minimum_position.x,
             y: this.maximum_position.y - this.minimum_position.y,

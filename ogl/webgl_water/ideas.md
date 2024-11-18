@@ -25,3 +25,10 @@ something like:
 ```
 * maybe we should have something to determine which to use and automatically do it
 ---
+
+### camera
+> regarding changes to the camera
+
+---
+orbital cameras?
+---

@@ -113,7 +113,8 @@ function app_main() {
             water_01.draw,
             // ( delta_time )=>{ water_01.update( delta_time ) },
             // ( cam_view, cam_proj ) => { water_01.draw( cam_view, cam_proj ) },
-        );
+        )
+        .set_camera_offset( -0.0, -0.75, -2.3);
 
 
 

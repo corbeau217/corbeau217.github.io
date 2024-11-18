@@ -12,13 +12,7 @@ export class Water {
         this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
         
         // settings
-        this.column_count = 7;
-        this.row_count = 7;
-
-        // the shape to use
-        //  we're saying false for clockwise winding
-        //  we're saying false for xz axis for now
-        this.shape = new Planar_Shape( this.column_count, this.row_count, true, false );
+        this.prepare_settings();
 
         // create our mesh
         this.generate_mesh();
@@ -28,6 +22,23 @@ export class Water {
         this.prepare_mesh_attribute_locations();
         this.bind_mesh_attributes();
         this.prepare_mesh_mapping_attribute();
+    }
+
+    // ###########################################
+    // ###########################################
+
+    prepare_settings(){
+
+        this.column_count = 10;
+        this.row_count = 10;
+
+        // the shape to use
+        //  we're saying false for clockwise winding
+        //  we're saying true for xz axis
+        this.shape = new Planar_Shape( this.column_count, this.row_count, false, true );
+
+        // our model matrix
+        this.model_matrix = mat4.create();
     }
 
     // ###########################################
@@ -121,17 +132,16 @@ export class Water {
 
     prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count") , this.column_count, this.row_count );
-
-        // TODO: this?
-        // this.gl_context.uniform4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix") , camera_view_matrix );
-        // this.gl_context.uniform4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix") , camera_projection_matrix );
+        
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.model_matrix );
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix"), false, camera_view_matrix );
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, camera_projection_matrix );
     }
 
     // ###########################################
     // ###########################################
 
     enable_attributes(){
-        
         this.gl_context.enableVertexAttribArray(this.vertex_position_location);
         this.gl_context.enableVertexAttribArray(this.vertex_reference_location);
     }
