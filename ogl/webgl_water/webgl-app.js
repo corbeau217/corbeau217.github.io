@@ -13,6 +13,7 @@ import { FRAGMENT_SHADER_SRC as water_03_fragment_shader_source } from "./shader
 
 import { VERTEX_SHADER_SRC as water_04_vertex_shader_source } from "./shaders/water_04_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as water_04_fragment_shader_source } from "./shaders/water_04_fragment_shader.js";
+import { Canvas_Object } from "../common/canvas_object.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -104,6 +105,7 @@ function start_canvas_instance( canvas_element_name, canvas_clear_colour, app_in
     return app_data;
 }
 
+
 function generate_app_instance( canvas_element_name, canvas_clear_colour, Scene_Type ){
     let canvas_app = new Canvas_App( canvas_element_name, canvas_clear_colour );
 
@@ -129,6 +131,61 @@ function generate_app_instance( canvas_element_name, canvas_clear_colour, Scene_
         );
     
     return start_canvas_instance( canvas_element_name, canvas_clear_colour, canvas_app, scene_instance );
+}
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+function prepare_alternative_water_app( canvas_element_name, Water_Type, camera_offset_x, camera_offset_y, camera_offset_z ){
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- get our context
+
+    let canvas_app = new Canvas_Object( canvas_element_name, canvas_default_clear_colour );
+    let scene_graph = canvas_app.get_scene_object();
+
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- add it to the list of apps
+        
+    // get the index it's going to be placed
+    const app_index = app_list.length;
+    
+    // make the canvas information
+    let app_data = {
+        // where in the list it is
+        id: app_index,
+        // what the element name is
+        canvas_name: canvas_element_name,
+        // what the background colour is
+        clear_colour: canvas_default_clear_colour,
+        // the canvas app
+        app_instance: canvas_app,
+        // quick access to the scene
+        scene_instance: scene_graph,
+    };
+
+    // add to our list
+    app_list.push( app_data );
+
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- make the water instance
+
+    let water_obj = new Water_Type( canvas_app.get_gl_context() );
+
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- link it up
+
+    // prepare the scene
+    scene_graph
+        .add_object( water_obj, water_obj.update, water_obj.draw )
+        .set_camera_offset( camera_offset_x, camera_offset_y, camera_offset_z );
+
+    // --------------------------------------------
+    // --------------------------------------------
 }
 
 // ############################################################################################
@@ -184,7 +241,7 @@ function app_main() {
     // ======================================================================
     // ======== build the app instances
     
-    prepare_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
+    prepare_alternative_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
     prepare_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
     prepare_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
     prepare_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );

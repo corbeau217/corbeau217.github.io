@@ -41,6 +41,10 @@ export class Canvas_Object {
         // give back reference
         return this;
     }
+    get_scene_object(){
+        return this.scene_obj;
+    }
+
     get_gl_context(){
         return this.gl_context;
     }
