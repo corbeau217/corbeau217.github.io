@@ -7,7 +7,8 @@ import { Water_03 } from "./objects/water_03.js";
 import { VERTEX_SHADER_SRC as water_03_vertex_shader_source } from "./shaders/water_03_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as water_03_fragment_shader_source } from "./shaders/water_03_fragment_shader.js";
 
-
+import { VERTEX_SHADER_SRC as water_04_vertex_shader_source } from "./shaders/water_04_vertex_shader.js";
+import { FRAGMENT_SHADER_SRC as water_04_fragment_shader_source } from "./shaders/water_04_fragment_shader.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -202,14 +203,23 @@ function app_main() {
         // #####  build the water object to use
 
         class Water_04 extends Water_03 {
+            // ============================
+            // ============================
+
             constructor( gl_context ){
                 super( gl_context );
-        
-                // // replace with a better shader
-                // this.gl_context.deleteProgram(this.shader);
-                // this.shader = generate_shader_program( this.gl_context, WATER_04_VERTEX_SHADER_SRC, WATER_04_FRAGMENT_SHADER_SRC );
-            }                
-        
+                this.replace_shader( water_04_vertex_shader_source, water_04_fragment_shader_source );
+            }
+
+            // ============================
+            // ============================
+
+            update_noise( delta_time ){
+                // ..
+            }
+
+            // ============================
+            // ============================
         },
 
         // ########################################################################

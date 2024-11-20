@@ -182,6 +182,7 @@ export class Water_03 extends Water_02 {
 
     update_noise( delta_time ){
         // TODO: have the noise change
+        // this.load_noise_buffer();
     }
 
     // ###########################################
@@ -191,8 +192,7 @@ export class Water_03 extends Water_02 {
         super.update( delta_time );
         
         // ...
-        // this.update_noise( delta_time );
-        // this.load_noise_buffer();
+        this.update_noise( delta_time );
 
         // ...
         let rotation_factor =  delta_time * this.y_rotation_radians;
