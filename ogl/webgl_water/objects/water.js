@@ -15,12 +15,14 @@ export class Water {
         // settings
         this.prepare_settings();
 
+        // initialise our attribute information
+        this.initialise_mesh_attribute_locations();
+
         // create our mesh
         this.generate_mesh();
         this.initialise_mesh_buffers();
 
         // deal with data
-        this.prepare_mesh_attribute_locations();
         this.bind_mesh_attributes();
         this.prepare_mesh_mapping_attribute();
     }
@@ -61,7 +63,14 @@ export class Water {
     // ###########################################
     // ###########################################
     
+    // once on construction
+    initialise_mesh_attribute_locations(){
+        this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
+        this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
+    }
+    // every time that we regenerate the shaders
     prepare_mesh_attribute_locations(){
+        // ... for refetching them
         this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
         this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
     }

@@ -51,7 +51,8 @@ export class Water_02 extends Water {
         super.prepare_mesh_attribute_locations();
 
         // gather the attribute shader location
-        this.normal_location = this.gl_context.getAttribLocation(this.shader, "a_normal");
+        // this.normal_location = this.managed_shader.get_attribute_location("a_normal");
+        this.normal_location = this.managed_shader.get_attribute_location_by_index( this.normal_attribute_index );
     }
 
     // ###########################################
@@ -136,6 +137,10 @@ export class Water_02 extends Water {
     // ###########################################
     // ###########################################
 
+    initialise_mesh_attribute_locations(){
+        super.initialise_mesh_attribute_locations();
+        this.normal_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal");
+    }
     prepare_mesh_attribute_normals(){
         // select references as the one we're working with
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_buffer);
@@ -211,12 +216,14 @@ export class Water_02 extends Water {
     enable_attributes(){
         super.enable_attributes();
         // ...
-        this.gl_context.enableVertexAttribArray(this.normal_location);
+        this.managed_shader.enable_attributes();
+        // this.gl_context.enableVertexAttribArray(this.normal_location);
     }
     disable_attributes(){
         super.disable_attributes();
         // ...
-        this.gl_context.disableVertexAttribArray(this.normal_location);
+        this.managed_shader.disable_attributes();
+        // this.gl_context.disableVertexAttribArray(this.normal_location);
     }
 
     // ###########################################

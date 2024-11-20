@@ -120,6 +120,7 @@ export class Shader_Manager {
 
         // prepare our managed shader
         let managed_shader = new Managed_Shader( shader_id, this.gl_context, vertex_shader_source, fragment_shader_source );
+        managed_shader.initialise();
 
         // add to our list
         this.shader_data_list.push(managed_shader);

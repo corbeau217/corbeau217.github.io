@@ -1,18 +1,43 @@
 
 export class Managed_Shader {
+
+    // ###########################################
+    // ###########################################
+
     constructor( shader_id, gl_context, vertex_shader_source, fragment_shader_source ){
-        // save our data
+        // --------------------------------
+        // --- declare program as null for testing
+        this.shader_program = null;
+        // --------------------------------
+        // --- save our data
         this.id = shader_id;
         this.gl_context = gl_context;
         this.vertex_source = vertex_shader_source;
         this.fragment_source = fragment_shader_source;
-        this.shader_program = null;
-
-        this.verbose_logging = false;
-
-        // make the shader
-        this.generate_shader_program();
+        // --------------------------------
+        // --- announce settings
+        this.verbose_logging = true;
+        this.preserve_attributes_on_shader_replacement = true;
+        // --------------------------------
+        // --- prepare attribute data
+        this.attribute_location_list = [];
+        // --------------------------------
     }
+
+    // ###########################################
+    // ###########################################
+    // #### initialise function used by manager
+
+    initialise(){
+        // --------------------------------
+        // --- compile and link
+        this.initialise_shaders();
+        // --------------------------------
+    }
+
+    // ###########################################
+    // ###########################################
+
     generate_shader_program(){
         // TODO: probably could just replace the changes rather than remaking from scratch?
         if(this.shader_program!=null){
@@ -120,6 +145,10 @@ export class Managed_Shader {
         this.vertex_source = new_vertex_source;
         this.fragment_source = new_fragment_source;
         this.generate_shader_program();
+        // when we need to refetch locations
+        if(this.preserve_attributes_on_shader_replacement){
+            this.rebind_attribute_locations();
+        }
     }
     get_shader_program(){
         return this.shader_program;
@@ -130,6 +159,58 @@ export class Managed_Shader {
     get_fragment_source(){
         return this.fragment_source;
     }
+
+    // ###########################################
+    // ###########################################
+
+    // ###################################
+
+
+    // assume we don't redo any, might have duplicates otherwise
+    declare_managed_attribute_location( attribute_name ){
+        let attribute_index = this.attribute_location_list.length;
+        this.get_attribute_location( attribute_name );
+        return attribute_index;
+    }
+    // assume we don't redo any, might have duplicates otherwise
+    get_attribute_location( attribute_name ){
+        let attribute_location = this.gl_context.getAttribLocation( this.shader_program, attribute_name );
+        this.attribute_location_list.push( { name: attribute_name, location: attribute_location } );
+        if(this.verbose_logging && attribute_location==-1){
+            console.log(`shader determined attribute: '${attribute_name}' to be INACTIVE!`);
+        }
+        return attribute_location;
+    }
+    rebind_attribute_locations(){
+        for (let index = 0; index < this.attribute_location_list.length; index++) {
+            const attribute_name = this.attribute_location_list[index].name;
+            this.attribute_location_list[index].location = this.gl_context.getAttribLocation( this.shader_program, attribute_name );
+            if(this.verbose_logging && this.attribute_location_list[index].location==-1){
+                console.log(`shader determined attribute: '${attribute_name}' to be INACTIVE!`);
+            }
+        }
+    }
+    get_attribute_location_by_index( attribute_index ){
+        return this.attribute_location_list[attribute_index].location;
+    }
+
+    // ###################################
+
+    enable_attributes(){
+        this.attribute_location_list.forEach(attribute_data => {
+            if(attribute_data.location!=-1) this.gl_context.enableVertexAttribArray(attribute_data.location);
+        });
+    }
+    disable_attributes(){
+        this.attribute_location_list.forEach(attribute_data => {
+            if(attribute_data.location!=-1) this.gl_context.disableVertexAttribArray(attribute_data.location);
+        });
+    }
+
+    // ###################################
+
+    // ###########################################
+    // ###########################################
 }
 
 // ############################################################################################

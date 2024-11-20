@@ -36,7 +36,7 @@ export class Water_03 extends Water_02 {
         super.prepare_mesh_attribute_locations();
 
         // gather the attribute shader location
-        this.noise_location = this.gl_context.getAttribLocation(this.shader, "a_noise");
+        this.noise_location = this.managed_shader.get_attribute_location("a_noise");
     }
 
     
@@ -129,12 +129,12 @@ export class Water_03 extends Water_02 {
     enable_attributes(){
         super.enable_attributes();
         // ...
-        this.gl_context.enableVertexAttribArray(this.noise_location);
+        // this.gl_context.enableVertexAttribArray(this.noise_location);
     }
     disable_attributes(){
         super.disable_attributes();
         // ...
-        this.gl_context.disableVertexAttribArray(this.noise_location);
+        // this.gl_context.disableVertexAttribArray(this.noise_location);
     }
 
     // ###########################################
