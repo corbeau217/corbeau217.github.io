@@ -58,11 +58,11 @@ export class Water_02 extends Water {
     // ###########################################
 
     replace_shader( vertex_source, fragment_source ){
-        // out with the olde
-        this.gl_context.deleteProgram(this.shader);
-
+        // out with the old
+        this.managed_shader.replace_shader_code(vertex_source, fragment_source);
+        
         // in with the new
-        this.shader = generate_shader_program( this.gl_context, vertex_source, fragment_source );
+        this.shader = this.managed_shader.get_shader_program();
 
         // relocated the things
         this.prepare_mesh_attribute_locations();

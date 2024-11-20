@@ -1,7 +1,7 @@
 import { Planar_Shape } from "../../common/obj/planar_shape.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/water_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_vertex_shader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program, Shader_Manager } from "/ogl/common/shaders/shader_engine.js";
 
 
 export class Water {
@@ -9,8 +9,9 @@ export class Water {
         // gather our context
         this.gl_context = gl_context;
         // gather our shader
-        this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
-        
+        this.shader_manager = new Shader_Manager(this.gl_context);
+        this.managed_shader = this.shader_manager.new_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
+        this.shader = this.managed_shader.get_shader_program();
         // settings
         this.prepare_settings();
 
