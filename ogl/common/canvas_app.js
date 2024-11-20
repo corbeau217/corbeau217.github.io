@@ -1,4 +1,4 @@
-class Canvas_App {
+export class Canvas_App {
     // ...
     constructor(canvas_name, canvas_clear_colour){
         // save the name of the canvas
@@ -86,5 +86,3 @@ class Canvas_App {
         return this;
     }
 }
-
-export { Canvas_App };

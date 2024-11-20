@@ -61,7 +61,7 @@ function loadShader( gl_context, type, source){
 
 
 // init a shader program, so WebGL knows how to draw our data
-function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
+export function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
 
     const vertexShader = loadShader(gl_context, gl_context.VERTEX_SHADER, vsSourceIn);
     const fragmentShader = loadShader(gl_context, gl_context.FRAGMENT_SHADER, fsSourceIn);
@@ -105,8 +105,3 @@ function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
-
-
-
-
-export { generate_shader_program };

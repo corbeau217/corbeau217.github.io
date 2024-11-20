@@ -1,6 +1,6 @@
 const TAU = 2.0*Math.PI;
 
-class Camera {
+export class Camera {
     // construct a camera instance using the supplied aspect ratio
     constructor( aspectRatio ){
         // prepare the camera information
@@ -83,6 +83,3 @@ class Camera {
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
-
-
-export { Camera };
