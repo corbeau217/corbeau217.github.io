@@ -1,4 +1,4 @@
-import { Canvas_App } from "/ogl/common/canvas_app.js";
+import { Canvas_App } from "/ogl/common/old_canvas_app.js";
 import { Scene } from "./scene.js";
 import { Scene_Car } from "./scene_car.js";
 import { Scene_Sphere } from "./scene_sphere.js";
