@@ -137,7 +137,7 @@ function generate_app_instance( canvas_element_name, canvas_clear_colour, Scene_
 // ############################################################################################
 // ############################################################################################
 
-function prepare_alternative_water_app( canvas_element_name, Water_Type, camera_offset_x, camera_offset_y, camera_offset_z ){
+function prepare_new_water_app( canvas_element_name, Water_Type, camera_offset_x, camera_offset_y, camera_offset_z ){
     // --------------------------------------------
     // --------------------------------------------
     // ---- get our context
@@ -192,37 +192,6 @@ function prepare_alternative_water_app( canvas_element_name, Water_Type, camera_
 // ############################################################################################
 // ############################################################################################
 
-function prepare_water_app( canvas_element_name, Water_Type, camera_offset_x, camera_offset_y, camera_offset_z ){
-    // --------------------------------------------
-    // --------------------------------------------
-    // ---- get our context
-
-    let app_data = generate_app_instance( canvas_element_name, canvas_default_clear_colour, Scene );
-    let webgl_context = app_data.app_instance.get_gl_context();
-
-    // --------------------------------------------
-    // --------------------------------------------
-    // ---- make the water instance
-
-    let water_obj = new Water_Type(webgl_context);
-
-    // --------------------------------------------
-    // --------------------------------------------
-    // ---- link it up
-
-    // prepare the scene
-    app_data.scene_instance
-        .add_object( water_obj, water_obj.update, water_obj.draw )
-        .set_camera_offset( camera_offset_x, camera_offset_y, camera_offset_z );
-
-    // --------------------------------------------
-    // --------------------------------------------
-}
- 
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
-
 
 // entry point
 function app_main() {
@@ -241,10 +210,10 @@ function app_main() {
     // ======================================================================
     // ======== build the app instances
     
-    prepare_alternative_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
-    prepare_alternative_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
-    prepare_alternative_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
-    prepare_alternative_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
+    prepare_new_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
+    prepare_new_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
+    prepare_new_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
+    prepare_new_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
 
     // ======================================================================
     // ======================================================================
