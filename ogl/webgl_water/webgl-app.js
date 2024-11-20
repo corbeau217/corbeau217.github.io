@@ -3,6 +3,10 @@ import { Scene } from "/ogl/common/scene.js";
 import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
 import { Water_03 } from "./objects/water_03.js";
+import { Water_04 } from "./objects/water_04.js";
+
+
+import { Perlin_Noise_Machine, generate_normals_for_explode_vertices } from "./objects/perlin_noise_machine.js";
 
 import { VERTEX_SHADER_SRC as water_03_vertex_shader_source } from "./shaders/water_03_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as water_03_fragment_shader_source } from "./shaders/water_03_fragment_shader.js";
@@ -183,54 +187,7 @@ function app_main() {
     prepare_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
     prepare_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
     prepare_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
-
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
-    // ======== apparently we can just commit crimes??
-
-
-
-    prepare_water_app(
-        // ########################################################################
-        // ########################################################################
-        // ##### identify the water element id
-        
-        "webgl_water_04",
-
-        // ########################################################################
-        // ########################################################################
-        // #####  build the water object to use
-
-        class Water_04 extends Water_03 {
-            // ============================
-            // ============================
-
-            constructor( gl_context ){
-                super( gl_context );
-                this.replace_shader( water_04_vertex_shader_source, water_04_fragment_shader_source );
-            }
-
-            // ============================
-            // ============================
-
-            update_noise( delta_time ){
-                // ..
-            }
-
-            // ============================
-            // ============================
-        },
-
-        // ########################################################################
-        // ########################################################################
-        // #####  camera offset
-
-        0.0, -0.0, -3.3
-
-        // ########################################################################
-        // ########################################################################
-    );
+    prepare_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
 
     // ======================================================================
     // ======================================================================

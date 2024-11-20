@@ -15,7 +15,6 @@ export class Water_02 extends Water {
         super( gl_context );
 
         this.replace_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
-
         this.model_matrix = mat4.create();
 
         // (static) scale(out, a, v) → {mat4}
@@ -34,6 +33,25 @@ export class Water_02 extends Water {
         // defer so we can overwrite
         this.customise_mesh_shape();
 
+        
+    }
+
+    initialise_mesh_buffers(){
+        super.initialise_mesh_buffers();
+
+
+        // generate a buffer for the normals
+        this.normal_buffer = this.gl_context.createBuffer();
+    }
+
+    // ###########################################
+    // ###########################################
+
+    prepare_mesh_attribute_locations(){
+        super.prepare_mesh_attribute_locations();
+
+        // gather the attribute shader location
+        this.normal_location = this.gl_context.getAttribLocation(this.shader, "a_normal");
     }
 
     // ###########################################
@@ -45,6 +63,9 @@ export class Water_02 extends Water {
 
         // in with the new
         this.shader = generate_shader_program( this.gl_context, vertex_source, fragment_source );
+
+        // relocated the things
+        this.prepare_mesh_attribute_locations();
     }
 
     // ###########################################
@@ -104,9 +125,6 @@ export class Water_02 extends Water {
         
         // generate normal vectors
         this.normals = generate_normals_for_explode_vertices( this.vertices, this.face_count );
-
-        // gather the attribute shader location
-        this.normal_location = this.gl_context.getAttribLocation(this.shader, "a_normal");
 
         // generate a buffer for the normals
         this.normal_buffer = this.gl_context.createBuffer();
