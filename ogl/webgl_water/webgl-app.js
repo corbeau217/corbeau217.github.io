@@ -80,58 +80,6 @@ window.addEventListener(
 // where to add an app once it's made
 let app_list = [];
 
-function start_canvas_instance( canvas_element_name, canvas_clear_colour, app_instance, scene_instance ){
-    // get the index it's going to be placed
-    const app_index = app_list.length;
-    
-    // make the canvas information
-    let app_data = {
-        // where in the list it is
-        id: app_index,
-        // what the element name is
-        canvas_name: canvas_element_name,
-        // what the background colour is
-        clear_colour: canvas_clear_colour,
-        // the canvas app
-        app_instance: app_instance,
-        // quick access to the scene
-        scene_instance: scene_instance,
-    };
-
-    // add to our list
-    app_list.push( app_data );
-
-    // supply information
-    return app_data;
-}
-
-
-function generate_app_instance( canvas_element_name, canvas_clear_colour, Scene_Type ){
-    let canvas_app = new Canvas_App( canvas_element_name, canvas_clear_colour );
-
-    let aspect_ratio = canvas_app.canvas_element.width/canvas_app.canvas_element.height;
-    
-    let scene_instance = new Scene_Type( canvas_app.get_gl_context(), aspect_ratio );
-    
-    canvas_app
-        .assign_scene_object( scene_instance )
-        .set_content_update_function(
-            (delta_time) => {
-                scene_instance.update( delta_time, aspect_ratio );
-                canvas_app.prepare_context();
-            }
-        )
-        .set_content_draw_function(
-            () => {
-                // Clear the canvas AND the depth buffer.
-                canvas_app.get_gl_context().clear(canvas_app.get_gl_context().COLOR_BUFFER_BIT | canvas_app.get_gl_context().DEPTH_BUFFER_BIT);
-                // draw the scene
-                scene_instance.draw();
-            }
-        );
-    
-    return start_canvas_instance( canvas_element_name, canvas_clear_colour, canvas_app, scene_instance );
-}
 
 // ############################################################################################
 // ############################################################################################
