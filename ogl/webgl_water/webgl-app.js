@@ -4,8 +4,17 @@ import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
 import { Water_03 } from "./objects/water_03.js";
 
-import { VERTEX_SHADER_SRC } from "./shaders/water_03_vertex_shader.js";
-import { FRAGMENT_SHADER_SRC } from "./shaders/water_03_fragment_shader.js";
+import { VERTEX_SHADER_SRC as water_03_vertex_shader_source } from "./shaders/water_03_vertex_shader.js";
+import { FRAGMENT_SHADER_SRC as water_03_fragment_shader_source } from "./shaders/water_03_fragment_shader.js";
+
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+//   0.0 to 1.0:                  [   R,   G,   B,   A ]
+var canvas_default_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
 
 // ############################################################################################
 // ############################################################################################
@@ -43,27 +52,6 @@ function prepare_shader_source_block( shader_source_data ){
     // array.forEach(element => {
         
     // });
-}
-function provide_shader_code(){
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
-    // ======== water 03
-
-    // get source ready (renaming to make nice)
-    let water_03_vertex_source = prepare_shader_source_block(VERTEX_SHADER_SRC);
-    let water_03_fragment_source = prepare_shader_source_block(FRAGMENT_SHADER_SRC);
-
-    // get elements ready
-    let water_03_vertex_code_block = document.querySelector(`#webgl_water_03_vertex_source`);
-    let water_03_fragment_code_block = document.querySelector(`#webgl_water_03_fragment_source`);
-
-    water_03_vertex_code_block.innerHTML = water_03_vertex_source;
-    water_03_fragment_code_block.innerHTML = water_03_fragment_source;
-
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
 }
 
 // ############################################################################################
@@ -142,6 +130,37 @@ function generate_app_instance( canvas_element_name, canvas_clear_colour, Scene_
 // ############################################################################################
 // ############################################################################################
 
+function prepare_water_app( canvas_element_name, Water_Type, camera_offset_x, camera_offset_y, camera_offset_z ){
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- get our context
+
+    let app_data = generate_app_instance( canvas_element_name, canvas_default_clear_colour, Scene );
+    let webgl_context = app_data.app_instance.get_gl_context();
+
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- make the water instance
+
+    let water_obj = new Water_Type(webgl_context);
+
+    // --------------------------------------------
+    // --------------------------------------------
+    // ---- link it up
+
+    // prepare the scene
+    app_data.scene_instance
+        .add_object( water_obj, water_obj.update, water_obj.draw )
+        .set_camera_offset( camera_offset_x, camera_offset_y, camera_offset_z );
+
+    // --------------------------------------------
+    // --------------------------------------------
+}
+ 
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
 
 // entry point
 function app_main() {
@@ -154,64 +173,59 @@ function app_main() {
     // just needed to be before the main call?
     let fps = 40;
     var timeBetweenFrames = 1000.0/fps;
-    //   0.0 to 1.0:     [   R,   G,   B,   A ]
-    var canvasClearColour = [ 0.1, 0.1, 0.1, 1.0 ];
 
     // ======================================================================
     // ======================================================================
     // ======================================================================
     // ======== build the app instances
     
-    let app_01 = generate_app_instance( "webgl_water_01", canvasClearColour, Scene );
-    let app_02 = generate_app_instance( "webgl_water_02", canvasClearColour, Scene );
-    let app_03 = generate_app_instance( "webgl_water_03", canvasClearColour, Scene );
+    prepare_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
+    prepare_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
+    prepare_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
 
     // ======================================================================
     // ======================================================================
     // ======================================================================
-    // ======== prepare -- water -- 01
+    // ======== apparently we can just commit crimes??
 
-    // get our context
-    let gl_01 = app_01.app_instance.get_gl_context();
-    let water_01 = new Water(gl_01);
-    app_01.scene_instance
-        .add_object( water_01, water_01.update, water_01.draw )
-        .set_camera_offset( -0.0, -0.75, -2.3);
 
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
-    // ======== prepare -- water -- 02
 
-    // get our context
-    let gl_02 = app_02.app_instance.get_gl_context();
-    // make the water object
-    let water_02 = new Water_02(gl_02);
-    // prepare the scene
-    app_02.scene_instance
-        .add_object( water_02, water_02.update, water_02.draw )
-        .set_camera_offset( -0.0, -0.0, -3.3);
+    prepare_water_app(
+        // ########################################################################
+        // ########################################################################
+        // ##### identify the water element id
+        
+        "webgl_water_04",
 
-    // ======================================================================
-    // ======================================================================
-    // ======================================================================
-    // ======== prepare -- water -- 03
+        // ########################################################################
+        // ########################################################################
+        // #####  build the water object to use
 
-    // get our context
-    let gl_03 = app_03.app_instance.get_gl_context();
-    // make the water object
-    let water_03 = new Water_03(gl_03);
-    // prepare the scene
-    app_03.scene_instance
-        .add_object( water_03, water_03.update, water_03.draw )
-        .set_camera_offset( -0.0, -0.0, -3.3);
+        class Water_04 extends Water_03 {
+            constructor( gl_context ){
+                super( gl_context );
+        
+                // // replace with a better shader
+                // this.gl_context.deleteProgram(this.shader);
+                // this.shader = generate_shader_program( this.gl_context, WATER_04_VERTEX_SHADER_SRC, WATER_04_FRAGMENT_SHADER_SRC );
+            }                
+        
+        },
+
+        // ########################################################################
+        // ########################################################################
+        // #####  camera offset
+
+        0.0, -0.0, -3.3
+
+        // ########################################################################
+        // ########################################################################
+    );
 
     // ======================================================================
     // ======================================================================
     // ======================================================================
     // ======== do drawing
-
-
 
     setInterval(
             function () {
@@ -232,6 +246,33 @@ function app_main() {
     // ======================================================================
 }
 
+
+
+// ############################################################################################
+// ############################################################################################
+// ############################################################################################
+
+function insert_shader_code_block( element_id, source_code ){
+    let code_block = document.querySelector(`#${element_id}`);
+    let source_block = prepare_shader_source_block(source_code);
+    code_block.innerHTML = source_block;
+}
+
+
+function provide_shader_code(){
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+
+    // water 03
+    insert_shader_code_block( "webgl_water_03_vertex_source", water_03_vertex_shader_source );
+    insert_shader_code_block( "webgl_water_03_fragment_source", water_03_fragment_shader_source );
+
+
+    // ======================================================================
+    // ======================================================================
+    // ======================================================================
+}
 
 
 // ############################################################################################
