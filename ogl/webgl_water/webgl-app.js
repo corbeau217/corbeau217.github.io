@@ -242,9 +242,9 @@ function app_main() {
     // ======== build the app instances
     
     prepare_alternative_water_app( "webgl_water_01", Water, 0.0, -0.75, -2.3 );
-    prepare_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
-    prepare_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
-    prepare_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
+    prepare_alternative_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
+    prepare_alternative_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
+    prepare_alternative_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
 
     // ======================================================================
     // ======================================================================
