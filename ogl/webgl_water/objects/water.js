@@ -121,8 +121,6 @@ export class Water {
     // ###########################################
 
     prepare_drawing_environment(){
-        // TODO: this should be moved to the scene or app or we cant draw multiple things
-        this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
         // start up our shader
         this.gl_context.useProgram(this.shader);
     }
