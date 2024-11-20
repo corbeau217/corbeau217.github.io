@@ -66,9 +66,8 @@ export class Water_03 extends Water_02 {
     constructor( gl_context ){
         super( gl_context );
 
-        // replace with a better shader
-        this.gl_context.deleteProgram(this.shader);
-        this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
+
+        this.replace_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
         
 
 

@@ -14,8 +14,7 @@ export class Water_02 extends Water {
     constructor( gl_context ){
         super( gl_context );
 
-        // replace with a better shader
-        this.shader = generate_shader_program( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
+        this.replace_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
 
         this.model_matrix = mat4.create();
 
@@ -36,6 +35,21 @@ export class Water_02 extends Water {
         this.customise_mesh_shape();
 
     }
+
+    // ###########################################
+    // ###########################################
+
+    replace_shader( vertex_source, fragment_source ){
+        // out with the olde
+        this.gl_context.deleteProgram(this.shader);
+
+        // in with the new
+        this.shader = generate_shader_program( this.gl_context, vertex_source, fragment_source );
+    }
+
+    // ###########################################
+    // ###########################################
+
     customise_mesh_shape(){
         this.z_function = (x,y)=>{return (-Math.cos(x) * Math.sin(y));};
         this.remap_z_values();
