@@ -1,5 +1,5 @@
-import { Canvas_App } from "/ogl/common/canvas_app.js";
-import { Scene } from "/ogl/common/scene.js";
+
+import { Canvas_Object } from "../common/canvas_object.js";
 import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
 import { Water_03 } from "./objects/water_03.js";
@@ -13,7 +13,6 @@ import { FRAGMENT_SHADER_SRC as water_03_fragment_shader_source } from "./shader
 
 import { VERTEX_SHADER_SRC as water_04_vertex_shader_source } from "./shaders/water_04_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as water_04_fragment_shader_source } from "./shaders/water_04_fragment_shader.js";
-import { Canvas_Object } from "../common/canvas_object.js";
 
 // ############################################################################################
 // ############################################################################################
