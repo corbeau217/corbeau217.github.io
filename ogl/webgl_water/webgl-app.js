@@ -236,6 +236,11 @@ function provide_shader_code(){
     insert_shader_code_block( "webgl_water_03_fragment_source", water_03_fragment_shader_source );
 
 
+    // water 04
+    insert_shader_code_block( "webgl_water_04_vertex_source", water_04_vertex_shader_source );
+    insert_shader_code_block( "webgl_water_04_fragment_source", water_04_fragment_shader_source );
+
+
     // ======================================================================
     // ======================================================================
     // ======================================================================

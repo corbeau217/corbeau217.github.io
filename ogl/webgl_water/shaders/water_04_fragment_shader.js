@@ -38,14 +38,18 @@ void main() {
 
   // ---------------------------------------------------------
   // ---------------------------------------------------------
-  // ---- determine final material colouring
+  // ---- use the variance value and muffle warnings
   
-  // float colour_r = min( u_shape_colour.r+v_colour_variance.r, 0.3 );
-  // float colour_g = min( u_shape_colour.g+v_colour_variance.g, 0.3 );
-  // float colour_b = min( u_shape_colour.b+v_colour_variance.b, 1.0 );
-  // vec3 shape_colouring = vec3( colour_r, colour_g, colour_b );
+  // this is "use" the shape colour and not make it cry we're not
   vec3 hide_warnings = vec3( 0.05*u_shape_colour.x, 0.05*u_shape_colour.y, 0.05*u_shape_colour.z );
+
+  // very cursed, potentially goes to 1.05 if the stars align
+  //    ( not a problem when maximum is <0.95 )
   vec3 shape_colouring = v_colour_variance + hide_warnings;
+
+  // ---------------------------------------------------------
+  // ---------------------------------------------------------
+  // ---- determine final material colouring
 
   vec3 final_colour = final_light * shape_colouring;
   

@@ -32,8 +32,10 @@ varying highp vec3 v_colour_variance;
 vec3 colour_element_1 = vec3( 0.055, 0.302, 0.573 );
 vec3 colour_element_2 = vec3( 0.788, 0.914, 1.000 );
 
+// what factor to speed up the colour shifting effect with
 float colour_lerp_time_scale = 7.0;
 
+// --- noise shifting values ---
 float minimum_t = 0.3;
 float maximum_t = 0.7;
 
@@ -43,14 +45,25 @@ void main(){
     // ---- general settings
 
     gl_PointSize = 10.0;
+
+    // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // ---- prepare height data
     
     float height_lerp_t = (1.0-u_time_val.x) * minimum_t  +  (u_time_val.x) * maximum_t;
 
     vec3 noise_val = mix(a_noise, a_noise_2, height_lerp_t);
     vec3 normal_val = mix(a_normal, a_normal_2, height_lerp_t);
 
-    float colour_time_val = sin( colour_lerp_time_scale * u_time_val.z );  // get it as a smooth function
-    float colour_lerp_t = (colour_time_val+1.0)/2.0;                      // now in 0.0-1.0 range
+    // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // ---- process the colour
+
+    // get it as a smooth function
+    float colour_time_val = sin( colour_lerp_time_scale * u_time_val.z );
+    
+    // now in 0.0-1.0 range
+    float colour_lerp_t = (colour_time_val+1.0)/2.0;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
@@ -58,7 +71,6 @@ void main(){
 
     // then prepare the point location
     gl_Position = u_mvp_matrix * vec4((a_vertex_position.xyz + noise_val), 1.0);
-    // gl_Position = u_mvp_matrix * a_vertex_position;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
