@@ -3,7 +3,7 @@ import { Camera } from "/ogl/common/camera/generic_camera.js";
 
 const TAU = 2.0*Math.PI;
 
-export class Scene_Manager {
+export class Scene_Graph {
 
     // ############################################################################################
     // ############################################################################################

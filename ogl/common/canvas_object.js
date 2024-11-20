@@ -1,6 +1,6 @@
-import { Scene_Manager } from "./scene_manager.js";
+import { Scene_Graph } from "./scene_graph.js";
 
-export class Canvas_Manager {
+export class Canvas_Object {
 
 
     // ############################################################################################
@@ -25,7 +25,7 @@ export class Canvas_Manager {
         // prepare time
         this.old_time = Date.now();
 
-        this.scene_obj = new Scene_Manager(this.gl_context, this.aspect_ratio )
+        this.scene_obj = new Scene_Graph(this.gl_context, this.aspect_ratio )
     }
 
 
