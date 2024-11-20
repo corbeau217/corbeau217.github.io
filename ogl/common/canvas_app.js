@@ -1,3 +1,7 @@
+/**
+ * avoid using this, it's  being phased out
+ */
+
 export class Canvas_App {
     // ...
     constructor(canvas_name, canvas_clear_colour){

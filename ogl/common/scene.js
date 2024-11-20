@@ -1,3 +1,6 @@
+/**
+ * avoid using this, it's  being phased out
+ */
 
 import { Camera } from "/ogl/common/camera/generic_camera.js";
 
