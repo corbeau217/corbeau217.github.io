@@ -53,6 +53,14 @@ li {
     padding-top: 1em;
     padding-right: 1em;
     margin: 1em;
+
+    max-height: 400px;
+    /* max-width: 700px; */
+    text-wrap: nowrap;
+
+    overflow: scroll;
+    overflow-x: scroll;
+    
 }
 .shader_source_line {
     white-space-collapse: preserve;

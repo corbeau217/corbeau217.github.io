@@ -14,3 +14,52 @@
     justify-content: space-evenly;
     /* justify-items: space-evenly; */
 }
+
+.major_card_content_outer:not(.section_hidden) { 
+    display:block;
+    background-color: #041831;
+    margin: 7px;
+    padding: 5px;
+
+    padding: 2em;
+    margin: 2em;
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.major_card_content_inner {
+    padding: 7px;
+    border-bottom: 2px solid #283e5e;
+    border-right: 2px solid #283e5e;
+    max-width:100%;
+    max-height:100%;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    flex-direction: row dense;
+    
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: space-evenly;
+}
+
+/* ======== container handles ======== */
+.minor_card_content_outer:not(.section_hidden) {
+    display:block;
+    /* max-width: 500px; */
+    background-color: #0c2547;
+    margin: 7px;
+    padding: 5px;
+    box-shadow: 3px 3px 2px #131e2f;
+
+}
+.minor_card_content_inner {
+    background-color: #0c2547;
+    padding: 5px;
+    border-top: 2px solid #8cb0de;
+    border-left: 2px solid #8cb0de;
+    max-width:100%;
+    max-height:100%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+}
