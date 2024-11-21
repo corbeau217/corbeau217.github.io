@@ -15,14 +15,22 @@ export class Water_02 extends Water {
         super( gl_context );
 
         this.replace_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
+
+
+        // defer so we can overwrite
+        this.customise_mesh_shape();
+
+        
+    }
+    prepare_settings(){
+        super.prepare_settings();
+
         this.model_matrix = mat4.create();
 
         // (static) scale(out, a, v) → {mat4}
         this.scale = vec3.fromValues(1.5, 1.0, 1.5);
-        mat4.scale( this.model_matrix, this.model_matrix, this.scale);
 
         this.rotation_y = 1.0*Math.PI/12.0;
-        mat4.rotateY( this.model_matrix, this.model_matrix, this.rotation_y );
 
         this.light_source_vector = { x: 4.0, y: 3.0, z: -3.5 };
 
@@ -30,18 +38,21 @@ export class Water_02 extends Water {
 
         this.shape_colour = { r: 0.9, g: 0.5, b: 0.2, a: 1.0 };
 
-        // defer so we can overwrite
-        this.customise_mesh_shape();
 
-        
+        mat4.scale( this.model_matrix, this.model_matrix, this.scale);
+        mat4.rotateY( this.model_matrix, this.model_matrix, this.rotation_y );
     }
 
     initialise_mesh_buffers(){
         super.initialise_mesh_buffers();
 
-
         // generate a buffer for the normals
         this.normal_buffer = this.gl_context.createBuffer();
+    }
+
+    initialise_mesh_attribute_locations(){
+        super.initialise_mesh_attribute_locations();
+        this.normal_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal");
     }
 
     // ###########################################
@@ -54,6 +65,85 @@ export class Water_02 extends Water {
         // this.normal_location = this.managed_shader.get_attribute_location("a_normal");
         this.normal_location = this.managed_shader.get_attribute_location_by_index( this.normal_attribute_index );
     }
+
+    
+    // ###########################################
+    // ###########################################
+
+    prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
+        // --- directly replace super
+        // --------------------------------------------------------
+
+        let model_view = mat4.create();
+        let model_view_projection = mat4.create();
+        let model_view_inverse = mat4.create();
+        let normal_matrix = mat3.create();
+
+        // --------------------------------------------------------
+        
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count"), this.column_count, this.row_count );
+        this.gl_context.uniform4f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour"), this.shape_colour.r, this.shape_colour.g, this.shape_colour.b, this.shape_colour.a );
+
+        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_source_vector"), this.light_source_vector.x, this.light_source_vector.y, this.light_source_vector.z );
+        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_ambient_intensity"), this.light_ambient_intensity.r, this.light_ambient_intensity.g, this.light_ambient_intensity.b );
+        
+        // --------------------------------------------------------
+        // --- build matrices
+
+        // (static) multiply(out, a, b) → {mat4}
+        mat4.multiply( model_view, camera_view_matrix, this.model_matrix);
+
+        // (static) multiply(out, a, b) → {mat4}
+        mat4.multiply( model_view_projection, camera_projection_matrix, model_view);
+
+        // (static) invert(out, a) → {mat4}
+        mat4.invert( model_view_inverse, model_view);
+
+        // (static) fromMat4(out, a) → {mat3}
+        mat3.fromMat4(normal_matrix, model_view_inverse);
+
+        // (static) transpose(out, a) → {mat4}
+        // (static) transpose(out, a) → {mat3}
+        mat3.transpose(normal_matrix, normal_matrix);
+
+        // --------------------------------------------------------
+
+        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_mvp_matrix"), false, model_view_projection );
+        this.gl_context.uniformMatrix3fv( this.gl_context.getUniformLocation(this.shader, "u_normal_matrix"), false, normal_matrix );
+
+        // --------------------------------------------------------
+    }
+    
+    // ###########################################
+    // ###########################################
+
+    enable_attributes(){
+        super.enable_attributes();
+        // ...
+        this.managed_shader.enable_attributes();
+        // this.gl_context.enableVertexAttribArray(this.normal_location);
+    }
+    disable_attributes(){
+        super.disable_attributes();
+        // ...
+        this.managed_shader.disable_attributes();
+        // this.gl_context.disableVertexAttribArray(this.normal_location);
+    }
+
+    // ###########################################
+    // ###########################################
+
+    update( delta_time ){
+        super.update( delta_time );
+        // ...
+    }
+
+    // ###########################################
+    // ###########################################
+
+
+    // #################################################### -- NEW FUNCTIONS
+
 
     // ###########################################
     // ###########################################
@@ -137,10 +227,6 @@ export class Water_02 extends Water {
     // ###########################################
     // ###########################################
 
-    initialise_mesh_attribute_locations(){
-        super.initialise_mesh_attribute_locations();
-        this.normal_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal");
-    }
     prepare_mesh_attribute_normals(){
         // select references as the one we're working with
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_buffer);
@@ -162,78 +248,9 @@ export class Water_02 extends Water {
         );
     }
 
-    
-    // ###########################################
-    // ###########################################
-
-    prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
-        // --- directly replace super
-        // --------------------------------------------------------
-
-        let model_view = mat4.create();
-        let model_view_projection = mat4.create();
-        let model_view_inverse = mat4.create();
-        let normal_matrix = mat3.create();
-
-        // --------------------------------------------------------
-        
-        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count"), this.column_count, this.row_count );
-        this.gl_context.uniform4f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour"), this.shape_colour.r, this.shape_colour.g, this.shape_colour.b, this.shape_colour.a );
-
-        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_source_vector"), this.light_source_vector.x, this.light_source_vector.y, this.light_source_vector.z );
-        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_ambient_intensity"), this.light_ambient_intensity.r, this.light_ambient_intensity.g, this.light_ambient_intensity.b );
-        
-        // --------------------------------------------------------
-        // --- build matrices
-
-        // (static) multiply(out, a, b) → {mat4}
-        mat4.multiply( model_view, camera_view_matrix, this.model_matrix);
-
-        // (static) multiply(out, a, b) → {mat4}
-        mat4.multiply( model_view_projection, camera_projection_matrix, model_view);
-
-        // (static) invert(out, a) → {mat4}
-        mat4.invert( model_view_inverse, model_view);
-
-        // (static) fromMat4(out, a) → {mat3}
-        mat3.fromMat4(normal_matrix, model_view_inverse);
-
-        // (static) transpose(out, a) → {mat4}
-        // (static) transpose(out, a) → {mat3}
-        mat3.transpose(normal_matrix, normal_matrix);
-
-        // --------------------------------------------------------
-
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_mvp_matrix"), false, model_view_projection );
-        this.gl_context.uniformMatrix3fv( this.gl_context.getUniformLocation(this.shader, "u_normal_matrix"), false, normal_matrix );
-
-        // --------------------------------------------------------
-    }
-    
-    // ###########################################
-    // ###########################################
-
-    enable_attributes(){
-        super.enable_attributes();
-        // ...
-        this.managed_shader.enable_attributes();
-        // this.gl_context.enableVertexAttribArray(this.normal_location);
-    }
-    disable_attributes(){
-        super.disable_attributes();
-        // ...
-        this.managed_shader.disable_attributes();
-        // this.gl_context.disableVertexAttribArray(this.normal_location);
-    }
 
     // ###########################################
     // ###########################################
 
-    update( delta_time ){
-        super.update( delta_time );
-        // ...
-    }
 
-    // ###########################################
-    // ###########################################
 }
