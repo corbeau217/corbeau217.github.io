@@ -18,19 +18,23 @@ export class Water_03 extends Water_02 {
         
 
 
-        this.y_rotation_radians = Math.PI / 12.0;
-
-
-
-        this.noise = [];
         this.initialise_mesh_noise_data();
         this.prepare_noise_handle();
         // loads noise, then regenerate normals
         this.regenerate_mesh();
     }
+    prepare_settings(){
+        super.prepare_settings();
 
-    // ###########################################
-    // ###########################################
+        this.y_rotation_radians = Math.PI / 12.0;
+
+        this.noise = [];
+    }
+
+    initialise_mesh_buffers(){
+        super.initialise_mesh_buffers();
+        this.noise_buffer = this.gl_context.createBuffer();
+    }
 
     prepare_mesh_attribute_locations(){
         super.prepare_mesh_attribute_locations();
@@ -39,6 +43,40 @@ export class Water_03 extends Water_02 {
         this.noise_location = this.managed_shader.get_attribute_location("a_noise");
     }
 
+    enable_attributes(){
+        super.enable_attributes();
+        // ...
+        // this.gl_context.enableVertexAttribArray(this.noise_location);
+    }
+    disable_attributes(){
+        super.disable_attributes();
+        // ...
+        // this.gl_context.disableVertexAttribArray(this.noise_location);
+    }
+
+    update( delta_time ){
+        super.update( delta_time );
+        
+        // ...
+        this.update_noise( delta_time );
+
+        // ...
+        let rotation_factor =  delta_time * this.y_rotation_radians;
+        mat4.rotateY( this.model_matrix, this.model_matrix, rotation_factor );
+    }
+
+    // ###########################################
+    // ###########################################
+
+    // OVERRIDE  - overwriting with new function
+    customise_mesh_shape(){ 
+        this.z_function = (x,y)=>{return (-0.8);};
+        this.remap_z_values();
+        this.rebuild_mesh_as_exploded();
+    }
+
+    // ###########################################
+    // ###########################################
     
     // ###########################################
     // ###########################################
@@ -52,15 +90,6 @@ export class Water_03 extends Water_02 {
         this.prepare_mesh_attribute_normals();
     }
     
-    // ###########################################
-    // ###########################################
-
-    // overwriting with new function
-    customise_mesh_shape(){ 
-        this.z_function = (x,y)=>{return (-0.8);};
-        this.remap_z_values();
-        this.rebuild_mesh_as_exploded();
-    }
     
     // ###########################################
     // ###########################################
@@ -75,11 +104,6 @@ export class Water_03 extends Water_02 {
     // ###########################################
     // ###########################################
 
-
-    initialise_mesh_buffers(){
-        super.initialise_mesh_buffers();
-        this.noise_buffer = this.gl_context.createBuffer();
-    }
     initialise_mesh_noise_data(){
     }
     load_noise_buffer(){
@@ -107,39 +131,6 @@ export class Water_03 extends Water_02 {
     // ###########################################
     // ###########################################
 
-    
-    // ###########################################
-    // ###########################################
-
-    prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
-        super.prepare_uniforms( camera_view_matrix, camera_projection_matrix );
-        // --------------------------------------------------------
-        
-
-        // --------------------------------------------------------
-
-        // ...
-
-        // --------------------------------------------------------
-    }
-    
-    // ###########################################
-    // ###########################################
-
-    enable_attributes(){
-        super.enable_attributes();
-        // ...
-        // this.gl_context.enableVertexAttribArray(this.noise_location);
-    }
-    disable_attributes(){
-        super.disable_attributes();
-        // ...
-        // this.gl_context.disableVertexAttribArray(this.noise_location);
-    }
-
-    // ###########################################
-    // ###########################################
-
     update_noise( delta_time ){
         // TODO: have the noise change
         // this.load_noise_buffer();
@@ -147,23 +138,6 @@ export class Water_03 extends Water_02 {
 
     // ###########################################
     // ###########################################
-
-    update( delta_time ){
-        super.update( delta_time );
-        
-        // ...
-        this.update_noise( delta_time );
-
-        // ...
-        let rotation_factor =  delta_time * this.y_rotation_radians;
-        mat4.rotateY( this.model_matrix, this.model_matrix, rotation_factor );
-    }
-
-    // ###########################################
-    // ###########################################
-
-
-
 
 
     rebuild_noise_values( vertex_bindings, noise_data ){
@@ -219,4 +193,8 @@ export class Water_03 extends Water_02 {
     
         return new_noise_data;
     }
+
+    // ###########################################
+    // ###########################################
+
 }
