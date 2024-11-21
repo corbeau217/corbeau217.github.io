@@ -39,7 +39,6 @@ export class Water_05 {
         
         // deal with data
         this.prepare_mesh_shape_attributes();
-        this.prepare_mesh_mapping_attribute();
         this.prepare_mesh_attribute_noises();
         this.prepare_mesh_attribute_normals();
     }
@@ -66,9 +65,14 @@ export class Water_05 {
 
         this.light_source_vector = { x: 4.0, y: 3.0, z: -3.5 };
 
-        this.light_ambient_intensity = { r: 0.2, g: 0.2, b: 0.2 };
+        this.light_ambient_intensity = { r: 0.7, g: 0.7, b: 0.7 };
 
-        this.shape_colour = { r: 0.9, g: 0.5, b: 0.2, a: 1.0 };
+        this.shape_colouring = {
+            // vec3 colour_darkest = vec3( 0.055, 0.302, 0.573 );
+            // vec3 colour_lightest = vec3( 0.788, 0.914, 1.000 );
+            darkest:  { r: 0.055, g: 0.302, b: 0.573, a: 1.0 },
+            lightest: { r: 0.788, g: 0.914, b: 1.000, a: 1.0 },
+        };
 
 
         mat4.scale( this.model_matrix, this.model_matrix, this.scale);
@@ -83,6 +87,7 @@ export class Water_05 {
         
         this.noise_1 = [];
         this.noise_2 = [];
+        this.normals_normals_raw = [];
         this.normals_1 = [];
         this.normals_2 = [];
     }
@@ -98,6 +103,7 @@ export class Water_05 {
         this.indices_buffer = this.gl_context.createBuffer();
         this.vertex_reference_buffer = this.gl_context.createBuffer();
         
+        this.normal_raw_buffer = this.gl_context.createBuffer();
         this.normal_1_buffer = this.gl_context.createBuffer();
         this.normal_2_buffer = this.gl_context.createBuffer();
 
@@ -107,8 +113,8 @@ export class Water_05 {
     // once on construction
     initialise_mesh_attribute_locations(){
         this.vertex_position_attribute_index = this.managed_shader.declare_managed_attribute_location("a_vertex_position");
-        this.vertex_reference_attribute_index = this.managed_shader.declare_managed_attribute_location("a_vertex_reference");
 
+        this.normal_raw_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal_raw");
         this.normal_1_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal_1");
         this.normal_2_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal_2");
 
@@ -118,8 +124,8 @@ export class Water_05 {
     // every time that we regenerate the shaders
     prepare_mesh_attribute_locations(){
         this.vertex_position_location = this.managed_shader.get_attribute_location_by_index( this.vertex_position_attribute_index );
-        this.vertex_reference_location = this.managed_shader.get_attribute_location_by_index( this.vertex_reference_attribute_index );
 
+        this.normal_raw_location = this.managed_shader.get_attribute_location_by_index( this.normal_raw_attribute_index );
         this.normal_1_location = this.managed_shader.get_attribute_location_by_index( this.normal_1_attribute_index );
         this.normal_2_location = this.managed_shader.get_attribute_location_by_index( this.normal_2_attribute_index );
 
@@ -154,27 +160,25 @@ export class Water_05 {
             0
         );
     }
-    prepare_mesh_mapping_attribute(){
+    prepare_mesh_attribute_normals(){
         // select references as the one we're working with
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.vertex_reference_buffer);
+        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_raw_buffer);
     
         // load the reference data
         this.gl_context.bufferData(
           this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.vertex_references),
+          new Float32Array(this.normals_raw),
           this.gl_context.STATIC_DRAW,
         );
         // map it to our attribute
         this.gl_context.vertexAttribPointer(
-            this.vertex_reference_location,
-            2,
+            this.normal_raw_location,
+            3,
             this.gl_context.FLOAT,
             false,
             0,
             0,
         );
-    }
-    prepare_mesh_attribute_normals(){
         // select references as the one we're working with
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_1_buffer);
     
@@ -255,7 +259,8 @@ export class Water_05 {
         this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, camera_projection_matrix );
 
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count"), this.column_count, this.row_count );
-        this.gl_context.uniform4f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour"), this.shape_colour.r, this.shape_colour.g, this.shape_colour.b, this.shape_colour.a );
+        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour_darkest"), this.shape_colouring.darkest.r, this.shape_colouring.darkest.g, this.shape_colouring.darkest.b );
+        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour_lightest"), this.shape_colouring.lightest.r, this.shape_colouring.lightest.g, this.shape_colouring.lightest.b );
 
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_source_vector"), this.light_source_vector.x, this.light_source_vector.y, this.light_source_vector.z );
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_ambient_intensity"), this.light_ambient_intensity.r, this.light_ambient_intensity.g, this.light_ambient_intensity.b );
@@ -321,18 +326,16 @@ export class Water_05 {
         this.indices = this.exploded_mesh_data.indices;
         this.vertex_references = this.exploded_mesh_data.references;
         this.face_count = this.exploded_mesh_data.face_count;
-
-        // generate normal vectors
-        this.raw_normals = generate_raw_normals_for_explode_vertices( this.vertices, this.face_count );
     }
     regenerate_mesh(){
         // generate normal vectors
+        this.normals_raw = generate_raw_normals_for_explode_vertices( this.vertices, this.face_count );
         this.normals_1 = generate_normals_for_explode_vertices( this.vertices, this.noise_1, this.face_count );
         this.normals_2 = generate_normals_for_explode_vertices( this.vertices, this.noise_2, this.face_count );
     }
     initialise_noise_handle(){
-        this.noise_1_machine = new Perlin_Noise_Machine( 3, 4 );
-        this.noise_2_machine = new Perlin_Noise_Machine( 4, 3 );
+        this.noise_1_machine = new Perlin_Noise_Machine( 5, 4 );
+        this.noise_2_machine = new Perlin_Noise_Machine( 6, 5 );
 
         this.noise_1 = this.noise_1_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
         this.noise_2 = this.noise_2_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );

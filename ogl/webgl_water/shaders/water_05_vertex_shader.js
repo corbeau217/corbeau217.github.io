@@ -11,9 +11,9 @@ uniform vec3 u_time_val;
 
 // --- location data ---
 attribute vec4 a_vertex_position;
-attribute vec2 a_vertex_reference;
 
 // interpolate between for the normal
+attribute vec3 a_normal_raw;
 attribute vec3 a_normal_1;
 attribute vec3 a_normal_2;
 
@@ -29,15 +29,19 @@ varying highp vec3 v_colour_variance;
 
 
 // --- colour factors ---
-vec3 colour_element_1 = vec3( 0.055, 0.302, 0.573 );
-vec3 colour_element_2 = vec3( 0.788, 0.914, 1.000 );
+uniform vec3 u_shape_colour_darkest;
+uniform vec3 u_shape_colour_lightest;
 
 // what factor to speed up the colour shifting effect with
-float colour_lerp_time_scale = 7.0;
+float noise_mixer_time_scale = 3.5;
+float noise_usage_time_scale = 7.9;
 
 // --- noise shifting values ---
-float minimum_t = 0.3;
-float maximum_t = 0.7;
+float minimum_noise_mixing = 0.22;
+float maximum_noise_mixing = 0.78;
+
+float minimum_noise_usage = 0.01;
+float maximum_noise_usage = 0.5;
 
 void main(){
     // ---------------------------------------------------------
@@ -49,11 +53,19 @@ void main(){
     // ---------------------------------------------------------
     // ---------------------------------------------------------
     // ---- prepare height data
-    
-    float height_lerp_t = (1.0-u_time_val.x) * minimum_t  +  (u_time_val.x) * maximum_t;
 
-    vec3 noise_val = mix(a_noise_1, a_noise_2, height_lerp_t);
-    vec3 normal_val = mix(a_normal_1, a_normal_2, height_lerp_t);
+    float mixer_timer = (cos(u_time_val.z * noise_mixer_time_scale)+1.0)/2.0;
+    float usage_timer = (cos(u_time_val.z * noise_usage_time_scale)+1.0)/2.0;
+
+    float noise_mixer_lerp_t = (1.0-u_time_val.x) * minimum_noise_mixing  +  (u_time_val.x) * maximum_noise_mixing;
+    float noise_usage_lerp_t = (1.0-usage_timer) * minimum_noise_usage  +  (usage_timer) * maximum_noise_usage;
+
+    // make our cocktails of noise and normals
+    vec3 noise_cocktail = mix(a_noise_1, a_noise_2, noise_mixer_lerp_t);
+    vec3 normal_cocktail = mix(a_normal_1, a_normal_2, noise_mixer_lerp_t);
+
+    vec3 noise_val = mix(vec3(0.0), noise_cocktail, noise_usage_lerp_t);
+    vec3 normal_val = mix(a_normal_raw, normal_cocktail, noise_usage_lerp_t);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
@@ -69,7 +81,7 @@ void main(){
     // ---- process the colour
     
     // now in 0.0-1.0 range
-    float colour_lerp_t = noise_val.y;
+    float colour_lerp_t = position_with_noise.y;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
@@ -77,7 +89,7 @@ void main(){
 
     v_noise = noise_val;
     v_normal = u_normal_matrix * normalize(normal_val);
-    v_colour_variance = mix(colour_element_1, colour_element_2, colour_lerp_t);
+    v_colour_variance = mix(u_shape_colour_darkest, u_shape_colour_lightest, colour_lerp_t);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
