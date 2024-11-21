@@ -20,7 +20,6 @@ export class Water_05 {
 
         // initialise our attribute information
         this.initialise_mesh_attribute_locations();
-        this.prepare_mesh_attribute_locations();
 
         // create our mesh
         this.generate_mesh();
@@ -38,9 +37,7 @@ export class Water_05 {
         this.regenerate_mesh();
         
         // deal with data
-        this.prepare_mesh_shape_attributes();
-        this.prepare_mesh_attribute_noises();
-        this.prepare_mesh_attribute_normals();
+        this.prepare_attribute_data();
     }
     prepare_settings(){
         this.column_count = 17;
@@ -109,16 +106,16 @@ export class Water_05 {
         this.face_count = this.shape.get_face_count();
     }
     initialise_mesh_buffers(){
-        this.vertex_buffer = this.gl_context.createBuffer();
+        // this.vertex_buffer = this.gl_context.createBuffer();
         this.indices_buffer = this.gl_context.createBuffer();
-        this.vertex_reference_buffer = this.gl_context.createBuffer();
+        // this.vertex_reference_buffer = this.gl_context.createBuffer();
         
-        this.normal_raw_buffer = this.gl_context.createBuffer();
-        this.normal_1_buffer = this.gl_context.createBuffer();
-        this.normal_2_buffer = this.gl_context.createBuffer();
+        // this.normal_raw_buffer = this.gl_context.createBuffer();
+        // this.normal_1_buffer = this.gl_context.createBuffer();
+        // this.normal_2_buffer = this.gl_context.createBuffer();
 
-        this.noise_1_buffer = this.gl_context.createBuffer();
-        this.noise_2_buffer = this.gl_context.createBuffer();
+        // this.noise_1_buffer = this.gl_context.createBuffer();
+        // this.noise_2_buffer = this.gl_context.createBuffer();
     }
     // once on construction
     initialise_mesh_attribute_locations(){
@@ -131,18 +128,7 @@ export class Water_05 {
         this.noise_1_attribute_index = this.managed_shader.declare_managed_attribute_location("a_noise_1");
         this.noise_2_attribute_index = this.managed_shader.declare_managed_attribute_location("a_noise_2");
     }
-    // every time that we regenerate the shaders
-    prepare_mesh_attribute_locations(){
-        this.vertex_position_location = this.managed_shader.get_attribute_location_by_index( this.vertex_position_attribute_index );
-
-        this.normal_raw_location = this.managed_shader.get_attribute_location_by_index( this.normal_raw_attribute_index );
-        this.normal_1_location = this.managed_shader.get_attribute_location_by_index( this.normal_1_attribute_index );
-        this.normal_2_location = this.managed_shader.get_attribute_location_by_index( this.normal_2_attribute_index );
-
-        this.noise_1_location = this.managed_shader.get_attribute_location_by_index( this.noise_1_attribute_index );
-        this.noise_2_location = this.managed_shader.get_attribute_location_by_index( this.noise_2_attribute_index );
-    }
-    prepare_mesh_shape_attributes(){
+    prepare_attribute_data(){
         // prepare the index buffer as the one we're working on
         this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indices_buffer);
         // announce the data as our indices/bindings data
@@ -152,115 +138,12 @@ export class Water_05 {
             this.gl_context.STATIC_DRAW
         );
 
-        // prepare the vertex position buffer as the one to work on
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.vertex_buffer);
-        // load the positions into the buffer
-        this.gl_context.bufferData(
-            this.gl_context.ARRAY_BUFFER,
-            new Float32Array(this.vertices),
-            this.gl_context.STATIC_DRAW
-        );
-        // link it to our attribute for usage in the shader
-        this.gl_context.vertexAttribPointer(
-            this.vertex_position_location,
-            4,
-            this.gl_context.FLOAT,
-            false,
-            0,
-            0
-        );
-    }
-    prepare_mesh_attribute_normals(){
-        // select references as the one we're working with
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_raw_buffer);
-    
-        // load the reference data
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.normals_raw),
-          this.gl_context.STATIC_DRAW,
-        );
-        // map it to our attribute
-        this.gl_context.vertexAttribPointer(
-            this.normal_raw_location,
-            3,
-            this.gl_context.FLOAT,
-            false,
-            0,
-            0,
-        );
-        // select references as the one we're working with
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_1_buffer);
-    
-        // load the reference data
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.normals_1),
-          this.gl_context.STATIC_DRAW,
-        );
-        // map it to our attribute
-        this.gl_context.vertexAttribPointer(
-            this.normal_1_location,
-            3,
-            this.gl_context.FLOAT,
-            false,
-            0,
-            0,
-        );
-        // select references as the one we're working with
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_2_buffer);
-    
-        // load the reference data
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.normals_2),
-          this.gl_context.STATIC_DRAW,
-        );
-        // map it to our attribute
-        this.gl_context.vertexAttribPointer(
-            this.normal_2_location,
-            3,
-            this.gl_context.FLOAT,
-            false,
-            0,
-            0,
-        );
-    }
-    prepare_mesh_attribute_noises(){
-        // select references as the one we're working with
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.noise_1_buffer);
-        // load the reference data
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.noise_1),
-          this.gl_context.STATIC_DRAW,
-        );
-        // map it to our attribute
-        this.gl_context.vertexAttribPointer(
-            this.noise_1_location,
-            3,
-            this.gl_context.FLOAT,
-            false,
-            0,
-            0,
-        );
-        // select references as the one we're working with
-        this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.noise_2_buffer);
-        // load the reference data
-        this.gl_context.bufferData(
-          this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.noise_2),
-          this.gl_context.STATIC_DRAW,
-        );
-        // map it to our attribute
-        this.gl_context.vertexAttribPointer(
-            this.noise_2_location,
-            3,
-            this.gl_context.FLOAT,
-            false,
-            0,
-            0,
-        );
+        this.managed_shader.load_attribute_buffer_floats( this.vertex_position_attribute_index, new Float32Array(this.vertices), 4 );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_raw_attribute_index, new Float32Array(this.normals_raw), 3 );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_1_attribute_index, new Float32Array(this.normals_1), 3 );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_2_attribute_index, new Float32Array(this.normals_2), 3 );
+        this.managed_shader.load_attribute_buffer_floats( this.noise_1_attribute_index, new Float32Array(this.noise_1), 3 );
+        this.managed_shader.load_attribute_buffer_floats( this.noise_2_attribute_index, new Float32Array(this.noise_2), 3 );
     }
     prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count") , this.column_count, this.row_count );

@@ -175,7 +175,7 @@ export class Managed_Shader {
     // assume we don't redo any, might have duplicates otherwise
     get_attribute_location( attribute_name ){
         let attribute_location = this.gl_context.getAttribLocation( this.shader_program, attribute_name );
-        this.attribute_location_list.push( { name: attribute_name, location: attribute_location } );
+        this.attribute_location_list.push( { name: attribute_name, location: attribute_location, buffer: this.gl_context.createBuffer() } );
         if(this.verbose_logging && attribute_location==-1){
             console.log(`shader determined attribute: '${attribute_name}' to be INACTIVE!`);
         }
@@ -208,6 +208,32 @@ export class Managed_Shader {
     }
 
     // ###################################
+
+    // ###########################################
+    // ###########################################
+
+
+
+    /**
+     * 
+     * @param {*} attribute_index 
+     * @param {*} attribute_data Float32Array
+     * @param {*} values_per_element vec4 would be 4, and vec3 is 3
+     */
+    load_attribute_buffer_floats( attribute_index, attribute_data, values_per_element ){
+        // prepare abbreviated reference
+        let target_attribute_data = this.attribute_location_list[attribute_index];
+
+        // bind it
+        this.gl_context.bindBuffer( this.gl_context.ARRAY_BUFFER, target_attribute_data.buffer);
+        
+        // load it
+        this.gl_context.bufferData( this.gl_context.ARRAY_BUFFER, attribute_data, this.gl_context.STATIC_DRAW );
+
+        // point to it
+        this.gl_context.vertexAttribPointer( target_attribute_data.location, values_per_element, this.gl_context.FLOAT, false, 0, 0 );
+        
+    }
 
     // ###########################################
     // ###########################################
