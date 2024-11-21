@@ -57,20 +57,19 @@ void main(){
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
-    // ---- process the colour
-
-    // get it as a smooth function
-    float colour_time_val = sin( colour_lerp_time_scale * u_time_val.z );
-    
-    // now in 0.0-1.0 range
-    float colour_lerp_t = (colour_time_val+1.0)/2.0;
-
-    // ---------------------------------------------------------
-    // ---------------------------------------------------------
     // ---- location information
 
+    vec3 position_with_noise = a_vertex_position.xyz + noise_val;
+
     // then prepare the point location
-    gl_Position = u_mvp_matrix * vec4((a_vertex_position.xyz + noise_val), 1.0);
+    gl_Position = u_mvp_matrix * vec4( position_with_noise, 1.0);
+
+    // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // ---- process the colour
+    
+    // now in 0.0-1.0 range
+    float colour_lerp_t = noise_val.y;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
