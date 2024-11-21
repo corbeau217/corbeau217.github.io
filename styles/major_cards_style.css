@@ -12,5 +12,5 @@
     align-content: flex-start;
     align-items: flex-start;
     justify-content: space-evenly;
-    justify-items: space-evenly;
+    /* justify-items: space-evenly; */
 }

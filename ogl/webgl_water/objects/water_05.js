@@ -43,8 +43,8 @@ export class Water_05 {
         this.prepare_mesh_attribute_normals();
     }
     prepare_settings(){
-        this.column_count = 10;
-        this.row_count = 10;
+        this.column_count = 17;
+        this.row_count = 17;
 
         // the shape to use
         //  we're saying false for clockwise winding
@@ -334,8 +334,8 @@ export class Water_05 {
         this.normals_2 = generate_normals_for_explode_vertices( this.vertices, this.noise_2, this.face_count );
     }
     initialise_noise_handle(){
-        this.noise_1_machine = new Perlin_Noise_Machine( 5, 4 );
-        this.noise_2_machine = new Perlin_Noise_Machine( 6, 5 );
+        this.noise_1_machine = new Perlin_Noise_Machine( 23, 19 );
+        this.noise_2_machine = new Perlin_Noise_Machine( 19, 23 );
 
         this.noise_1 = this.noise_1_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
         this.noise_2 = this.noise_2_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
@@ -346,9 +346,11 @@ export class Water_05 {
         this.time_interpolation_value.dt += delta_time;
 
         // get the x and y interpolation values
-        let noise_cosine_value = Math.cos(this.time_interpolation_value.dt);
-        this.time_interpolation_value.x = (noise_cosine_value+1.0)/2.0;
-        this.time_interpolation_value.y = noise_cosine_value;
+        let noise_cosine_mixer = Math.cos(this.time_interpolation_value.dt*1.8);
+        this.time_interpolation_value.x = (noise_cosine_mixer+1.0)/2.0;
+        
+        let noise_sine_usage = Math.sin(this.time_interpolation_value.dt*2.2312);
+        this.time_interpolation_value.y = (noise_sine_usage+1.0)/2.0;
     }
 
     rebuild_noise_values(old_noise_data){
