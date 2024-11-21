@@ -22,7 +22,6 @@ export class Water_04 extends Water_03 {
 
         this.noise = [];
         this.noise_2 = [];
-        this.initialise_mesh_noise_data();
         this.prepare_noise_handle();
         // loads noise, then regenerate normals
         this.regenerate_mesh();

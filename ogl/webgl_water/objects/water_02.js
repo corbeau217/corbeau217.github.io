@@ -133,21 +133,6 @@ export class Water_02 extends Water {
     // ###########################################
     // ###########################################
 
-    update( delta_time ){
-        super.update( delta_time );
-        // ...
-    }
-
-    // ###########################################
-    // ###########################################
-
-
-    // #################################################### -- NEW FUNCTIONS
-
-
-    // ###########################################
-    // ###########################################
-
     replace_shader( vertex_source, fragment_source ){
         // out with the old
         this.managed_shader.replace_shader_code(vertex_source, fragment_source);

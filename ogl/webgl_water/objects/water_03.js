@@ -18,7 +18,6 @@ export class Water_03 extends Water_02 {
         
 
 
-        this.initialise_mesh_noise_data();
         this.prepare_noise_handle();
         // loads noise, then regenerate normals
         this.regenerate_mesh();
@@ -41,17 +40,6 @@ export class Water_03 extends Water_02 {
 
         // gather the attribute shader location
         this.noise_location = this.managed_shader.get_attribute_location("a_noise");
-    }
-
-    enable_attributes(){
-        super.enable_attributes();
-        // ...
-        // this.gl_context.enableVertexAttribArray(this.noise_location);
-    }
-    disable_attributes(){
-        super.disable_attributes();
-        // ...
-        // this.gl_context.disableVertexAttribArray(this.noise_location);
     }
 
     update( delta_time ){
@@ -104,8 +92,6 @@ export class Water_03 extends Water_02 {
     // ###########################################
     // ###########################################
 
-    initialise_mesh_noise_data(){
-    }
     load_noise_buffer(){
         // ...
         // select references as the one we're working with
