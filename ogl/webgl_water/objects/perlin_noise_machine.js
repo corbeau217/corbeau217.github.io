@@ -5,6 +5,7 @@ import { cross_product } from "/ogl/common/util/geometry.js";
 // ############################################################################################
 // ############################################################################################
 
+
 export function generate_normals_for_explode_vertices( vertices, noise, number_of_triangles ){
     // prepare array
     let vertex_normals = [];
