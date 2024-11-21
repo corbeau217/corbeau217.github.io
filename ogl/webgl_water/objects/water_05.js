@@ -32,47 +32,65 @@ export class Water_05 {
         this.gl_context = gl_context;
         // gather our shader
         this.shader_manager = new Shader_Manager(this.gl_context);
-        this.managed_shader = this.shader_manager.new_shader( vertex_source_01, fragment_source_01 );
+        this.managed_shader = this.shader_manager.new_shader( water_05_vertex_shader_source, water_05_fragment_shader_source );
         this.shader = this.managed_shader.get_shader_program();
         // settings
         this.prepare_settings();
 
         // initialise our attribute information
         this.initialise_mesh_attribute_locations();
+        this.prepare_mesh_attribute_locations();
 
         // create our mesh
         this.generate_mesh();
         this.initialise_mesh_buffers();
 
-        // deal with data
-        this.bind_mesh_attributes();
-        this.prepare_mesh_mapping_attribute();
+        // // deal with data
+        // this.prepare_mesh_shape_attributes();
+        // this.prepare_mesh_mapping_attribute();
         // -------------------_ 02
 
-        this.replace_shader( vertex_source_02, fragment_source_02 );
+        // this.replace_shader( vertex_source_02, fragment_source_02 );
 
-        // defer so we can overwrite
-        this.customise_mesh_shape();
+        // // defer so we can overwrite
+        // this.customise_mesh_shape();
         // -------------------_ 03
 
 
-        this.replace_shader( vertex_source_03, fragment_source_03 );
+        // this.replace_shader( vertex_source_03, fragment_source_03 );
         
 
+        this.initialise_noise_handle();
+        // this.prepare_noise_data();
+        this.noise = this.rebuild_noise_values(this.noise);
+        this.noise_2 = this.rebuild_noise_values(this.noise_2);
 
-        this.prepare_noise_handle();
         // loads noise, then regenerate normals
-        this.regenerate_mesh();
+        // this.regenerate_mesh();
         // -------------------_ 04
-        this.replace_shader( vertex_source_04, fragment_source_04 );
+        // this.replace_shader( vertex_source_04, fragment_source_04 );
         
         this.rebuild_mesh_as_exploded();
 
-        this.prepare_noise_handle();
+        // this.clone_raw_normals();
+
+        // // deal with data
+        // this.prepare_mesh_shape_attributes();
+        // this.prepare_mesh_mapping_attribute();
+
+        // // this.prepare_noise_data();
+        // this.prepare_mesh_attribute_noises();
         // loads noise, then regenerate normals
         this.regenerate_mesh();
         // -------------------_ 05
-        this.replace_shader( water_05_vertex_shader_source, water_05_fragment_shader_source );
+        // deal with data
+        this.prepare_mesh_shape_attributes();
+        this.prepare_mesh_mapping_attribute();
+
+        // this.prepare_noise_data();
+        this.prepare_mesh_attribute_noises();
+        // this.replace_shader( water_05_vertex_shader_source, water_05_fragment_shader_source );
+        this.prepare_mesh_attribute_normals();
     }
     prepare_settings(){
         // -------------------_ 01
@@ -109,12 +127,13 @@ export class Water_05 {
 
         this.y_rotation_radians = Math.PI / 12.0;
 
-        this.noise = [];
         // -------------------_ 04
-
+        
         this.time_interpolation_value = { x: 0.0, y: 0.0, dt: 0.0 };
-
+        
+        this.noise = [];
         this.noise_2 = [];
+        this.normals_1 = [];
         this.normals_2 = [];
         // -------------------_ 05
     }
@@ -149,20 +168,26 @@ export class Water_05 {
     // once on construction
     initialise_mesh_attribute_locations(){
         // -------------------_ 01
-        this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
-        this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
+        // this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
+        // this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
         // -------------------_ 02
         this.normal_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal");
         // -------------------_ 03
         // -------------------_ 04
         // -------------------_ 05
+        // ... for refetching them
+        this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
+        this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
+        // gather the attribute shader location
+        this.normal_2_location = this.gl_context.getAttribLocation(this.shader, "a_normal_2");
+        this.noise_2_location = this.gl_context.getAttribLocation(this.shader, "a_noise_2");
     }
     // every time that we regenerate the shaders
     prepare_mesh_attribute_locations(){
         // -------------------_ 01
-        // ... for refetching them
-        this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
-        this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
+        // // ... for refetching them
+        // this.vertex_position_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_position");
+        // this.vertex_reference_location = this.gl_context.getAttribLocation(this.shader, "a_vertex_reference");
         // -------------------_ 02
 
         // gather the attribute shader location
@@ -174,12 +199,12 @@ export class Water_05 {
         this.noise_location = this.managed_shader.get_attribute_location("a_noise");
         // -------------------_ 04
 
-        // gather the attribute shader location
-        this.normal_2_location = this.gl_context.getAttribLocation(this.shader, "a_normal_2");
-        this.noise_2_location = this.gl_context.getAttribLocation(this.shader, "a_noise_2");
+        // // gather the attribute shader location
+        // this.normal_2_location = this.gl_context.getAttribLocation(this.shader, "a_normal_2");
+        // this.noise_2_location = this.gl_context.getAttribLocation(this.shader, "a_noise_2");
         // -------------------_ 05
     }
-    bind_mesh_attributes(){
+    prepare_mesh_shape_attributes(){
         // -------------------_ 01
         // prepare the index buffer as the one we're working on
         this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indices_buffer);
@@ -232,15 +257,6 @@ export class Water_05 {
             0,
             0,
         );
-        // -------------------_ 02
-        // -------------------_ 03
-        // -------------------_ 04
-        // -------------------_ 05
-    }
-    prepare_drawing_environment(){
-        // -------------------_ 01
-        // start up our shader
-        this.gl_context.useProgram(this.shader);
         // -------------------_ 02
         // -------------------_ 03
         // -------------------_ 04
@@ -304,6 +320,7 @@ export class Water_05 {
         // --------------------------------------------------------
         // -------------------_ 05
     }
+
     enable_attributes(){
         // -------------------_ 01
         this.gl_context.enableVertexAttribArray(this.vertex_position_location);
@@ -332,6 +349,16 @@ export class Water_05 {
         // ...
         this.gl_context.disableVertexAttribArray(this.noise_2_location);
         this.gl_context.disableVertexAttribArray(this.normal_2_location);
+        // -------------------_ 05
+    }
+    
+    prepare_drawing_environment(){
+        // -------------------_ 01
+        // start up our shader
+        this.gl_context.useProgram(this.shader);
+        // -------------------_ 02
+        // -------------------_ 03
+        // -------------------_ 04
         // -------------------_ 05
     }
     update( delta_time ){
@@ -374,33 +401,33 @@ export class Water_05 {
     // ###########################################
     // ###########################################
 
-    replace_shader( vertex_source, fragment_source ){
-        // -------------------_ 02
-        // out with the old
-        this.managed_shader.replace_shader_code(vertex_source, fragment_source);
+    // replace_shader( vertex_source, fragment_source ){
+    //     // -------------------_ 02
+    //     // out with the old
+    //     this.managed_shader.replace_shader_code(vertex_source, fragment_source);
         
-        // in with the new
-        this.shader = this.managed_shader.get_shader_program();
+    //     // in with the new
+    //     this.shader = this.managed_shader.get_shader_program();
 
-        // relocated the things
-        this.prepare_mesh_attribute_locations();
-        // -------------------_ 03
-        // -------------------_ 04
-        // -------------------_ 05
-    }
-    customise_mesh_shape(){
-        // -------------------_ 02
-        // this.z_function = (x,y)=>{return (-Math.cos(x) * Math.sin(y));};
-        // this.remap_z_values();
+    //     // // relocated the things
+    //     // this.prepare_mesh_attribute_locations();
+    //     // -------------------_ 03
+    //     // -------------------_ 04
+    //     // -------------------_ 05
+    // }
+    // customise_mesh_shape(){
+    //     // -------------------_ 02
+    //     // this.z_function = (x,y)=>{return (-Math.cos(x) * Math.sin(y));};
+    //     // this.remap_z_values();
 
-        // this.rebuild_mesh_as_exploded();
-        // -------------------_ 03
-        this.z_function = (x,y)=>{return (-0.8);};
-        this.remap_z_values();
-        this.rebuild_mesh_as_exploded();
-        // -------------------_ 04
-        // -------------------_ 05
-    }
+    //     // this.rebuild_mesh_as_exploded();
+    //     // -------------------_ 03
+    //     this.z_function = (x,y)=>{return (-0.8);};
+    //     this.remap_z_values();
+    //     // this.rebuild_mesh_as_exploded();
+    //     // -------------------_ 04
+    //     // -------------------_ 05
+    // }
     remap_z_values(){
         // -------------------_ 02
         // total number
@@ -439,22 +466,23 @@ export class Water_05 {
         this.vertex_references = this.exploded_mesh_data.references;
         this.face_count = this.exploded_mesh_data.face_count;
 
+
         
-        // rebuild our mesh bindings
-        this.bind_mesh_attributes();
-        // rebuild our referencing information
-        this.prepare_mesh_mapping_attribute();
+        // // rebuild our mesh bindings
+        // this.prepare_mesh_shape_attributes();
+        // // rebuild our referencing information
+        // this.prepare_mesh_mapping_attribute();
 
 
         
         // generate normal vectors
-        this.normals = generate_raw_normals_for_explode_vertices( this.vertices, this.face_count );
+        this.raw_normals = generate_raw_normals_for_explode_vertices( this.vertices, this.face_count );
 
-        // generate a buffer for the normals
-        this.normal_buffer = this.gl_context.createBuffer();
+        // // generate a buffer for the normals
+        // this.normal_buffer = this.gl_context.createBuffer();
         
         // fill the buffer with information
-        this.prepare_mesh_attribute_normals();
+        // this.prepare_mesh_attribute_normals();
         // -------------------_ 03
         // -------------------_ 04
         // -------------------_ 05
@@ -467,7 +495,7 @@ export class Water_05 {
         // load the reference data
         this.gl_context.bufferData(
           this.gl_context.ARRAY_BUFFER,
-          new Float32Array(this.normals),
+          new Float32Array(this.normals_1),
           this.gl_context.STATIC_DRAW,
         );
         // map it to our attribute
@@ -509,39 +537,44 @@ export class Water_05 {
     regenerate_mesh(){
         // -------------------_ 03
         // // load the noise information
-        // this.load_noise_buffer();
+        // this.prepare_mesh_attribute_noises();
         // // generate normal vectors
         // this.normals = generate_normals_for_explode_vertices( this.vertices, this.noise, this.face_count );
         // // fill the normals buffer with information
         // this.prepare_mesh_attribute_normals();
         // -------------------_ 04
-        // load the noise information
-        this.load_noise_buffer();
+        // // load the noise information
+        // this.prepare_mesh_attribute_noises();
 
         // generate normal vectors
-        this.normals = generate_normals_for_explode_vertices( this.vertices, this.noise, this.face_count );
+        this.normals_1 = generate_normals_for_explode_vertices( this.vertices, this.noise, this.face_count );
         this.normals_2 = generate_normals_for_explode_vertices( this.vertices, this.noise_2, this.face_count );
 
         // fill the normals buffer with information
-        this.prepare_mesh_attribute_normals();
+        // this.prepare_mesh_attribute_normals();
         // -------------------_ 05
     }
     
-    prepare_noise_handle(){
-        // -------------------_ 03
+    initialise_noise_handle(){
+        // ...
         this.noise_machine = new Perlin_Noise_Machine( 3, 3 );
-        this.noise = this.noise_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
-        this.noise = this.rebuild_noise_values(this.noise);
-        this.prepare_mesh_attribute_normals();
-        // -------------------_ 04
         this.noise_2_machine = new Perlin_Noise_Machine( 3, 3 );
+        this.noise = this.noise_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
         this.noise_2 = this.noise_2_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
-        this.noise_2 = this.rebuild_noise_values(this.noise_2);
-        this.prepare_mesh_attribute_normals();
-        // -------------------_ 05
     }
+    // prepare_noise_data(){
+    //     // -------------------_ 03
+    //     // this.noise_machine = new Perlin_Noise_Machine( 3, 3 );
+    //     this.noise = this.rebuild_noise_values(this.noise);
+    //     // this.prepare_mesh_attribute_normals();
+    //     // -------------------_ 04
+    //     // this.noise_2_machine = new Perlin_Noise_Machine( 3, 3 );
+    //     this.noise_2 = this.rebuild_noise_values(this.noise_2);
+    //     // this.prepare_mesh_attribute_normals();
+    //     // -------------------_ 05
+    // }
     
-    load_noise_buffer(){
+    prepare_mesh_attribute_noises(){
         // -------------------_ 03
         // select references as the one we're working with
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.noise_buffer);
@@ -587,7 +620,7 @@ export class Water_05 {
     update_noise( delta_time ){
         // -------------------_ 03
         // TODO: have the noise change
-        // this.load_noise_buffer();
+        // this.prepare_mesh_attribute_noises();
         // -------------------_ 04
 
         // increase our time

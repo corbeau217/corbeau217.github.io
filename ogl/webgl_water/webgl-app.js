@@ -165,7 +165,7 @@ function app_main() {
     prepare_new_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
     prepare_new_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
     prepare_new_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
-    prepare_new_water_app( "webgl_water_05", Water_05, 0.0, -0.0, -3.3 );
+    prepare_new_water_app( "webgl_water_05", Water_05, 0.0, -0.7, -3.3 );
 
     // ======================================================================
     // ======================================================================
