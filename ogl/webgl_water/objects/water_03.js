@@ -10,6 +10,10 @@ const SQRT_OF_3 = 1.73205080757;
 
 
 export class Water_03 extends Water_02 {
+    // ################################## -- WATER -- OVERRIDES
+    // ###########################################
+    // ###########################################
+
     constructor( gl_context ){
         super( gl_context );
 
@@ -52,9 +56,11 @@ export class Water_03 extends Water_02 {
         let rotation_factor =  delta_time * this.y_rotation_radians;
         mat4.rotateY( this.model_matrix, this.model_matrix, rotation_factor );
     }
+    
+    // ################################## -- WATER_02 -- OVERRIDES
+    // ###########################################
+    // ###########################################
 
-    // ###########################################
-    // ###########################################
 
     // OVERRIDE  - overwriting with new function
     customise_mesh_shape(){ 
@@ -63,9 +69,7 @@ export class Water_03 extends Water_02 {
         this.rebuild_mesh_as_exploded();
     }
 
-    // ###########################################
-    // ###########################################
-    
+    // NEW FUNCTIONS #################### -- WATER_03
     // ###########################################
     // ###########################################
 
@@ -78,22 +82,14 @@ export class Water_03 extends Water_02 {
         this.prepare_mesh_attribute_normals();
     }
     
-    
-    // ###########################################
-    // ###########################################
-
     prepare_noise_handle(){
         this.noise_machine = new Perlin_Noise_Machine( 3, 3 );
         this.noise = this.noise_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
-        this.noise = this.rebuild_noise_values( this.shape.bindings, this.noise );
+        this.noise = this.rebuild_noise_values(this.noise);
         this.prepare_mesh_attribute_normals();
     }
     
-    // ###########################################
-    // ###########################################
-
     load_noise_buffer(){
-        // ...
         // select references as the one we're working with
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.noise_buffer);
     
@@ -114,22 +110,15 @@ export class Water_03 extends Water_02 {
         );
     }
     
-    // ###########################################
-    // ###########################################
-
     update_noise( delta_time ){
         // TODO: have the noise change
         // this.load_noise_buffer();
     }
 
-    // ###########################################
-    // ###########################################
-
-
-    rebuild_noise_values( vertex_bindings, noise_data ){
+    rebuild_noise_values(old_noise_data){
         let new_noise_data = [];
     
-        let triangle_count = vertex_bindings.length / 3;
+        let triangle_count = this.shape.bindings.length / 3;
     
         // separate out the information for all triangles
         for (let triangle_index = 0; triangle_index < triangle_count; triangle_index++) {
@@ -140,28 +129,28 @@ export class Water_03 extends Water_02 {
             const binding_start = triangle_index*3;
     
             // get the indices to use for our vertex data
-            const first_old_vertex_index = vertex_bindings[binding_start+0];
-            const second_old_vertex_index = vertex_bindings[binding_start+1];
-            const third_old_vertex_index = vertex_bindings[binding_start+2];
+            const first_old_vertex_index = this.shape.bindings[binding_start+0];
+            const second_old_vertex_index = this.shape.bindings[binding_start+1];
+            const third_old_vertex_index = this.shape.bindings[binding_start+2];
     
             // --------------------------------------------------------
             // --------------------------------------------------------
     
             // get the vertices (they're in groups of 3)
             const first_vertex = {
-                x: noise_data[( first_old_vertex_index*3)  ],
-                y: noise_data[( first_old_vertex_index*3)+1],
-                z: noise_data[( first_old_vertex_index*3)+2],
+                x: old_noise_data[( first_old_vertex_index*3)  ],
+                y: old_noise_data[( first_old_vertex_index*3)+1],
+                z: old_noise_data[( first_old_vertex_index*3)+2],
             };
             const second_vertex = {
-                x: noise_data[(second_old_vertex_index*3)  ],
-                y: noise_data[(second_old_vertex_index*3)+1],
-                z: noise_data[(second_old_vertex_index*3)+2],
+                x: old_noise_data[(second_old_vertex_index*3)  ],
+                y: old_noise_data[(second_old_vertex_index*3)+1],
+                z: old_noise_data[(second_old_vertex_index*3)+2],
             };
             const third_vertex = {
-                x: noise_data[( third_old_vertex_index*3)  ],
-                y: noise_data[( third_old_vertex_index*3)+1],
-                z: noise_data[( third_old_vertex_index*3)+2],
+                x: old_noise_data[( third_old_vertex_index*3)  ],
+                y: old_noise_data[( third_old_vertex_index*3)+1],
+                z: old_noise_data[( third_old_vertex_index*3)+2],
             };
     
             // --------------------------------------------------------
@@ -176,7 +165,6 @@ export class Water_03 extends Water_02 {
             // --------------------------------------------------------
         }
         
-    
         return new_noise_data;
     }
 

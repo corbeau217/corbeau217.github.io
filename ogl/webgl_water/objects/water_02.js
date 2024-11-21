@@ -11,16 +11,17 @@ import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
 const SQRT_OF_3 = 1.73205080757;
 
 export class Water_02 extends Water {
+    // ################################## -- WATER -- OVERRIDES
+    // ###########################################
+    // ###########################################
+
     constructor( gl_context ){
         super( gl_context );
 
         this.replace_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
 
-
         // defer so we can overwrite
         this.customise_mesh_shape();
-
-        
     }
     prepare_settings(){
         super.prepare_settings();
@@ -55,9 +56,6 @@ export class Water_02 extends Water {
         this.normal_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal");
     }
 
-    // ###########################################
-    // ###########################################
-
     prepare_mesh_attribute_locations(){
         super.prepare_mesh_attribute_locations();
 
@@ -65,10 +63,6 @@ export class Water_02 extends Water {
         // this.normal_location = this.managed_shader.get_attribute_location("a_normal");
         this.normal_location = this.managed_shader.get_attribute_location_by_index( this.normal_attribute_index );
     }
-
-    
-    // ###########################################
-    // ###########################################
 
     prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
         // --- directly replace super
@@ -114,9 +108,6 @@ export class Water_02 extends Water {
         // --------------------------------------------------------
     }
     
-    // ###########################################
-    // ###########################################
-
     enable_attributes(){
         super.enable_attributes();
         // ...
@@ -130,6 +121,7 @@ export class Water_02 extends Water {
         // this.gl_context.disableVertexAttribArray(this.normal_location);
     }
 
+    // NEW FUNCTIONS #################### -- WATER_02
     // ###########################################
     // ###########################################
 
@@ -143,9 +135,6 @@ export class Water_02 extends Water {
         // relocated the things
         this.prepare_mesh_attribute_locations();
     }
-
-    // ###########################################
-    // ###########################################
 
     customise_mesh_shape(){
         this.z_function = (x,y)=>{return (-Math.cos(x) * Math.sin(y));};
@@ -178,9 +167,6 @@ export class Water_02 extends Water {
         }
     }
 
-    // ###########################################
-    // ###########################################
-
     rebuild_mesh_as_exploded(){
         // gather the data when it's by face
         this.exploded_mesh_data = explode_mesh_with_references( this.vertices, this.indices, this.vertex_references );
@@ -209,9 +195,6 @@ export class Water_02 extends Water {
         this.prepare_mesh_attribute_normals();
     }
 
-    // ###########################################
-    // ###########################################
-
     prepare_mesh_attribute_normals(){
         // select references as the one we're working with
         this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, this.normal_buffer);
@@ -233,9 +216,6 @@ export class Water_02 extends Water {
         );
     }
 
-
     // ###########################################
     // ###########################################
-
-
 }
