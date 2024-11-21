@@ -23,7 +23,7 @@ export class Water_05 {
 
         // create our mesh
         this.generate_mesh();
-        this.initialise_mesh_buffers();
+        this.indices_buffer = this.gl_context.createBuffer();
 
 
         this.initialise_noise_handle();
@@ -65,8 +65,6 @@ export class Water_05 {
         this.light_ambient_intensity = { r: 0.7, g: 0.7, b: 0.7 };
 
         this.shape_colouring = {
-            // vec3 colour_darkest = vec3( 0.055, 0.302, 0.573 );
-            // vec3 colour_lightest = vec3( 0.788, 0.914, 1.000 );
             darkest:  { r: 0.055, g: 0.302, b: 0.573, a: 1.0 },
             lightest: { r: 0.788, g: 0.914, b: 1.000, a: 1.0 },
         };
@@ -105,18 +103,6 @@ export class Water_05 {
         this.vertex_references = this.shape.get_vertex_references();
         this.face_count = this.shape.get_face_count();
     }
-    initialise_mesh_buffers(){
-        // this.vertex_buffer = this.gl_context.createBuffer();
-        this.indices_buffer = this.gl_context.createBuffer();
-        // this.vertex_reference_buffer = this.gl_context.createBuffer();
-        
-        // this.normal_raw_buffer = this.gl_context.createBuffer();
-        // this.normal_1_buffer = this.gl_context.createBuffer();
-        // this.normal_2_buffer = this.gl_context.createBuffer();
-
-        // this.noise_1_buffer = this.gl_context.createBuffer();
-        // this.noise_2_buffer = this.gl_context.createBuffer();
-    }
     // once on construction
     initialise_mesh_attribute_locations(){
         this.vertex_position_attribute_index = this.managed_shader.declare_managed_attribute_location("a_vertex_position");
@@ -140,8 +126,8 @@ export class Water_05 {
 
         this.managed_shader.load_attribute_buffer_floats( this.vertex_position_attribute_index, new Float32Array(this.vertices), 4 );
         this.managed_shader.load_attribute_buffer_floats( this.normal_raw_attribute_index, new Float32Array(this.normals_raw), 3 );
-        this.managed_shader.load_attribute_buffer_floats( this.normal_1_attribute_index, new Float32Array(this.normals_1), 3 );
-        this.managed_shader.load_attribute_buffer_floats( this.normal_2_attribute_index, new Float32Array(this.normals_2), 3 );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_1_attribute_index,   new Float32Array(this.normals_1),   3 );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_2_attribute_index,   new Float32Array(this.normals_2),   3 );
         this.managed_shader.load_attribute_buffer_floats( this.noise_1_attribute_index, new Float32Array(this.noise_1), 3 );
         this.managed_shader.load_attribute_buffer_floats( this.noise_2_attribute_index, new Float32Array(this.noise_2), 3 );
     }
