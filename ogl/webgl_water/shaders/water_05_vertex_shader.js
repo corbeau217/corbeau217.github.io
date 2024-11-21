@@ -33,11 +33,11 @@ uniform vec3 u_shape_colour_darkest;
 uniform vec3 u_shape_colour_lightest;
 
 // --- noise shifting values ---
-float minimum_noise_mixing = 0.35;
-float maximum_noise_mixing = 0.65;
+float minimum_noise_mixing = 0.25;
+float maximum_noise_mixing = 0.75;
 
-float minimum_noise_usage = 0.07;
-float maximum_noise_usage = 0.386;
+float minimum_noise_usage = 0.34;
+float maximum_noise_usage = 0.486;
 
 void main(){
     // ---------------------------------------------------------
@@ -61,7 +61,7 @@ void main(){
     vec3 normal_cocktail = mix(a_normal_1, a_normal_2, noise_mixer_lerp_t);
 
     vec3 noise_val = mix(vec3(0.0), noise_cocktail, noise_usage_lerp_t);
-    vec3 normal_val = mix(a_normal_raw, normal_cocktail, noise_usage_lerp_t);
+    vec3 normal_val = mix(vec3(0.0,1.0,0.0), normal_cocktail, noise_usage_lerp_t);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------

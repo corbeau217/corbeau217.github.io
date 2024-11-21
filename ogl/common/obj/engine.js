@@ -46,25 +46,35 @@ export class Engine_Shape {
 
         this.ring_radius_list = [
             // front cone tip
-            { radius: 0.0, position_z: 0.5 },
-            { radius: 0.2, position_z: 0.2 },
+            { radius: 0.0,  position_z:  0.87, colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.28, position_z:  0.7,  colour: {r:0.5, g:0.5, b:0.5}},
             // end of blades
-            { radius: 0.8, position_z: 0.2 },
+            { radius: 0.58, position_z:  0.7,  colour: {r:0.5, g:0.5, b:0.5}},
             // front of shell
-            { radius: 0.7, position_z: 1.0 },
+            { radius: 0.67, position_z:  1.0,  colour: {r:0.5, g:0.5, b:0.5}},
             // widest part
-            { radius: 1.0, position_z: 0.4 },
+            { radius: 0.73, position_z:  0.48, colour: {r:0.5, g:0.5, b:0.5}},
             // past blades
-            { radius: 0.9, position_z: 0.0 },
+            { radius: 0.7,  position_z: -0.17, colour: {r:0.5, g:0.5, b:0.5}},
             // end of shell
-            { radius: 0.6, position_z: -0.5 },
+            { radius: 0.6,  position_z: -0.62, colour: {r:0.5, g:0.5, b:0.5}},
             // outer rear exhaust
-            { radius: 0.5, position_z: -0.4 },
-            { radius: 0.35, position_z: -0.7 },
+            { radius: 0.62, position_z: -0.4,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.39, position_z: -0.86, colour: {r:0.5, g:0.5, b:0.5}},
             // rear inner exhaust
-            { radius: 0.25, position_z: -0.6 },
+            { radius: 0.52, position_z: -0.6,  colour: {r:0.5, g:0.5, b:0.5}},
             // rear tip
-            { radius: 0.0, position_z: -1.0 },
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            // ---- junk to fix it not binding right
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
         ];
         
         // ==========================================
@@ -74,7 +84,7 @@ export class Engine_Shape {
         // could be more efficient but it's easier to read right now
 
         // all rings we have data for
-        for (let ring_index = 1; ring_index < this.ring_radius_list.length-2; ring_index++) {
+        for (let ring_index = 0; ring_index < this.ring_radius_list.length; ring_index++) {
             // current ring information
             const ring_data = this.ring_radius_list[ring_index];
             
@@ -85,8 +95,8 @@ export class Engine_Shape {
             // for the current ring we want to generate all the vertices for it
             for (let i = 0; i < current_ring_xy_points.length; i++) {
                 let circle_data = {
-                    x: current_ring_xy_points[ i*2 ],
-                    y: current_ring_xy_points[ i*2+1 ],
+                    x: current_ring_xy_points[ (i*2) ],
+                    y: current_ring_xy_points[ (i*2)+1 ],
                 };
                 // x value
                 this.vertices.push( ring_data.radius * circle_data.x );
@@ -142,7 +152,7 @@ export class Engine_Shape {
         let left_list = [];
         // number of points on a circle
         for(let i = 0; i < this.circle_point_count; i++){
-            let left_index = ((this.ring_radius_list.length-2)*this.circle_point_count) + i;
+            let left_index = ((this.ring_radius_list.length-1)*this.circle_point_count) + i;
             left_list.push( left_index );
         }
         indices_list_of_lists.push( tesselate_indices_list_to_index( left_list, (this.circle_point_count*(this.ring_radius_list.length-2)) ) );

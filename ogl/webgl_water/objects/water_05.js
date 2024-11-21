@@ -79,7 +79,7 @@ export class Water_05 {
         mat4.rotateY( this.model_matrix, this.model_matrix, this.rotation_y );
         
 
-        this.y_rotation_radians = Math.PI / 12.0;
+        this.y_rotation_radians = Math.PI / 24.0;
 
         
         
@@ -90,6 +90,16 @@ export class Water_05 {
         this.normals_normals_raw = [];
         this.normals_1 = [];
         this.normals_2 = [];
+
+
+
+        this.noise_properties = {
+            noise_1_size: { x: 4, y: 6, },
+            noise_2_size: { x: 7, y: 4, },
+            mixer_time_scale: 1.8,
+            usage_time_scale: 2.2312,
+        };
+
     }
     generate_mesh(){
         // raw shape
@@ -334,8 +344,8 @@ export class Water_05 {
         this.normals_2 = generate_normals_for_explode_vertices( this.vertices, this.noise_2, this.face_count );
     }
     initialise_noise_handle(){
-        this.noise_1_machine = new Perlin_Noise_Machine( 23, 19 );
-        this.noise_2_machine = new Perlin_Noise_Machine( 19, 23 );
+        this.noise_1_machine = new Perlin_Noise_Machine( this.noise_properties.noise_1_size.x, this.noise_properties.noise_1_size.y );
+        this.noise_2_machine = new Perlin_Noise_Machine( this.noise_properties.noise_2_size.x, this.noise_properties.noise_2_size.y );
 
         this.noise_1 = this.noise_1_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
         this.noise_2 = this.noise_2_machine.gather_noise_values_as_float_array( this.shape.vertex_count.x, this.shape.vertex_count.y );
@@ -346,10 +356,10 @@ export class Water_05 {
         this.time_interpolation_value.dt += delta_time;
 
         // get the x and y interpolation values
-        let noise_cosine_mixer = Math.cos(this.time_interpolation_value.dt*1.8);
+        let noise_cosine_mixer = Math.cos(this.time_interpolation_value.dt*this.noise_properties.mixer_time_scale);
         this.time_interpolation_value.x = (noise_cosine_mixer+1.0)/2.0;
         
-        let noise_sine_usage = Math.sin(this.time_interpolation_value.dt*2.2312);
+        let noise_sine_usage = Math.sin(this.time_interpolation_value.dt*this.noise_properties.usage_time_scale);
         this.time_interpolation_value.y = (noise_sine_usage+1.0)/2.0;
     }
 
