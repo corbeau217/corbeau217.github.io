@@ -1,5 +1,8 @@
 import { Scene_Graph } from "./scene_graph.js";
 
+
+//   0.0 to 1.0:                    [   R,   G,   B,   A ]
+const canvas_default_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
 export class Canvas_Object {
 
 
@@ -133,4 +136,22 @@ export class Canvas_Object {
     // ############################################################################################
     // ############################################################################################
 
+    static new_with_focus_object( canvas_element_name, Scene_Focus_Object, camera_offset_x, camera_offset_y, camera_offset_z ){
+        let canvas_app = new Canvas_Object( canvas_element_name, canvas_default_clear_colour );
+        let focus_obj = new Scene_Focus_Object( canvas_app.get_gl_context() );
+    
+        // prepare the scene
+        canvas_app.get_scene_object()
+            .add_object( focus_obj, focus_obj.update, focus_obj.draw )
+            .set_camera_offset( camera_offset_x, camera_offset_y, camera_offset_z );
+    
+        // give it to the asker
+        return canvas_app;
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    
 }
