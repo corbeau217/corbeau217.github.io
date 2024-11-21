@@ -11,7 +11,7 @@ const DAILY_POST_DATA = {
             // the day that post is for
             "day": "thursday",
             // the name for the post on that day
-            "title": "lorem ipsum",
+            "title": "stormy seas",
             // this is just always the book for now
             "thumbnail": "/img/bookicon.png",
             "thumbnail_alt_text": "an open book icon"
