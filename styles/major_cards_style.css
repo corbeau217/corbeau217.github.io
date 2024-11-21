@@ -1,0 +1,16 @@
+
+/* ===== MAIN BODY ===== */
+.major_card_content_body {
+    flex-wrap: wrap;
+    border-left: 2px solid #c1d4ed;
+    grid-column: 2 / span 3;
+    padding: 5px;
+    text-align: left;
+    display: flex;
+    flex-direction: row dense;
+    
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    justify-items: space-evenly;
+}

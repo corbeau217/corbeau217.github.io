@@ -2,17 +2,21 @@
 import { Canvas_Object } from "../common/canvas_object.js";
 import { Water } from "./objects/water.js";
 import { Water_02 } from "./objects/water_02.js";
-import { Water_03 } from "./objects/water_03.js";
-import { Water_04 } from "./objects/water_04.js";
 
 
 import { Perlin_Noise_Machine, generate_normals_for_explode_vertices } from "./objects/perlin_noise_machine.js";
 
+import { Water_03 } from "./objects/water_03.js";
 import { VERTEX_SHADER_SRC as water_03_vertex_shader_source } from "./shaders/water_03_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as water_03_fragment_shader_source } from "./shaders/water_03_fragment_shader.js";
 
+import { Water_04 } from "./objects/water_04.js";
 import { VERTEX_SHADER_SRC as water_04_vertex_shader_source } from "./shaders/water_04_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as water_04_fragment_shader_source } from "./shaders/water_04_fragment_shader.js";
+
+import { Water_05 } from "./objects/water_05.js";
+import { VERTEX_SHADER_SRC as water_05_vertex_shader_source } from "./shaders/water_05_vertex_shader.js";
+import { FRAGMENT_SHADER_SRC as water_05_fragment_shader_source } from "./shaders/water_05_fragment_shader.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -161,6 +165,7 @@ function app_main() {
     prepare_new_water_app( "webgl_water_02", Water_02, 0.0, -0.0, -3.3 );
     prepare_new_water_app( "webgl_water_03", Water_03, 0.0, -0.0, -3.3 );
     prepare_new_water_app( "webgl_water_04", Water_04, 0.0, -0.0, -3.3 );
+    prepare_new_water_app( "webgl_water_05", Water_05, 0.0, -0.0, -3.3 );
 
     // ======================================================================
     // ======================================================================
@@ -212,6 +217,11 @@ function provide_shader_code(){
     // water 04
     insert_shader_code_block( "webgl_water_04_vertex_source", water_04_vertex_shader_source );
     insert_shader_code_block( "webgl_water_04_fragment_source", water_04_fragment_shader_source );
+
+
+    // water 05
+    insert_shader_code_block( "webgl_water_05_vertex_source", water_05_vertex_shader_source );
+    insert_shader_code_block( "webgl_water_05_fragment_source", water_05_fragment_shader_source );
 
 
     // ======================================================================
