@@ -6,7 +6,7 @@ uniform mat4 u_mvp_matrix;
 uniform mat3 u_normal_matrix;
 
 // --- interpolation uniform ---
-// x is used to interpolate our a_normal/a_noise
+// x is used to interpolate our a_normal_1/a_noise_1
 uniform vec3 u_time_val;
 
 // --- location data ---
@@ -14,12 +14,12 @@ attribute vec4 a_vertex_position;
 attribute vec2 a_vertex_reference;
 
 // interpolate between for the normal
-attribute vec3 a_normal;
+attribute vec3 a_normal_1;
 attribute vec3 a_normal_2;
 
 // --- noise data ---
 // interpolate between for the noise
-attribute vec3 a_noise;
+attribute vec3 a_noise_1;
 attribute vec3 a_noise_2;
 
 // --- fragment variables ---
@@ -52,8 +52,8 @@ void main(){
     
     float height_lerp_t = (1.0-u_time_val.x) * minimum_t  +  (u_time_val.x) * maximum_t;
 
-    vec3 noise_val = mix(a_noise, a_noise_2, height_lerp_t);
-    vec3 normal_val = mix(a_normal, a_normal_2, height_lerp_t);
+    vec3 noise_val = mix(a_noise_1, a_noise_2, height_lerp_t);
+    vec3 normal_val = mix(a_normal_1, a_normal_2, height_lerp_t);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
