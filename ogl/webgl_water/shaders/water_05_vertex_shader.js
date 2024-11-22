@@ -6,8 +6,7 @@ uniform mat4 u_mvp_matrix;
 uniform mat3 u_normal_matrix;
 
 // --- interpolation uniform ---
-// x is used to interpolate our a_normal_1/a_noise_1
-uniform vec3 u_time_val;
+uniform vec2 u_noise_settings;
 
 // --- location data ---
 attribute vec4 a_vertex_position;
@@ -33,11 +32,15 @@ uniform vec3 u_shape_colour_darkest;
 uniform vec3 u_shape_colour_lightest;
 
 // --- noise shifting values ---
-float minimum_noise_mixing = 0.25;
-float maximum_noise_mixing = 0.75;
 
-float minimum_noise_usage = 0.34;
-float maximum_noise_usage = 0.486;
+// used to interpolate between normal/noise pairs
+float noise_mixer_lerp_t = u_noise_settings.x;
+
+// used to interpolate between none or full noise
+float noise_usage_lerp_t = u_noise_settings.y;
+
+// when not using noise
+vec3 no_noise_vector = vec3(0.0);
 
 void main(){
     // ---------------------------------------------------------
@@ -50,18 +53,12 @@ void main(){
     // ---------------------------------------------------------
     // ---- prepare height data
 
-    float mixer_timer = u_time_val.x;
-    float usage_timer = u_time_val.y;
-
-    float noise_mixer_lerp_t = (1.0-mixer_timer) * minimum_noise_mixing  +  (mixer_timer) * maximum_noise_mixing;
-    float noise_usage_lerp_t = (1.0-usage_timer) * minimum_noise_usage  +  (usage_timer) * maximum_noise_usage;
-
     // make our cocktails of noise and normals
     vec3 noise_cocktail = mix(a_noise_1, a_noise_2, noise_mixer_lerp_t);
     vec3 normal_cocktail = mix(a_normal_1, a_normal_2, noise_mixer_lerp_t);
 
-    vec3 noise_val = mix(vec3(0.0), noise_cocktail, noise_usage_lerp_t);
-    vec3 normal_val = mix(vec3(0.0,1.0,0.0), normal_cocktail, noise_usage_lerp_t);
+    vec3 noise_val = mix(no_noise_vector, noise_cocktail, noise_usage_lerp_t);
+    vec3 normal_val = mix(a_normal_raw, normal_cocktail, noise_usage_lerp_t);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
