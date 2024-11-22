@@ -82,7 +82,7 @@ export class Water_05 {
         
         this.noise_1 = [];
         this.noise_2 = [];
-        this.normals_normals_raw = [];
+        this.normals_raw = [];
         this.normals_1 = [];
         this.normals_2 = [];
 
