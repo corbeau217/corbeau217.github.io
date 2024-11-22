@@ -41,13 +41,14 @@ float noise_usage_lerp_t = u_noise_settings.y;
 
 // when not using noise
 vec3 no_noise_vector = vec3(0.0);
+vec3 up_vector = vec3(0.0, 1.0, 0.0);
 
 void main(){
     // ---------------------------------------------------------
     // ---------------------------------------------------------
     // ---- general settings
 
-    gl_PointSize = 10.0;
+    gl_PointSize = 21.0;
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
@@ -57,14 +58,31 @@ void main(){
     vec3 noise_cocktail = mix(a_noise_1, a_noise_2, noise_mixer_lerp_t);
     vec3 normal_cocktail = mix(a_normal_1, a_normal_2, noise_mixer_lerp_t);
 
+
     vec3 noise_val = mix(no_noise_vector, noise_cocktail, noise_usage_lerp_t);
-    vec3 normal_val = mix(a_normal_raw, normal_cocktail, noise_usage_lerp_t);
+    vec3 noise_usage_normal = mix(a_normal_raw, normal_cocktail, noise_usage_lerp_t);
 
     // ---------------------------------------------------------
     // ---------------------------------------------------------
-    // ---- location information
+    // ---- location
 
     vec3 position_with_noise = a_vertex_position.xyz + noise_val;
+
+    // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // ---- determine actual normal
+
+    float how_tall_it_is = (position_with_noise.y+1.0)/2.0;
+
+    // cancel out the shading 
+    vec3 strip_normal_from_peaks = mix(noise_usage_normal, up_vector, how_tall_it_is);
+
+    vec3 normal_val = mix(strip_normal_from_peaks, normal_cocktail, noise_usage_lerp_t);
+
+    // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // ---- apply point
+
 
     // then prepare the point location
     gl_Position = u_mvp_matrix * vec4( position_with_noise, 1.0);
