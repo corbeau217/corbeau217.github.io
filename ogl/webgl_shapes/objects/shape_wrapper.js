@@ -1,8 +1,8 @@
 import { Shader_Manager } from "/ogl/common/shaders/shader_engine.js";
 import { VERTEX_SHADER_SRC as shape_wrapper_default_vertex_source } from "../shaders/shape_wrapper_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as shape_wrapper_default_fragment_source } from "../shaders/shape_wrapper_fragment_shader.js";
-import { explode_mesh, generate_normals_for_explode_vertices } from "../../common/util/geometry.js";
-import { Crate_Shape } from "../../common/obj/crate_shape.js";
+import { explode_mesh, generate_normals_for_explode_vertices,generate_normals } from "../../common/util/geometry.js";
+import { Sphere_Shape } from "../../common/obj/sphere_shape.js";
 
 export class Shape_Wrapper {
     // ############################################################################################
@@ -46,7 +46,7 @@ export class Shape_Wrapper {
         this.light_source_vector = { x: 4.0, y: 3.0, z: -3.5 };
         this.light_ambient_intensity = { r: 0.6, g: 0.6, b: 0.6 };
 
-        this.shape = new Crate_Shape();
+        this.shape = new Sphere_Shape(false);
         this.load_mesh_data();
     }
     // once on construction
@@ -83,10 +83,10 @@ export class Shape_Wrapper {
         this.managed_shader.load_attribute_buffer_floats( this.normals_attribute_index, this.normals_float_array );
     }
     // when announcing a new shape to use
-    replace_shape(Shape_Replacement){
-        this.shape = new Shape_Replacement();
+    replace_shape( replacement_shape_instance ){
+        this.shape = replacement_shape_instance;
         this.load_mesh_data();
-        this.rebuild_mesh_as_exploded();
+        this.update_attribute_data();
     }
 
     rebuild_mesh_as_exploded(){
@@ -107,6 +107,7 @@ export class Shape_Wrapper {
             this.normals = this.shape.normals;
         }
         else{
+            this.normals = generate_normals(this.vertices, this.indices);
             this.rebuild_mesh_as_exploded();
         }
     }

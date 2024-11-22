@@ -201,6 +201,21 @@ export function unit_sphere_float_vertices(){
     return vertices;
 }
 
+export function unit_sphere_normals(){
+    // prepare vertices array
+    let vertices = [];
+    // get the vertices
+    let unit_circle_vertices = unit_sphere_points_vector4f();
+    // then we turn them into actual points
+    for (let vertex_index = 0; vertex_index < unit_circle_vertices.length; vertex_index++) {
+        const current_vertex = unit_circle_vertices[vertex_index];
+        vertices.push(current_vertex.x);
+        vertices.push(current_vertex.y);
+        vertices.push(current_vertex.z);
+    }
+    return vertices;
+}
+
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
