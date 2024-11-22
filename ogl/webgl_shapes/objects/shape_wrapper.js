@@ -23,8 +23,6 @@ export class Shape_Wrapper {
         // initialise our attribute information
         this.initialise_mesh_attribute_locations();
 
-        this.indices_buffer = this.gl_context.createBuffer();
-
         this.initialise_gl_arrays();
         this.initialise_attribute_data();
     }
@@ -51,6 +49,7 @@ export class Shape_Wrapper {
     }
     // once on construction
     initialise_mesh_attribute_locations(){
+        this.managed_shader.declare_managed_bindings();
         this.vertex_position_attribute_index = this.managed_shader.declare_managed_attribute_location("a_vertex_position");
         this.normals_attribute_index = this.managed_shader.declare_managed_attribute_location("a_normal");
     }
@@ -66,19 +65,13 @@ export class Shape_Wrapper {
         this.normals_float_array = new Float32Array(this.normals);
     }
     initialise_attribute_data(){
-        // prepare the index buffer as the one we're working on
-        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indices_buffer);
-        // announce the data as our indices/bindings data
-        this.gl_context.bufferData(
-            this.gl_context.ELEMENT_ARRAY_BUFFER,
-            this.indices_int_array,
-            this.gl_context.STATIC_DRAW
-        );
+        this.managed_shader.load_binding_buffer( this.indices_int_array );
         this.managed_shader.initialise_attribute_buffer_floats( this.vertex_position_attribute_index, this.vertices_float_array, 4 );
         this.managed_shader.initialise_attribute_buffer_floats( this.normals_attribute_index, this.normals_float_array, 3 );
     }
     // when we load the buffers with data
     update_attribute_data(){
+        this.managed_shader.load_binding_buffer( this.indices_int_array );
         this.managed_shader.load_attribute_buffer_floats( this.vertex_position_attribute_index, this.vertices_float_array );
         this.managed_shader.load_attribute_buffer_floats( this.normals_attribute_index, this.normals_float_array );
     }
@@ -86,6 +79,7 @@ export class Shape_Wrapper {
     replace_shape( replacement_shape_instance ){
         this.shape = replacement_shape_instance;
         this.load_mesh_data();
+        this.initialise_gl_arrays();
         this.update_attribute_data();
     }
 
@@ -103,8 +97,9 @@ export class Shape_Wrapper {
         this.vertices = this.shape.get_vertices();
         this.indices = this.shape.get_bindings();
         this.face_count = this.shape.get_face_count();
-        if(this.shape.normals != undefined){
+        if(this.shape.prevent_exploding){
             this.normals = this.shape.normals;
+            // console.log(`not exploding faces`);
         }
         else{
             this.normals = generate_normals(this.vertices, this.indices);
@@ -155,9 +150,14 @@ export class Shape_Wrapper {
     }
     draw_self(){
         // ... override with things?
-        // this.gl_context.drawElements(this.gl_context.TRIANGLES, this.face_count*3, this.gl_context.UNSIGNED_SHORT, 0);
-        this.gl_context.drawElements(this.gl_context.TRIANGLES, this.face_count*3, this.gl_context.UNSIGNED_SHORT, 0);
+        if(this.shape.prefer_wireframe){
+            this.gl_context.drawElements(this.gl_context.LINE_LOOP, this.face_count*3, this.gl_context.UNSIGNED_SHORT, 0);
+        }
+        else {
+            this.gl_context.drawElements(this.gl_context.TRIANGLES, this.face_count*3, this.gl_context.UNSIGNED_SHORT, 0);
+        }
         this.gl_context.drawElements(this.gl_context.POINT, this.face_count*3, this.gl_context.UNSIGNED_SHORT, 0);
+
     }
     draw( view_matrix, projection_matrix ){
         // test we have a shape to draw

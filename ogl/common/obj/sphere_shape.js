@@ -8,7 +8,8 @@ export class Sphere_Shape {
     // ...
     constructor( winding_cw ){
         this.prepare_shape_settings();
-        this.winding_clockwise = (winding_cw!=undefined)?winding_cw:true;
+        this.winding_clockwise = false;
+        this.prevent_exploding = true;
         this.build_mesh();
     }
     prepare_shape_settings(){

@@ -6,6 +6,7 @@ import {
     tesselate_indices_index_to_list,
     tesselate_indices_list_to_index,
 } from "../util/geometry.js";
+import { Lathe } from "../util/lathe.js";
 
 
 export class Engine_Shape {
@@ -23,149 +24,55 @@ export class Engine_Shape {
         this.bindings = [];
 
         this.circle_point_count = 12;
+        this.face_count = 0;
+
+        this.lathe_data = {
+            // front cone tip
+            first_point: { radius: 0.0,  position_z:  0.87, colour: {r:0.5, g:0.5, b:0.5}},
+            // rear tip
+            last_point: { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+            // the others
+            body_points: [
+                // front cone base
+                { radius: 0.28, position_z:  0.7,  colour: {r:0.5, g:0.5, b:0.5}},
+                // end of blades
+                { radius: 0.58, position_z:  0.7,  colour: {r:0.5, g:0.5, b:0.5}},
+                // front of shell
+                { radius: 0.67, position_z:  1.0,  colour: {r:0.5, g:0.5, b:0.5}},
+                // widest part
+                { radius: 0.73, position_z:  0.48, colour: {r:0.5, g:0.5, b:0.5}},
+                // past blades
+                { radius: 0.7,  position_z: -0.17, colour: {r:0.5, g:0.5, b:0.5}},
+                // end of shell
+                { radius: 0.6,  position_z: -0.62, colour: {r:0.5, g:0.5, b:0.5}},
+                // outer rear exhaust
+                { radius: 0.62, position_z: -0.4,  colour: {r:0.5, g:0.5, b:0.5}},
+                { radius: 0.39, position_z: -0.86, colour: {r:0.5, g:0.5, b:0.5}},
+                // rear inner exhaust
+                { radius: 0.52, position_z: -0.6,  colour: {r:0.5, g:0.5, b:0.5}},
+            ],
+            slice_count: this.circle_point_count,
+        };
 
         // ==========================================
         // ==========================================
         // generate
 
-        this.generateVertices();
-        this.generateBindings();
+        // convince to do our dirty work
+        this.lathe = new Lathe( this.lathe_data );
+
+        // heist the data
+        this.vertices = this.lathe.vertices;
+        this.bindings = this.lathe.bindings;
+        this.colours = this.lathe.colours;
+        this.normals = this.lathe.normals;
+        this.vertex_count = this.lathe.vertex_count;
+        this.face_count = this.lathe.face_count;
+        this.prevent_exploding = true;
+        this.prefer_wireframe = true;
 
         // ==========================================
         // ==========================================
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    generateVertices(){
-        // ==========================================
-        // ==========================================
-        // === sizings
-
-        this.ring_radius_list = [
-            // front cone tip
-            { radius: 0.0,  position_z:  0.87, colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.28, position_z:  0.7,  colour: {r:0.5, g:0.5, b:0.5}},
-            // end of blades
-            { radius: 0.58, position_z:  0.7,  colour: {r:0.5, g:0.5, b:0.5}},
-            // front of shell
-            { radius: 0.67, position_z:  1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            // widest part
-            { radius: 0.73, position_z:  0.48, colour: {r:0.5, g:0.5, b:0.5}},
-            // past blades
-            { radius: 0.7,  position_z: -0.17, colour: {r:0.5, g:0.5, b:0.5}},
-            // end of shell
-            { radius: 0.6,  position_z: -0.62, colour: {r:0.5, g:0.5, b:0.5}},
-            // outer rear exhaust
-            { radius: 0.62, position_z: -0.4,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.39, position_z: -0.86, colour: {r:0.5, g:0.5, b:0.5}},
-            // rear inner exhaust
-            { radius: 0.52, position_z: -0.6,  colour: {r:0.5, g:0.5, b:0.5}},
-            // rear tip
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            // ---- junk to fix it not binding right
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-            { radius: 0.0,  position_z: -1.0,  colour: {r:0.5, g:0.5, b:0.5}},
-        ];
-        
-        // ==========================================
-        // ==========================================
-        // create the rings
-
-        // could be more efficient but it's easier to read right now
-
-        // all rings we have data for
-        for (let ring_index = 0; ring_index < this.ring_radius_list.length; ring_index++) {
-            // current ring information
-            const ring_data = this.ring_radius_list[ring_index];
-            
-            // get a list of vertices for the ring
-            let current_ring_xy_points = circle_points_radius(this.circle_point_count, ring_data.radius);
-            // let current_ring_xy_points = unit_circle_points(this.circle_point_count);
-            
-            // for the current ring we want to generate all the vertices for it
-            for (let i = 0; i < current_ring_xy_points.length; i++) {
-                let circle_data = {
-                    x: current_ring_xy_points[ (i*2) ],
-                    y: current_ring_xy_points[ (i*2)+1 ],
-                };
-                // x value
-                this.vertices.push( ring_data.radius * circle_data.x );
-                // y value
-                this.vertices.push( ring_data.radius * circle_data.y );
-                // z value
-                this.vertices.push( ring_data.position_z );
-                // w value
-                this.vertices.push( 1.0 );
-            }
-        }
-
-        // ==========================================
-        // ==========================================
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    generateBindings(){
-        // create the list of lists of indices
-        let indices_list_of_lists = [];
-
-        // first point is on its own, then we do the rings
-
-        // for all the circles we're doing
-        let right_list = [];
-        // number of points on a circle
-        for(let i = 0; i < this.circle_point_count; i++){
-            let right_index = this.circle_point_count + i;
-            right_list.push( right_index );
-        }
-        indices_list_of_lists.push( tesselate_indices_index_to_list( 0, right_list ) );
-
-        // also ignoring the last element
-        // for all the circles we're doing
-        for (let ring_index = 1; ring_index < this.ring_radius_list.length; ring_index++) {
-            let left_list = [];
-            let right_list = [];
-            // number of points on a circle
-            for(let i = 0; i < this.circle_point_count; i++){
-                let left_index = ((ring_index-1)*this.circle_point_count) + i;
-                let right_index = ((ring_index+1)*this.circle_point_count) + i;
-                left_list.push( left_index );
-                right_list.push( right_index );
-            }
-            indices_list_of_lists.push( tesselate_between_indices_lists( left_list, right_list ) );
-        }
-
-
-        // for all the circles we're doing
-        let left_list = [];
-        // number of points on a circle
-        for(let i = 0; i < this.circle_point_count; i++){
-            let left_index = ((this.ring_radius_list.length-1)*this.circle_point_count) + i;
-            left_list.push( left_index );
-        }
-        indices_list_of_lists.push( tesselate_indices_list_to_index( left_list, (this.circle_point_count*(this.ring_radius_list.length-2)) ) );
-
-        // now we go through each list and fill our bindings list iwth it
-        for (let i = 0; i < indices_list_of_lists.length; i++) {
-            const sub_list = indices_list_of_lists[i];
-            // all points in sublist
-            for (let j = 0; j < sub_list.length; j++) {
-                // add to bindings
-                this.bindings.push(sub_list[j]);
-            }   
-        }
     }
 
     // ############################################################################################
@@ -178,6 +85,10 @@ export class Engine_Shape {
     get_indices(){
         return this.bindings;
     }
+    get_bindings(){
+        return this.bindings;
+    }
+    get_face_count(){ return this.face_count; }
 
     // ############################################################################################
     // ############################################################################################

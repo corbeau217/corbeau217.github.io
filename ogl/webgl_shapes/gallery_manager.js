@@ -42,7 +42,8 @@ export class Gallery_Manager extends Canvas_Manager{
         super.page_main();
         // ------------------------------
         
-        this.prepare_gallery_item_selecting();
+        this.connect_gallery_selection_function_to_page();
+        this.prepare_gallery_selection_options();
 
         // ------------------------------
     }
@@ -75,7 +76,7 @@ export class Gallery_Manager extends Canvas_Manager{
     // ############################################################################################
     // ############################################################################################
 
-    prepare_gallery_item_selecting(){
+    connect_gallery_selection_function_to_page(){
         // so we can talk about ourself inside the closure
         let self_reference = this;
         // hook in our shape selection function
@@ -104,6 +105,29 @@ export class Gallery_Manager extends Canvas_Manager{
         
         // when we end up here, this means we've not found anything
         if(this.verbose_logging) console.log(`!!! unknown element id: '${element_object_id}'`);
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    // shape_view_menu_gallery_flow_elem
+    prepare_gallery_selection_options(){
+        let gallery_flow_elem = document.querySelector(`#shape_view_menu_gallery_flow_elem`);
+        let line_white_space = "                    ";
+        let replacement_inner_html = `${line_white_space}<!-- selection items -->`;
+
+        for (let option_index = 0; option_index < this.selection_type_map.length; option_index++) {
+            const current_selection_option = this.selection_type_map[option_index];
+            const current_item_html = this.build_gallery_selection_item( current_selection_option.id, current_selection_option.thumbnail );
+            replacement_inner_html = `${replacement_inner_html}\n${line_white_space}${current_item_html}`;
+        }
+
+        // then just directly replace the body
+        gallery_flow_elem.innerHTML = replacement_inner_html;
+    }
+    build_gallery_selection_item(element_id, element_thumbnail){
+        return `<div id="${element_id}" onclick="handle_gallery_shape_selection('${element_id}')" class="shape_view_menu_gallery_item"><img class="shape_view_menu_gallery_item_thumbnail" src="${element_thumbnail}" alt="change to ${element_id} shape" /></div>`;
     }
 
     // ############################################################################################

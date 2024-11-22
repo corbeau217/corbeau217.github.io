@@ -165,6 +165,10 @@ export class Managed_Shader {
 
     // ###################################
 
+    declare_managed_bindings(){
+        this.indices_buffer = this.gl_context.createBuffer();
+    }
+
 
     // assume we don't redo any, might have duplicates otherwise
     declare_managed_attribute_location( attribute_name ){
@@ -213,6 +217,17 @@ export class Managed_Shader {
     // ###########################################
 
 
+    load_binding_buffer( bindings_data ){
+        // prepare the index buffer as the one we're working on
+        this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indices_buffer);
+        // announce the data as our indices/bindings data
+        this.gl_context.bufferData(
+            this.gl_context.ELEMENT_ARRAY_BUFFER,
+            bindings_data,
+            this.gl_context.STATIC_DRAW
+        );
+    }
+
 
     /**
      * 
@@ -233,6 +248,8 @@ export class Managed_Shader {
         // for use if we need to initialise as well
         return target_attribute_data;
     }
+
+
 
     /**
      * 
