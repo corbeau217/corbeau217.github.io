@@ -36,8 +36,9 @@ export class Water_05 {
         // then regenerate normals
         this.regenerate_mesh();
         
+        this.initialise_gl_arrays();
         // deal with data
-        this.prepare_attribute_data();
+        this.initialise_attribute_data();
     }
     prepare_settings(){
         this.column_count = 17;
@@ -58,8 +59,6 @@ export class Water_05 {
         // (static) scale(out, a, v) → {mat4}
         this.scale = vec3.fromValues(1.5, 1.0, 1.5);
 
-        this.rotation_y = 1.0*Math.PI/12.0;
-
         this.light_source_vector = { x: 4.0, y: 3.0, z: -3.5 };
 
         this.light_ambient_intensity = { r: 0.7, g: 0.7, b: 0.7 };
@@ -71,7 +70,6 @@ export class Water_05 {
 
 
         mat4.scale( this.model_matrix, this.model_matrix, this.scale);
-        mat4.rotateY( this.model_matrix, this.model_matrix, this.rotation_y );
         
 
         this.y_rotation_radians = Math.PI / 24.0;
@@ -82,7 +80,7 @@ export class Water_05 {
         
         this.noise_1 = [];
         this.noise_2 = [];
-        this.normals_normals_raw = [];
+        this.normals_raw = [];
         this.normals_1 = [];
         this.normals_2 = [];
 
@@ -93,6 +91,13 @@ export class Water_05 {
             noise_2_size: { x: 7, y: 4, },
             mixer_time_scale: 1.8,
             usage_time_scale: 2.2312,
+            minimum_mixing: 0.25,
+            maximum_mixing: 0.75,
+            minimum_usage: 0.34,
+            maximum_usage: 0.486,
+            // start them as 0.0
+            mixer_lerp_t: 0.0,
+            usage_lerp_t: 0.0,
         };
 
     }
@@ -114,28 +119,46 @@ export class Water_05 {
         this.noise_1_attribute_index = this.managed_shader.declare_managed_attribute_location("a_noise_1");
         this.noise_2_attribute_index = this.managed_shader.declare_managed_attribute_location("a_noise_2");
     }
-    prepare_attribute_data(){
+    // prepare the webgl friendly array types for all our data
+    initialise_gl_arrays(){
+        this.indices_int_array = new Uint16Array(this.indices);
+        this.vertices_float_array = new Float32Array(this.vertices);
+        this.normals_raw_float_array = new Float32Array(this.normals_raw);
+        this.normals_1_float_array = new Float32Array(this.normals_1);
+        this.normals_2_float_array = new Float32Array(this.normals_2);
+        this.noise_1_float_array = new Float32Array(this.noise_1);
+        this.noise_2_float_array = new Float32Array(this.noise_2);
+    }
+    initialise_attribute_data(){
+
         // prepare the index buffer as the one we're working on
         this.gl_context.bindBuffer(this.gl_context.ELEMENT_ARRAY_BUFFER, this.indices_buffer);
         // announce the data as our indices/bindings data
         this.gl_context.bufferData(
             this.gl_context.ELEMENT_ARRAY_BUFFER,
-            new Uint16Array(this.indices),
+            this.indices_int_array,
             this.gl_context.STATIC_DRAW
         );
-
-        this.managed_shader.load_attribute_buffer_floats( this.vertex_position_attribute_index, new Float32Array(this.vertices), 4 );
-        this.managed_shader.load_attribute_buffer_floats( this.normal_raw_attribute_index, new Float32Array(this.normals_raw), 3 );
-        this.managed_shader.load_attribute_buffer_floats( this.normal_1_attribute_index,   new Float32Array(this.normals_1),   3 );
-        this.managed_shader.load_attribute_buffer_floats( this.normal_2_attribute_index,   new Float32Array(this.normals_2),   3 );
-        this.managed_shader.load_attribute_buffer_floats( this.noise_1_attribute_index, new Float32Array(this.noise_1), 3 );
-        this.managed_shader.load_attribute_buffer_floats( this.noise_2_attribute_index, new Float32Array(this.noise_2), 3 );
+        this.managed_shader.initialise_attribute_buffer_floats( this.vertex_position_attribute_index, this.vertices_float_array, 4 );
+        this.managed_shader.initialise_attribute_buffer_floats( this.normal_raw_attribute_index, this.normals_raw_float_array, 3 );
+        this.managed_shader.initialise_attribute_buffer_floats( this.normal_1_attribute_index, this.normals_1_float_array, 3 );
+        this.managed_shader.initialise_attribute_buffer_floats( this.normal_2_attribute_index, this.normals_2_float_array, 3 );
+        this.managed_shader.initialise_attribute_buffer_floats( this.noise_1_attribute_index, this.noise_1_float_array, 3 );
+        this.managed_shader.initialise_attribute_buffer_floats( this.noise_2_attribute_index, this.noise_2_float_array, 3 );
+    }
+    update_attribute_data(){
+        this.managed_shader.load_attribute_buffer_floats( this.vertex_position_attribute_index, this.vertices_float_array );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_raw_attribute_index, this.normals_raw_float_array );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_1_attribute_index, this.normals_1_float_array );
+        this.managed_shader.load_attribute_buffer_floats( this.normal_2_attribute_index, this.normals_2_float_array );
+        this.managed_shader.load_attribute_buffer_floats( this.noise_1_attribute_index, this.noise_1_float_array );
+        this.managed_shader.load_attribute_buffer_floats( this.noise_2_attribute_index, this.noise_2_float_array );
     }
     prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count") , this.column_count, this.row_count );
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.model_matrix );
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix"), false, camera_view_matrix );
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, camera_projection_matrix );
+        // this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.model_matrix );
+        // this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix"), false, camera_view_matrix );
+        // this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, camera_projection_matrix );
 
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count"), this.column_count, this.row_count );
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour_darkest"), this.shape_colouring.darkest.r, this.shape_colouring.darkest.g, this.shape_colouring.darkest.b );
@@ -143,8 +166,7 @@ export class Water_05 {
 
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_source_vector"), this.light_source_vector.x, this.light_source_vector.y, this.light_source_vector.z );
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_light_ambient_intensity"), this.light_ambient_intensity.r, this.light_ambient_intensity.g, this.light_ambient_intensity.b );
-
-        this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_time_val"), this.time_interpolation_value.x, this.time_interpolation_value.y, this.time_interpolation_value.dt );
+        this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_noise_settings"), this.noise_properties.mixer_lerp_t, this.noise_properties.usage_lerp_t );
         
         // --------------------------------------------------------
         // --- build matrices
@@ -230,6 +252,10 @@ export class Water_05 {
         
         let noise_sine_usage = Math.sin(this.time_interpolation_value.dt*this.noise_properties.usage_time_scale);
         this.time_interpolation_value.y = (noise_sine_usage+1.0)/2.0;
+
+        // prepare our lerp data
+        this.noise_properties.mixer_lerp_t = (1.0-this.time_interpolation_value.x) * this.noise_properties.minimum_mixing  +  (this.time_interpolation_value.x) * this.noise_properties.maximum_mixing;
+        this.noise_properties.usage_lerp_t = (1.0-this.time_interpolation_value.y) * this.noise_properties.minimum_mixing  +  (this.time_interpolation_value.y) * this.noise_properties.maximum_mixing;        
     }
 
     rebuild_noise_values(old_noise_data){

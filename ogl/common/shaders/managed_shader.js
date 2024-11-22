@@ -220,7 +220,7 @@ export class Managed_Shader {
      * @param {*} attribute_data Float32Array
      * @param {*} values_per_element vec4 would be 4, and vec3 is 3
      */
-    load_attribute_buffer_floats( attribute_index, attribute_data, values_per_element ){
+    load_attribute_buffer_floats( attribute_index, attribute_data ){
         // prepare abbreviated reference
         let target_attribute_data = this.attribute_location_list[attribute_index];
 
@@ -230,9 +230,21 @@ export class Managed_Shader {
         // load it
         this.gl_context.bufferData( this.gl_context.ARRAY_BUFFER, attribute_data, this.gl_context.STATIC_DRAW );
 
+        // for use if we need to initialise as well
+        return target_attribute_data;
+    }
+
+    /**
+     * 
+     * @param {*} attribute_index 
+     * @param {*} attribute_data Float32Array
+     * @param {*} values_per_element vec4 would be 4, and vec3 is 3
+     */
+    initialise_attribute_buffer_floats( attribute_index, attribute_data, values_per_element ){
+        let target_attribute_data = this.load_attribute_buffer_floats( attribute_index, attribute_data );
+
         // point to it
         this.gl_context.vertexAttribPointer( target_attribute_data.location, values_per_element, this.gl_context.FLOAT, false, 0, 0 );
-        
     }
 
     // ###########################################
