@@ -41,10 +41,10 @@
     <script src="/data/config.js" type="text/javascript"></script>
     <!-- ######################################################################## -->
     <!-- ######################################################################## -->
-    <body>
+    <body id="shape_gallery_body_block_elem" class="shape_gallery_body_block">
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <header>
+        <header class="shape_gallery_header_block">
             <!-- ============================================= -->
             <div class="top_header_logo">
                 <img class="top_header_logo_img" src="/img/himbcrow.png" alt="him crow" />
@@ -58,33 +58,64 @@
         </header>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <nav id="navMenu">
+        <nav id="navMenu" class="shape_gallery_nav_block">
             <!-- generated on page load -->
         </nav>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <main class="content_body">
+        <main id="shape_gallery_main_block_elem" class="shape_gallery_main_block">
             <!-- ============================================= -->
-            <!-- ... -->
+            <section class="shape_view_outer">
+                <!-- ========================== -->
+                <div class="shape_view_inner">
+                    <canvas id="shape_gallery_canvas_elem" class="shape_gallery_canvas" width="640" height="480"><code>meant to be a canvas element here, if you're seeing this then it doesn't work on your device sorry</code></canvas>
+                </div>
+                <!-- ========================== -->
+                <div class="shape_details_outer">
+                    <div id="shape_details_inner_data_elem" class="shape_details_inner">
+                        <hr />
+                        <!-- TODO: erm? -->
+                        <ul>
+                            <li>lorem ipsum</li>
+                            <li>lorem ipsum</li>
+                            <li>lorem ipsum</li>
+                            <li>lorem ipsum</li>
+                        </ul>
+                        <hr />
+                    </div>
+                </div>
+                <!-- ========================== -->
+            </section>
             <!-- ============================================= -->
         </main>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <footer>
+        <footer id="shape_gallery_footer_block_elem" class="shape_gallery_footer_block">
             <!-- ============================================= -->
-            <section class="footer_section">
-                <!-- ... -->
-                <p>...</p>
-            </section>
-            <!-- ============================================= -->
-            <section class="footer_section">
-                <!-- ... -->
-                <p>...</p>
-            </section>
-            <!-- ============================================= -->
-            <section class="footer_section">
-                <!-- Github link -->
-                <p><a href="https://github.com/corbeau217/corbeau217.github.io"><img class="BannerNotesSub" src="https://img.shields.io/badge/github%20repo-121013?style=for-the-badge&logo=github&logoColor=white"></a></p>
+            <section class="shape_view_menu_outer">
+                <!-- ========================== -->
+                <div id="shape_view_menu_gallery_flow_elem" class="shape_view_menu_gallery">
+                    <!-- #################################### -->
+                    <!-- TODO: erm -->
+                    <!-- #################################### -->
+                    <div id="crate_01" onclick="handle_gallery_shape_selection(`${this.id}`)" class="shape_view_menu_gallery_item"><img class="shape_view_menu_gallery_item_thumbnail" src="/img/bookicon.png" alt="[...]" /></div>
+                    <!-- #################################### -->
+                </div>
+                <!-- ========================== -->
+                <div id="shape_view_menu_config_elem" class="shape_view_menu_config">
+                    <hr />
+                    <!-- TODO: erm -->
+                    <ul>
+                        <li>lorem ipsum</li>
+                        <li>lorem ipsum</li>
+                        <li>lorem ipsum</li>
+                        <li>lorem ipsum</li>
+                    </ul>
+                    <hr />
+                    <p><a href="https://github.com/corbeau217/corbeau217.github.io"><img class="BannerNotesSub" src="https://img.shields.io/badge/github%20repo-121013?style=for-the-badge&logo=github&logoColor=white"></a></p>
+                    <hr />
+                </div>
+                <!-- ========================== -->
             </section>
             <!-- ============================================= -->
         </footer>
@@ -93,8 +124,10 @@
     </body>
     <!-- ######################################################################## -->
     <!-- ######################################################################## -->
-    <!-- ... -->
-    <!-- this page doesnt have any scripts yet -->
+    <script type="text/javascript">
+        // defined for replacement in our app
+        function handle_gallery_shape_selection(element_id){}
+    </script>
     <!-- ######################################################################## -->
     <!-- ######################################################################## -->
 </html>
