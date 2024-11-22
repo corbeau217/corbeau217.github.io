@@ -59,8 +59,6 @@ export class Water_05 {
         // (static) scale(out, a, v) → {mat4}
         this.scale = vec3.fromValues(1.5, 1.0, 1.5);
 
-        this.rotation_y = 1.0*Math.PI/12.0;
-
         this.light_source_vector = { x: 4.0, y: 3.0, z: -3.5 };
 
         this.light_ambient_intensity = { r: 0.7, g: 0.7, b: 0.7 };
@@ -72,7 +70,6 @@ export class Water_05 {
 
 
         mat4.scale( this.model_matrix, this.model_matrix, this.scale);
-        mat4.rotateY( this.model_matrix, this.model_matrix, this.rotation_y );
         
 
         this.y_rotation_radians = Math.PI / 24.0;
@@ -159,9 +156,9 @@ export class Water_05 {
     }
     prepare_uniforms( camera_view_matrix, camera_projection_matrix ){
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count") , this.column_count, this.row_count );
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.model_matrix );
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix"), false, camera_view_matrix );
-        this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, camera_projection_matrix );
+        // this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_matrix"), false, this.model_matrix );
+        // this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_view_matrix"), false, camera_view_matrix );
+        // this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_projection_matrix"), false, camera_projection_matrix );
 
         this.gl_context.uniform2f( this.gl_context.getUniformLocation(this.shader, "u_mesh_quad_count"), this.column_count, this.row_count );
         this.gl_context.uniform3f( this.gl_context.getUniformLocation(this.shader, "u_shape_colour_darkest"), this.shape_colouring.darkest.r, this.shape_colouring.darkest.g, this.shape_colouring.darkest.b );
