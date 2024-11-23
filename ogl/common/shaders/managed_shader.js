@@ -165,10 +165,10 @@ export class Managed_Shader {
 
     // ###################################
 
+    // tells the managed shader to prepare a buffer for our indices
     declare_managed_bindings(){
         this.indices_buffer = this.gl_context.createBuffer();
     }
-
 
     // assume we don't redo any, might have duplicates otherwise
     declare_managed_attribute_location( attribute_name ){
@@ -255,7 +255,7 @@ export class Managed_Shader {
      * 
      * @param {*} attribute_index 
      * @param {*} attribute_data Float32Array
-     * @param {*} values_per_element vec4 would be 4, and vec3 is 3
+     * @param {*} values_per_element vec4 would be 4, and vec3 is 3, vec2 is 2, floats are 1
      */
     initialise_attribute_buffer_floats( attribute_index, attribute_data, values_per_element ){
         let target_attribute_data = this.load_attribute_buffer_floats( attribute_index, attribute_data );
