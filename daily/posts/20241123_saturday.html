@@ -1,0 +1,47 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>cleanup today is more about the methods we're taking to do things</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">started creating some concrete classes for scene objects but the scope creep was very large (it has been tabled for now)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">in the spirit of cleaning, you could say we cleaned the viewing window to the ideas we were having (they've been left behind frosted glass so far)</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>first item worked on is a coordinate frame using the <code>gl_PointSize</code> feature</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we can then use the <code>LINES</code> and <code>POINTS</code> draw modes, leaving out the center point when drawing the lines</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">below you'll find a sketch of the diagram that was made for it</li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/daily/img/20241123_coordinate_frame_construction.png" alt="placeholder image" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>after that, we commenced operation "thinking about 4D"</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the idea is that if you take 4 angles, and you project a 2D image in the direction, repeating for all 4 of the orientations, you should get a shape from it</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">left out of the diagrams, but thought about is that once a structure for storing these 2D images is decided, you just group the pixels in blocks of 4, to interlace the images</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">alternatively you can leave them as separate images, and theoretically use them as perspective shots of the object you're describing</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the shapes used at any point which falls in these 4 axis, would then be treated as a block of unit size, and filled in if it's occupied, otherwise left empty if it's not full in all 4 images (like a pixel)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">transforming from this 4d space to 3d space, looses some of the information, due to the way matrices work, so you would need to either use a "unit cube"/"view space" style of data representation, or break it up into separate pieces</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it should be explored what the results of different operations on this space would look like, but it would be nice to imagine it like perpendicular vectors to each of the 4 faces of a triangular pyramid</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using a similar structure to current 3D environments where they use a 4D matrix to represent their transformations, we would need to take our transformations into 5D to fully represent them. this adds the challenge of there being not much in the realm of options without reinventing the "transformation pipeline" wheel and making our own math library to facilitate</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">somewhere there was a mention of how certain parts of matrices could be reused in operations of matrices, so there's a possibility we might be able to break it up into sub matrices or assume parts of the picture and still use the 4x4 matrices</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">below is a diagram of the 4 perspectives along each axis, leaving a space that resembles a hexagon when looking down each of the axis</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">to flatten it from this 4D into 3D is to throw away one of the vectors and leave you with a 3D object which has the camera at <code>1,1,1</code> facing the origin at <code>0,0,0</code></li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/daily/img/20241123_views_of_4d.png" alt="placeholder image" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem"><p>a thought about storing the pixels for this might be to use spirals from the origin out to the edges, like a record player, or to use barycentric coordinates somehow, maybe a right angle triangle where we just smoosh/assume the other half of the data, or use the other parts of the puzzle to reconstruct it?</p></li>
+    <li class="daily_textbody_list_elem"><p>last thought before we cast this into the figurative fire: if the line is no rotation, the circle is one axis of rotation, and the sphere is two axis of rotation, then would 4D be 3 axis of rotation? could we use a sphere to model the cross product?</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
