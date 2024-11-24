@@ -9,7 +9,7 @@ export class Coordinate_Frame extends Scene_Object {
     // ############################################################################################
     
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * #### !! REPLACEMENT !!
      * 
      * prepares the shader sources using: `this.shader_source_list`
@@ -36,7 +36,7 @@ export class Coordinate_Frame extends Scene_Object {
     // ############################################################################################
     
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * #### !! REPLACEMENT !!
      * 
      * operations that happen during the construction of this object
@@ -58,7 +58,7 @@ export class Coordinate_Frame extends Scene_Object {
     // ############################################################################################
     
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * 
      * used to prepare references and settings, ***minimal calculations*** and
      *      ***no function calls*** should be performed during this stage
@@ -73,7 +73,7 @@ export class Coordinate_Frame extends Scene_Object {
         };
     }
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * 
      * used for initalising matrices and large setting information
      *      function calls are fine but should be limited as
@@ -93,7 +93,7 @@ export class Coordinate_Frame extends Scene_Object {
         this.generate_mesh_data();
     }
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * #### !! REPLACEMENT !!
      * 
      * any operation that needs to happen during initialisation
@@ -251,7 +251,7 @@ export class Coordinate_Frame extends Scene_Object {
     // ############################################################################################
 
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * #### !! REPLACEMENT !!
      * 
      * draw this object using the already prepared `temp_model_to_ndc_matrix`

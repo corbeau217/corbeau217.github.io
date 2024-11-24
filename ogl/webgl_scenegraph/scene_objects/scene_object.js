@@ -8,7 +8,7 @@ export class Scene_Object {
     // ############################################################################################
 
     /**
-     * construct a new `Coordinate_Frame` scene object, providing it with a WebGL context to use
+     * construct a new scene object, providing it with a WebGL context to use
      * 
      * @warn avoid extending/modifying the constructor in derived objects and instead use the creation
      *      pipeline functions provided

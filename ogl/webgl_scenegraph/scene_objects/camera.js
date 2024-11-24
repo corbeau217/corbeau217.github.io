@@ -3,92 +3,106 @@
 // ############################################################################################
 // ############################################################################################
 
+import { Scene_Object } from "./scene_object.js";
+
 const TAU = 2.0*Math.PI;
 
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
-export class Camera {
-    // construct a camera instance using the supplied aspect ratio
-    constructor( aspectRatio ){
-        // prepare the camera information
-        
-        //    needs negative  [   -x,   -y,   -z ]
-        this.offset = vec3.fromValues(-0.0, -0.0, -2.3);
+export class Camera extends Scene_Object {
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * construct a camera instance using the supplied aspect ratio
+     *      then call the super's constructor
+     */
+    constructor( gl_context, aspect_ratio ){
+        super(gl_context);
+        // now handle the aspect ratio
+        this.set_aspect_ratio( aspect_ratio );
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * 
+     * used to prepare references and settings, ***minimal calculations*** and
+     *      ***no function calls*** should be performed during this stage
+     */
+    initialise_pre_event(){
+        super.initialise_pre_event();
+
         this.fov_y = 1.2*TAU/7.0;
         this.z_near = 0.5;
         this.z_far = 50.0;
-        this.aspect = aspectRatio;
-        
-        // build the matrices
+        this.aspect_ratio = 640.0/480.0;
+    }
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * 
+     * used for initalising matrices and large setting information
+     *      function calls are fine but should be limited as
+     *      bloating this could cause excessive object creation
+     *      overhead if we're creating and destroying objects often
+     * 
+     * this is where attribute locations are determined and the model shape is made
+     *      which is handled by their respective functions
+     */
+    initialise_on_event(){
+        super.initialise_on_event();
 
         // initialise the projection matrix
-        this.projectionMatrix = mat4.create();
+        this.view_matrix = mat4.create();
+        this.projection_matrix = mat4.create();
+        this.temp_view_projection = mat4.create();
 
-        // === handle view ===
-        this.buildViewMatrix();
-
-        // === handle projection ===
-        this.buildProjectionMatrix();
+        //    needs negative              [ -x,   -y,   -z   ]
+        this.translation = vec3.fromValues( -0.0, -0.0, -2.3 );
     }
 
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    buildViewMatrix(){
-        // init as identity
-        this.viewMatrix = mat4.create();
-        
+    build_view_matrix(){
+        mat4.identity(this.view_matrix);
+
         mat4.translate(
-            this.viewMatrix,
-            this.viewMatrix,
-            this.offset,
-            // [-0.0, 0.0, -6.0],
+            this.view_matrix,
+            this.view_matrix,
+            this.translation,
         );
-        return this.viewMatrix;
+        return this.view_matrix;
     }
-    buildProjectionMatrix(){
-        // init as identity
-        this.projectionMatrix = mat4.create();
+    build_projection_matrix(){
+        // identity
+        mat4.identity(this.projection_matrix);
 
         // first arg as the destination to receive result
-        mat4.perspective(this.projectionMatrix, this.fov_y, this.aspect, this.z_near, this.z_far);
-        return this.projectionMatrix;
+        mat4.perspective(this.projection_matrix, this.fov_y, this.aspect_ratio, this.z_near, this.z_far);
+        return this.projection_matrix;
     }
-
+    
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
-
-    update( deltaTime, aspectRatio ) { 
-        // .. erm
-        if(aspectRatio != this.aspect ){
-            // ...
-            this.aspect = aspectRatio;
-            // this.buildViewMatrix();
-            this.buildProjectionMatrix();
-            // console.log("rebuilt projection matrix");
-            this.buildViewMatrix();
-        }
+    
+    get_projection_matrix(){
+        return this.projection_matrix;
     }
-
-    getProjectionMatrix(){
-        return this.projectionMatrix;
+    get_view_matrix(){
+        return this.view_matrix;
     }
-
-    getViewMatrix(){
-        return this.viewMatrix;
-    }
-
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
     get_view_projection_matrix(){
-        let view_projection = mat4.create();
+        mat4.identity(this.temp_view_projection);
 
         // (static) multiply(out, a, b) → {mat4}
         // (static) invert(out, a) → {mat4}
@@ -96,10 +110,32 @@ export class Camera {
         // (static) transpose(out, a) → {mat4}
         // (static) transpose(out, a) → {mat3}
 
-        mat4.multiply( view_projection, this.getProjectionMatrix(), this.getViewMatrix());
+        mat4.multiply( this.temp_view_projection, this.projection_matrix, this.view_matrix);
         // mat4.multiply( parent_matrix, view_matrix, projection_matrix);
 
-        return view_projection;
+        return this.temp_view_projection;
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    set_offset( x, y, z){
+        this.translation = vec3.fromValues( x, y, z );
+
+        this.build_view_matrix();
+
+        // done, send back
+        return this;
+    }
+    // now handle the aspect ratio
+    set_aspect_ratio( aspect_ratio ){
+        this.aspect_ratio = aspect_ratio;
+        // rebuild projection
+        this.build_projection_matrix();
+
+        // done, send back
+        return this;
     }
 
     // ############################################################################################
@@ -107,10 +143,27 @@ export class Camera {
     // ############################################################################################
 
 
-    set_offset(offset_value_list){
-        this.offset = vec3.fromValues(offset_value_list[0],offset_value_list[1],offset_value_list[2]);
-        this.buildViewMatrix();
+
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * #### !! REPLACEMENT !!
+     * 
+     * operations performed on this object each frame with respect to the time scale provided
+     *      by `delta_time` parameter
+     */
+    update_self( delta_time ){
+        let new_aspect_ratio = this.gl_context.canvas.width/this.gl_context.canvas.height;
+        
+        // rebuild only when it's different
+        if(new_aspect_ratio != this.aspect_ratio ){
+            // now handle the aspect ratio
+            this.set_aspect_ratio( new_aspect_ratio );
+        }
+
+        // update the view matrix
+        this.build_view_matrix();
     }
+
 
     // ############################################################################################
     // ############################################################################################

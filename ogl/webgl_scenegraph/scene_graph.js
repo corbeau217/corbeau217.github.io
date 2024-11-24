@@ -16,7 +16,7 @@ export class Scene_Graph extends Scene_Object {
     // ############################################################################################
 
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * 
      * used to prepare references and settings, ***minimal calculations*** and
      *      ***no function calls*** should be performed during this stage
@@ -27,7 +27,7 @@ export class Scene_Graph extends Scene_Object {
         this.aspect_ratio = 640.0/480.0;
     }
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * 
      * used for initalising matrices and large setting information
      *      function calls are fine but should be limited as
@@ -41,12 +41,12 @@ export class Scene_Graph extends Scene_Object {
         super.initialise_on_event();
 
         this.camera = new Camera( this.gl_context, this.aspect_ratio );
-        this.camera.set_offset([ -0.0, -0.0, -4.3 ]);
+        this.camera.set_offset( -0.0, -0.0, -4.3 );
 
         this.coordinate_frame = new Coordinate_Frame( this.gl_context );
     }
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * #### !! REPLACEMENT !!
      * 
      * any operation that needs to happen during initialisation
@@ -58,6 +58,7 @@ export class Scene_Graph extends Scene_Object {
      */
     initialise_post_event(){
         this.add_child_object(this.camera);
+        this.add_child_object(this.coordinate_frame);
     }
     
     
@@ -75,30 +76,23 @@ export class Scene_Graph extends Scene_Object {
      */
     set_camera_offset( x, y, z ){
         // tell camera to change
-        this.camera.set_offset([ x, y, z ]);
+        this.camera.set_offset( x, y, z );
 
         // give back self reference
         return this;
+    }
+    
+    draw_from_camera(){
+        // draw from the camera's view projection matrix
+        this.draw( this.camera.get_view_projection_matrix() );
     }
     
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-
     /**
-     * ### OVERRIDE OF PARENT FUNCTION
-     * #### !! REPLACEMENT !!
-     * 
-     * operations performed on this object each frame with respect to the time scale provided
-     *      by `delta_time` parameter
-     */
-    update_self( delta_time ){
-        // TODO: gather the aspect ratio
-    }
-
-    /**
-     * ### OVERRIDE OF PARENT FUNCTION
+     * ### OVERRIDE OF SUPER FUNCTION
      * #### !! REPLACEMENT !!
      * 
      * draw this object using the already prepared `temp_model_to_ndc_matrix`

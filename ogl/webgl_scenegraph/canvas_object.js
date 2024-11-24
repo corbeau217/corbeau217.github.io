@@ -10,13 +10,11 @@ const canvas_default_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
 
 export class Canvas_Object {
 
-
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    // ...
-    constructor(canvas_name, canvas_clear_colour){
+    constructor( canvas_name, canvas_clear_colour ){
         // save the name of the canvas
         this.canvas_name = canvas_name;
 
@@ -33,7 +31,7 @@ export class Canvas_Object {
         // prepare time
         this.old_time = Date.now();
 
-        this.scene_obj = new Scene_Graph(this.gl_context, this.aspect_ratio )
+        this.scene_graph = new Scene_Graph(this.gl_context);
     }
 
 
@@ -41,34 +39,12 @@ export class Canvas_Object {
     // ############################################################################################
     // ############################################################################################
 
-
-    assign_scene_object(scene_obj){
-        // save it
-        this.scene_obj = scene_obj;
-        
-        // give back reference
-        return this;
+    get_scene_graph(){
+        return this.scene_graph;
     }
-    get_scene_object(){
-        return this.scene_obj;
-    }
-
     get_gl_context(){
         return this.gl_context;
     }
-    set_content_update_function(new_update_function){
-        // replace our functional interface
-        this.content_update = new_update_function;
-        // give back reference
-        return this;
-    }
-    set_content_draw_function(new_draw_function){
-        // replace our functional interface
-        this.content_draw = new_draw_function;
-        // give back reference
-        return this;
-    }
-
 
     // ############################################################################################
     // ############################################################################################
@@ -79,17 +55,16 @@ export class Canvas_Object {
         // ... generate delta time
         const delta_time = (new_time - this.old_time)/1000.0;
         this.old_time = new_time;
-
-        // do update
-        this.content_update(delta_time);
-        // then draw
-        this.content_draw();
         
-        // give back reference
-        return this;
+        // give back self reference after:
+        // 
+        // do update
+        //      prepare context
+        //      do draw
+        return this.content_update(delta_time)
+                    .prepare_context()
+                    .content_draw();
     }
-
-
 
     // ############################################################################################
     // ############################################################################################
@@ -97,8 +72,10 @@ export class Canvas_Object {
 
 
     content_update( delta_time ){
-        this.scene_obj.update( delta_time, this.aspect_ratio );
-        this.prepare_context();
+        this.scene_graph.update( delta_time );
+
+        // give back reference
+        return this;
     }
 
     // ############################################################################################
@@ -121,7 +98,6 @@ export class Canvas_Object {
         this.gl_context.blendFunc(this.gl_context.SRC_ALPHA, this.gl_context.ONE_MINUS_SRC_ALPHA);
         // this.gl_context.blendFunc(this.gl_context.ONE, this.gl_context.ONE_MINUS_SRC_ALPHA);
 
-        this.scene_obj.prepare_draw_context();
         // give back reference
         return this;
     }
@@ -133,9 +109,11 @@ export class Canvas_Object {
 
     content_draw(){
         // draw the scene
-        this.scene_obj.draw();
-    }
+        this.scene_graph.draw_from_camera();
 
+        // give back reference
+        return this;
+    }
 
     // ############################################################################################
     // ############################################################################################
@@ -145,7 +123,7 @@ export class Canvas_Object {
         let canvas_app = new Canvas_Object( canvas_element_name, canvas_default_clear_colour );
     
         // prepare the scene
-        canvas_app.get_scene_object()
+        canvas_app.get_scene_graph()
             .set_camera_offset( camera_offset_x, camera_offset_y, camera_offset_z );
     
         // give it to the asker
