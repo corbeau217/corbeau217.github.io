@@ -1,0 +1,64 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem"><p>lots to talk about, not many words available to do it, where to begin?</p></li>
+    <li class="daily_textbody_list_elem">
+        <p>the work performed today requires a fair bit of technical explaination to digest without reading the code and commit log, so we'll try to keep it concise and instead focus on diagrams</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we started out by implementing the coordinate frame from yesterday</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">after which, there was a deep dive into the scene graph and scene objects structuring</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lastly was merging the shapes gallery code with the new scene graph code</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>regarding the coordinate frame</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">to start with it was causing some issues with colouring the edges when added to the shapes gallery</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">an attempt was made to try getting it to work, but it was decided to finally implement the scene graph structure</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">not much time spent on the scene graph structure it started to work and made working on the scene graph/transformations much easier</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>regarding scene graph and scene objects</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this took some time, but ther had been back peddling on doing this in previous days so the idea of a <code>construction</code>/<code>initialisation</code> pipeline was rather thought through already</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">there will need to be a diagram made to show this, but observing the <code>Scene_Object.js</code> file will show it</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then we implemented a doubly linked tree structure for the scene graph, having a reference to parent nodes and a list of child nodes that relate to the current object</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>regarding the shapes gallery</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">spooky ghosts and spaghetti monsters were found skulking around the <code>webgl-app</code> code, so it was reimagined with the scene graph in mind</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">some of the shapes were causing serious issues when selected, and getting the <code>Shape_Wrapper</code> to work with the scene graph was misserable work, so it was removed in favour of using the scene object structuring</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it's worth noting that the current structure is still very <code>inheritance</code> based, and so requires modification of the source code to make new objects</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">moving towards <code>Composition</code> rather than <code>inheritance</code> is the dream as it can squish complexity demons, but if it's chased too early, it'll cause more problems</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">once the new shape structure was completed, it made getting the vertex colouring for the turbofan model, much easier. However now the issue is the lack of vertex normals to provide proper shading</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>as there's a fair bit of matrix math going on in graphical systems, we prefer to reuse as much of the work as we can without needing to redo the work</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">one of the things we can do to acheive this is to use a tree structure so we can perform matrix math operations which modern computers love to gobble up</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we then have to keep in mind the different stages of the transformation pipeline so we can use the correct information at each point of the graph</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">something we've taken into consideration is the creation of scene objects and their derived types, and implemented a construction/initialisation pipeline. currently this happens all at once during the creation of an object, but the stages can be overwritten in derived classes to change the behaviour of creation</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>below is some of the diagrams to explain the behaviour of the system</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorem ipsum</li>
+                </ul>
+            </li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/img/placeholder.png" alt="placeholder image" />
+            <img class="daily_post_content_image" src="/img/placeholder.png" alt="placeholder image" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
+    <li class="daily_textbody_list_elem"><p>lorem ipsum</p></li>
+</ul>
