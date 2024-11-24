@@ -4,7 +4,7 @@ import { FRAGMENT_SHADER_SRC as shape_wrapper_default_fragment_source } from "..
 import { explode_mesh, generate_normals_for_explode_vertices,generate_normals } from "../../common/util/geometry.js";
 import { Sphere_Shape } from "../../common/obj/sphere_shape.js";
 
-export class Shape_Wrapper {
+export class Shape_Wrapper extends Scene_Object {
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
