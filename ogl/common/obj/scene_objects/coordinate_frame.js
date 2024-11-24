@@ -129,7 +129,6 @@ export class Coordinate_Frame {
         this.model_matrix = mat4.create();
         // how we create the model to ndc matrix when this object is
         //      is drawn by a Canvas_Object
-        this.temp_model_view = mat4.create();
         this.temp_model_to_ndc_matrix = mat4.create();
         this.temp_parent_matrix = mat4.create();
 
@@ -278,7 +277,7 @@ export class Coordinate_Frame {
      * for use by our object during run time to update the data within our buffers
      */
     update_attribute_data(){
-        this.managed_shader.load_binding_buffer( this.vertex_bindings_int_array );
+        // this.managed_shader.load_binding_buffer( this.vertex_bindings_int_array );
         this.managed_shader.load_attribute_buffer_floats( this.vertex_position_attribute_index, this.vertex_positions_float_array );
         this.managed_shader.load_attribute_buffer_floats( this.vertex_colours_attribute_index,  this.vertex_colours_float_array   );
         this.managed_shader.load_attribute_buffer_floats( this.vertex_sizes_attribute_index,    this.vertex_sizes_float_array     );
@@ -332,7 +331,7 @@ export class Coordinate_Frame {
         // --------------------------------------------------------
         // --- perform standard drawing
 
-        this.draw(this.temp_parent_matrix);
+        this.draw( this.temp_parent_matrix );
     }
     /**
      * TODO: *have a write up somewhere explaining the scene graph in greater detail than below, this is very word mouthful*
@@ -353,8 +352,6 @@ export class Coordinate_Frame {
 
         // --------------------------------------------------------
         // --- clear matrices
-
-        mat4.identity(this.temp_model_to_ndc_matrix);
         
         // --------------------------------------------------------
         // --- multiply matrices
@@ -366,7 +363,7 @@ export class Coordinate_Frame {
         
         // self then all children
         this.draw_self();
-        this.draw_children();
+        this.draw_children( this.temp_model_to_ndc_matrix );
     }
 
     // ############################################################################################
@@ -388,9 +385,10 @@ export class Coordinate_Frame {
         // select shader as being used
         this.gl_context.useProgram(this.shader);
         // enable attribute data if it isnt already
+        this.update_attribute_data();
+        this.update_uniform_data();
         this.managed_shader.enable_attributes();
         // update uniform data, incase it wasnt
-        this.update_uniform_data();
         // draw call
         this.gl_context.drawElements(this.gl_context.LINES, this.mesh_counts.edges*2,  this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.POINT, this.mesh_counts.vertices, this.gl_context.UNSIGNED_SHORT, 0);
@@ -426,13 +424,13 @@ export class Coordinate_Frame {
      * TODO: *have NDC included in a write up about the transformation pipline*
      * 
      */
-    draw_children(){
+    draw_children( model_to_parent_matrix ){
         // loop through all child elements and call draw
         for (let child_index = 0; child_index < this.children.length; child_index++) {
             const child_object = this.children[child_index];
 
             // make them do their draw
-            child_object.draw(this.temp_model_to_ndc_matrix);
+            child_object.draw( model_to_parent_matrix );
         }
     }
 

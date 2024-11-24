@@ -17,6 +17,6 @@ void main(){
     gl_PointSize = a_vertex_size;
 
     // interpolate in frag shader
-    v_vertex_colour = a_vertex_colour;
+    v_vertex_colour = vec4(a_vertex_colour.xyz,1.0);
 }
 `;
