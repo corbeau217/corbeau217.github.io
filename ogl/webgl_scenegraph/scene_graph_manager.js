@@ -44,18 +44,19 @@ export class Scene_Graph_Manager {
     }
     page_main(){
         // override to include things
-        console.log("initialising page...");
+        if(this.verbose_logging){ console.log("initialising page..."); }
     }
     app_main(){
         // override to include things
-        console.log("initialising canvases...");
+        if(this.verbose_logging){ console.log("initialising canvases..."); }
     
-        this.prepare_new_app( "webgl_scene_graph_01", -0.0, -0.0, -1.1 );
+        this.prepare_new_app( "webgl_scene_graph_01" );
     }
 
-    prepare_new_app( canvas_element_name, camera_offset_x, camera_offset_y, camera_offset_z ){
+    prepare_new_app( canvas_element_name ){
+        if(this.verbose_logging){ console.log(`creating canvas with name '${canvas_element_name}'`); }
         // construct and add
-        this.app_list.push( Canvas_Object.new_with_camera_offset( canvas_element_name, camera_offset_x, camera_offset_y, camera_offset_z ) );
+        this.app_list.push( new Canvas_Object( canvas_element_name ) );
     }
 
 }

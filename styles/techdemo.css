@@ -10,7 +10,7 @@
     display: block;
     margin-left: 3em;
 
-    
+    font-style: italic;
     word-wrap: normal;
 }
 .brief_textbody_elem, .brief_heading_elem {

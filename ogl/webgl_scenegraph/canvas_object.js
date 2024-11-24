@@ -14,7 +14,7 @@ export class Canvas_Object {
     // ############################################################################################
     // ############################################################################################
 
-    constructor( canvas_name, canvas_clear_colour ){
+    constructor( canvas_name ){
         // save the name of the canvas
         this.canvas_name = canvas_name;
 
@@ -26,7 +26,7 @@ export class Canvas_Object {
         this.aspect_ratio = this.canvas_element.width/this.canvas_element.height;
 
         // save our clear colour
-        this.canvas_clear_colour = canvas_clear_colour;
+        this.canvas_clear_colour = canvas_default_clear_colour;
 
         // prepare time
         this.old_time = Date.now();
