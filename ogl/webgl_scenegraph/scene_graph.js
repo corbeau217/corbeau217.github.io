@@ -1,16 +1,11 @@
 
-import { Camera } from "/ogl/common/camera/generic_camera.js";
 import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
+import { Camera } from "./camera.js";
 
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
-const TAU = 2.0*Math.PI;
-
-// ############################################################################################
-// ############################################################################################
-// ############################################################################################
 
 export class Scene_Graph {
 
@@ -105,19 +100,18 @@ export class Scene_Graph {
     // ############################################################################################
 
     draw(){
-        let camera_view_mat4 = this.camera.getViewMatrix();
-        let camera_projection_mat4 = this.camera.getProjectionMatrix();
+        let world_to_ndc_matrix = this.camera.get_view_projection_matrix();
 
-        this.coordinate_frame.draw_as_scene_root(camera_view_mat4, camera_projection_mat4);
+        this.coordinate_frame.draw( world_to_ndc_matrix );
 
-        // handle drawing all our objects
-        this.object_list.forEach(
-            object_to_draw => {
-                // this is like we're saying 
-                //  obj.draw_function_name( camera_view_mat4, camera_projection_mat4 )
-                object_to_draw.draw.apply( object_to_draw.instance, [ camera_view_mat4, camera_projection_mat4 ] );
-            }
-        );
+        // // handle drawing all our objects
+        // this.object_list.forEach(
+        //     object_to_draw => {
+        //         // this is like we're saying 
+        //         //  obj.draw_function_name( camera_view_mat4, camera_projection_mat4 )
+        //         object_to_draw.draw.apply( object_to_draw.instance, [ camera_view_mat4, camera_projection_mat4 ] );
+        //     }
+        // );
     }
 }
 
