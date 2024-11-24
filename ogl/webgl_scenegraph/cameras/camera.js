@@ -3,7 +3,7 @@
 // ############################################################################################
 // ############################################################################################
 
-import { Scene_Object } from "./scene_object.js";
+import { Scene_Object } from "../scene_objects/scene_object.js";
 
 const TAU = 2.0*Math.PI;
 
@@ -67,22 +67,12 @@ export class Camera extends Scene_Object {
         //    needs negative              [ -x,   -y,   -z   ]
         this.translation = vec3.fromValues( -0.0, -0.0, -2.3 );
     }
-
+    
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
-
-    build_view_matrix(){
-        mat4.identity(this.view_matrix);
-
-        mat4.translate(
-            this.view_matrix,
-            this.view_matrix,
-            this.translation,
-        );
-        return this.view_matrix;
-    }
-    build_projection_matrix(){
+    
+    get_projection_matrix(){
         // identity
         mat4.identity(this.projection_matrix);
 
@@ -90,15 +80,14 @@ export class Camera extends Scene_Object {
         mat4.perspective(this.projection_matrix, this.fov_y, this.aspect_ratio, this.z_near, this.z_far);
         return this.projection_matrix;
     }
-    
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-    
-    get_projection_matrix(){
-        return this.projection_matrix;
-    }
     get_view_matrix(){
+        mat4.identity(this.view_matrix);
+
+        mat4.translate(
+            this.view_matrix,
+            this.view_matrix,
+            this.translation,
+        );
         return this.view_matrix;
     }
     get_view_projection_matrix(){
@@ -110,7 +99,7 @@ export class Camera extends Scene_Object {
         // (static) transpose(out, a) → {mat4}
         // (static) transpose(out, a) → {mat3}
 
-        mat4.multiply( this.temp_view_projection, this.projection_matrix, this.view_matrix);
+        mat4.multiply( this.temp_view_projection, this.get_projection_matrix(), this.get_view_matrix());
         // mat4.multiply( parent_matrix, view_matrix, projection_matrix);
 
         return this.temp_view_projection;
@@ -123,16 +112,12 @@ export class Camera extends Scene_Object {
     set_offset( x, y, z){
         this.translation = vec3.fromValues( x, y, z );
 
-        this.build_view_matrix();
-
         // done, send back
         return this;
     }
     // now handle the aspect ratio
     set_aspect_ratio( aspect_ratio ){
         this.aspect_ratio = aspect_ratio;
-        // rebuild projection
-        this.build_projection_matrix();
 
         // done, send back
         return this;
@@ -159,9 +144,6 @@ export class Camera extends Scene_Object {
             // now handle the aspect ratio
             this.set_aspect_ratio( new_aspect_ratio );
         }
-
-        // update the view matrix
-        this.build_view_matrix();
     }
 
 
