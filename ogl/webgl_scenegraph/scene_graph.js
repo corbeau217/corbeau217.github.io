@@ -1,4 +1,6 @@
 
+import { Scene_Object } from "./scene_objects/scene_object.js";
+
 import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
 import { Camera } from "./scene_objects/camera.js";
 
@@ -7,58 +9,70 @@ import { Camera } from "./scene_objects/camera.js";
 // ############################################################################################
 
 
-export class Scene_Graph {
+export class Scene_Graph extends Scene_Object {
 
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    // ...
-    constructor( gl_context, aspectRatio ){
-        // .. local references to gl and program info
-        this.gl_context = gl_context;
-        
-        this.camera = new Camera( this.gl_context,aspectRatio );
-        
-        this.camera.set_offset([ -0.0, -0.0, -4.3 ]);
-
-        this.coordinate_frame = new Coordinate_Frame( this.gl_context, null );
-
-        // empty list
-        this.object_list = [];
-    }
-    
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
     /**
-     * @brief provide an object and the relevant functions used during updates/draws for the object
+     * ### OVERRIDE OF PARENT FUNCTION
      * 
-     * @param {*} object_to_add scene object to add
-     * @param {*} update_function the relevant update function with 1 parameter for delta_time
-     * @param {*} draw_function  the draw function for the object, 2 parameters of camera_view, and camera_projection matrices
+     * used to prepare references and settings, ***minimal calculations*** and
+     *      ***no function calls*** should be performed during this stage
      */
-    add_object( object_to_add, update_function, draw_function ){
-        // prepare
-        let object_list_addition = {
-            // this is the object itself
-            instance: object_to_add,
-            // how we update the object
-            update: update_function,
-            // how we draw it
-            draw: draw_function,
-        };
-        // put it in our list
-        this.object_list.push( object_list_addition );
-        // give back self reference
-        return this;
+    initialise_pre_event(){
+        super.initialise_pre_event();
+
+        this.aspect_ratio = 640.0/480.0;
+    }
+    /**
+     * ### OVERRIDE OF PARENT FUNCTION
+     * 
+     * used for initalising matrices and large setting information
+     *      function calls are fine but should be limited as
+     *      bloating this could cause excessive object creation
+     *      overhead if we're creating and destroying objects often
+     * 
+     * this is where attribute locations are determined and the model shape is made
+     *      which is handled by their respective functions
+     */
+    initialise_on_event(){
+        super.initialise_on_event();
+
+        this.camera = new Camera( this.gl_context, this.aspect_ratio );
+        this.camera.set_offset([ -0.0, -0.0, -4.3 ]);
+
+        this.coordinate_frame = new Coordinate_Frame( this.gl_context );
+    }
+    /**
+     * ### OVERRIDE OF PARENT FUNCTION
+     * #### !! REPLACEMENT !!
+     * 
+     * any operation that needs to happen during initialisation
+     *      but requires that the object already have information
+     *      ready to be used
+     * 
+     * this is effectively operations which arent part of initialisation
+     *      but need to happen before the object is ready to be used
+     */
+    initialise_post_event(){
+        this.add_child_object(this.camera);
     }
     
+    
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
     
+    /**
+     * change the camera offset for this scene instance
+     * 
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} z 
+     * @returns self reference
+     */
     set_camera_offset( x, y, z ){
         // tell camera to change
         this.camera.set_offset([ x, y, z ]);
@@ -72,25 +86,24 @@ export class Scene_Graph {
     // ############################################################################################
 
 
-    update( delta_time, aspectRatio ){
-        this.coordinate_frame.update(delta_time);
-
-        // this.triangle.update(delta_time);
-        this.camera.update(delta_time, aspectRatio);
-
-        // handle updating all our objects
-        this.object_list.forEach(object_to_update => {
-            // this is like we're saying 
-            //  obj.update_function_name( delta_time )
-            object_to_update.update.apply( object_to_update.instance, [delta_time] );
-        });
+    /**
+     * ### OVERRIDE OF PARENT FUNCTION
+     * #### !! REPLACEMENT !!
+     * 
+     * operations performed on this object each frame with respect to the time scale provided
+     *      by `delta_time` parameter
+     */
+    update_self( delta_time ){
+        // TODO: gather the aspect ratio
     }
-    
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
 
-    prepare_draw_context(){
+    /**
+     * ### OVERRIDE OF PARENT FUNCTION
+     * #### !! REPLACEMENT !!
+     * 
+     * draw this object using the already prepared `temp_model_to_ndc_matrix`
+     */
+    draw_self(){
         // clear the screen
         this.gl_context.clear(this.gl_context.COLOR_BUFFER_BIT | this.gl_context.DEPTH_BUFFER_BIT);
     }
@@ -99,20 +112,6 @@ export class Scene_Graph {
     // ############################################################################################
     // ############################################################################################
 
-    draw(){
-        let world_to_ndc_matrix = this.camera.get_view_projection_matrix();
-
-        this.coordinate_frame.draw( world_to_ndc_matrix );
-
-        // // handle drawing all our objects
-        // this.object_list.forEach(
-        //     object_to_draw => {
-        //         // this is like we're saying 
-        //         //  obj.draw_function_name( camera_view_mat4, camera_projection_mat4 )
-        //         object_to_draw.draw.apply( object_to_draw.instance, [ camera_view_mat4, camera_projection_mat4 ] );
-        //     }
-        // );
-    }
 }
 
 // ############################################################################################

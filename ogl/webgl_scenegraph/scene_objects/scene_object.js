@@ -14,16 +14,14 @@ export class Scene_Object {
      *      pipeline functions provided
      * 
      * @param {*} gl_context WebGL context for this object to use
-     * @param {*} parent_object parent object to attach this object to, leave it as `null` if it's drawn
-     *                  directly from the `Canvas_Object`
      */
-    constructor( gl_context, parent_object ){
+    constructor( gl_context){
         // before creating the object
         this.fetch_required_resources();
         // construction event
         this.perform_construction_event( gl_context );
         // initialisation event
-        this.perform_initialisation_event( parent_object );
+        this.perform_initialisation_event();
     }
     /**
      * ### this function is to be overriden in derived objects to handle the fetching of
@@ -47,8 +45,8 @@ export class Scene_Object {
      * 
      * ### this function should not be modified to preserve intended flow of the creation pipeline
      */
-    perform_initialisation_event( parent_object ){
-        this.initialise_pre_event( parent_object );
+    perform_initialisation_event(){
+        this.initialise_pre_event();
         this.initialise_on_event();
         this.initialise_post_event();
     }
@@ -87,9 +85,9 @@ export class Scene_Object {
      * used to prepare references and settings, ***minimal calculations*** and
      *      ***no function calls*** should be performed during this stage
      */
-    initialise_pre_event( parent_object ){
+    initialise_pre_event(){
         // information about location in scene graph
-        this.parent = (parent_object!=undefined)?parent_object:null;
+        this.parent = null;
         this.children = [];
     }
     /**
@@ -258,6 +256,28 @@ export class Scene_Object {
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
+
+    set_parent_object( parent_object ){
+        // information about location in scene graph
+        this.parent = (parent_object!=undefined)?parent_object:null;
+    }
+    /**
+     * add a child object to this 'node' within our scene graph
+     * 
+     * ***(this may cause infinite loops if the child object has a child instance which is parent to this instance)***
+     * 
+     * @param {*} child_object child object that does not contain any loops back to this object
+     */
+    add_child_object( child_object ){
+        if(child_object!=undefined){
+            this.children.push(child_object);
+        }
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+    
 }
 
 // ############################################################################################
