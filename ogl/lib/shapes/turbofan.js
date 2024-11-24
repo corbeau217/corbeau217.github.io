@@ -48,28 +48,28 @@ export class Turbofan extends Drawable_Scene_Object {
 
         this.lathe_data = {
             // front cone tip
-            first_point: { radius: 0.0,  position_z:  0.87, colour: {r:0.1, g:0.1, b:0.5}},
+            first_point: { radius: 0.0,  position_z:  0.87, colour: {r:0.1, g:0.1, b:0.5} },
             // rear tip
-            last_point: { radius: 0.0,  position_z: -1.0,  colour: {r:1.0, g:0.4, b:0.2}},
+            last_point: { radius: 0.0,  position_z: -1.0,  colour: {r:1.0, g:0.4, b:0.2} },
             // the others
             body_points: [
                 // front cone base
-                { radius: 0.28, position_z:  0.7,  colour: {r:0.15, g:0.15, b:0.15}},
+                { radius: 0.28, position_z:  0.7,  colour: {r:0.15, g:0.15, b:0.15} },
                 // end of blades
-                { radius: 0.58, position_z:  0.7,  colour: {r:0.3, g:0.3, b:0.3}},
+                { radius: 0.58, position_z:  0.7,  colour: {r:0.3, g:0.3, b:0.3} },
                 // front of shell
-                { radius: 0.67, position_z:  1.0,  colour: {r:0.7, g:0.7, b:0.7}},
+                { radius: 0.67, position_z:  1.0,  colour: {r:0.7, g:0.7, b:0.7} },
                 // widest part
-                { radius: 0.73, position_z:  0.48, colour: {r:0.8, g:0.8, b:0.8}},
+                { radius: 0.73, position_z:  0.48, colour: {r:0.8, g:0.8, b:0.8} },
                 // past blades
-                { radius: 0.7,  position_z: -0.17, colour: {r:0.78, g:0.78, b:0.78}},
+                { radius: 0.7,  position_z: -0.17, colour: {r:0.78, g:0.78, b:0.78} },
                 // end of shell
-                { radius: 0.6,  position_z: -0.62, colour: {r:0.72, g:0.72, b:0.72}},
+                { radius: 0.6,  position_z: -0.62, colour: {r:0.72, g:0.72, b:0.72} },
                 // outer rear exhaust
-                { radius: 0.62, position_z: -0.4,  colour: {r:0.05, g:0.05, b:0.05}},
-                { radius: 0.39, position_z: -0.86, colour: {r:0.5, g:0.2, b:0.52}},
+                { radius: 0.62, position_z: -0.4,  colour: {r:0.05, g:0.05, b:0.05} },
+                { radius: 0.39, position_z: -0.86, colour: {r:0.5, g:0.2, b:0.52} },
                 // rear inner exhaust
-                { radius: 0.52, position_z: -0.6,  colour: {r:1.0, g:0.9, b:0.8}},
+                { radius: 0.52, position_z: -0.6,  colour: {r:1.0, g:0.9, b:0.8} },
             ],
             slice_count: this.circle_point_count,
         };
