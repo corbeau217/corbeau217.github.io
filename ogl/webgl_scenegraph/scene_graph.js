@@ -3,7 +3,7 @@ import { Orbital_Perspective_Camera } from "/ogl/webgl_scenegraph/cameras/orbita
 
 import { Scene_Object } from "./scene_objects/scene_object.js";
 
-import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
+import { Coordinate_Frame } from "./scene_objects/coordinate_frame.js";
 
 // ############################################################################################
 // ############################################################################################
