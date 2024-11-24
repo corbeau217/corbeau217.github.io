@@ -1,4 +1,3 @@
-
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
@@ -31,7 +30,7 @@ export class Orbital_Perspective_Camera extends Camera {
         super.initialise_on_event();
 
         // new vector for our rotation
-        this.rotation_speed = vec3.create();
+        this.rotation_speed = vec3.fromValues(0.0, 0.2, 0.0);
 
         // matrix to speed things up
         this.rotation_matrix = mat4.create();
@@ -41,11 +40,23 @@ export class Orbital_Perspective_Camera extends Camera {
     // ############################################################################################
     // ############################################################################################
 
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * #### !! replacement !!
+     * 
+     * @returns view matrix of the camera
+     */
     get_view_matrix(){
-        // super resets view and performs translation already
-        super.get_view_matrix();
+        mat4.identity(this.view_matrix);
 
-        // TODO: process rotation
+        mat4.translate(
+            this.view_matrix,
+            this.view_matrix,
+            this.translation,
+        );
+
+        // (static) multiply(out, a, b) → {mat4}
+        mat4.multiply(this.view_matrix, this.view_matrix, this.rotation_matrix);
 
 
         // give back view matrix
@@ -108,6 +119,9 @@ export class Orbital_Perspective_Camera extends Camera {
         // this.rotation_matrix
         //TODO: suffering
         
+        mat4.rotateY(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[1]);
+        mat4.rotateX(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[0]);
+        mat4.rotateZ(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[2]);
     }
 }
 

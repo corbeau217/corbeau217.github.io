@@ -1,8 +1,9 @@
+import { Orbital_Perspective_Camera } from "/ogl/webgl_scenegraph/cameras/orbital_perspective_camera.js";
+// import { Camera } from "./cameras/camera.js";
 
 import { Scene_Object } from "./scene_objects/scene_object.js";
 
 import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
-import { Camera } from "./cameras/camera.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -10,6 +11,7 @@ import { Camera } from "./cameras/camera.js";
 
 
 export class Scene_Graph extends Scene_Object {
+
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
@@ -39,8 +41,8 @@ export class Scene_Graph extends Scene_Object {
     initialise_on_event(){
         super.initialise_on_event();
 
-        this.camera = new Camera( this.gl_context, this.aspect_ratio );
-        this.camera.set_offset( -0.0, -0.0, -4.3 );
+        this.camera = new Orbital_Perspective_Camera( this.gl_context, this.aspect_ratio );
+        this.camera.set_offset( -0.0, -0.8, -4.3 );
 
         this.coordinate_frame = new Coordinate_Frame( this.gl_context );
     }
