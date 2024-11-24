@@ -105,10 +105,15 @@ export class Scene_Object {
     initialise_on_event(){
         // our model matrix
         this.model_matrix = mat4.create();
+        
+        // represents the rotation for this object
+        this.rotation_matrix = mat4.create();
+        
         // how we create the model to ndc matrix when this object is
         //      is drawn by a Canvas_Object
         this.temp_model_to_ndc_matrix = mat4.create();
         this.temp_parent_matrix = mat4.create();
+
     }
     /**
      * any operation that needs to happen during initialisation
@@ -281,6 +286,44 @@ export class Scene_Object {
     // ############################################################################################
     // ############################################################################################
     
+
+    /**
+     * apply rotation by vec3 containing the "euler angles"
+     * this rotation is applied as an existing rotation in local model space
+     */
+    rotate_local( rotation_factor_vec3 ){
+        // ...
+
+        // rotate our rotation matrix using it
+        // oh my dog it's our boy Euler, once again
+        //                  https://en.wikipedia.org/wiki/Euler_angles#Conversion_to_other_orientation_representations
+        //             heck https://en.wikipedia.org/wiki/Gimbal_lock#Loss_of_a_degree_of_freedom_with_Euler_angles
+        //             more https://learnopengl.com/Getting-started/Transformations
+        //         and more https://eecs.qmul.ac.uk/~gslabaugh/publications/euler.pdf
+        // kylo ren: MORE - https://en.wikipedia.org/wiki/Rotation_matrix
+
+        // (static) rotateX(out, a, rad) → {mat4}
+        // Rotates a matrix by the given angle around the X axis 
+
+        // (static) rotateY(out, a, rad) → {mat4}
+        // Rotates a matrix by the given angle around the Y axis 
+
+        // (static) rotateZ(out, a, rad) → {mat4}
+        // Rotates a matrix by the given angle around the Z axis 
+
+        // this.rotation_matrix
+        //TODO: suffering
+        
+        mat4.rotateY(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[1]);
+        mat4.rotateX(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[0]);
+        mat4.rotateZ(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[2]);
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+    
+
 }
 
 // ############################################################################################

@@ -2,7 +2,7 @@
 // ############################################################################################
 // ############################################################################################
 
-import { Camera } from "./perspective_camera.js";
+import { Perspective_Camera } from "./perspective_camera.js";
 
 const TAU = 2.0*Math.PI;
 
@@ -10,7 +10,7 @@ const TAU = 2.0*Math.PI;
 // ############################################################################################
 // ############################################################################################
 
-export class Orbital_Perspective_Camera extends Camera {
+export class Orbital_Perspective_Camera extends Perspective_Camera {
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
@@ -31,9 +31,6 @@ export class Orbital_Perspective_Camera extends Camera {
 
         // new vector for our rotation
         this.rotation_speed = vec3.fromValues(0.0, 0.2, 0.0);
-
-        // matrix to speed things up
-        this.rotation_matrix = mat4.create();
     }
 
     // ############################################################################################
@@ -90,38 +87,7 @@ export class Orbital_Perspective_Camera extends Camera {
         // scale by time scale
         vec3.scale(rotation_factor_vec3, rotation_factor_vec3, delta_time);
 
-        this.rotate_self( rotation_factor_vec3 );
-    }
-
-    /**
-     * apply rotation by vec3 containing the "euler angles"
-     */
-    rotate_self( rotation_factor_vec3 ){
-        // ...
-
-        // rotate our rotation matrix using it
-        // oh my dog it's our boy Euler, once again
-        //                  https://en.wikipedia.org/wiki/Euler_angles#Conversion_to_other_orientation_representations
-        //             heck https://en.wikipedia.org/wiki/Gimbal_lock#Loss_of_a_degree_of_freedom_with_Euler_angles
-        //             more https://learnopengl.com/Getting-started/Transformations
-        //         and more https://eecs.qmul.ac.uk/~gslabaugh/publications/euler.pdf
-        // kylo ren: MORE - https://en.wikipedia.org/wiki/Rotation_matrix
-
-        // (static) rotateX(out, a, rad) → {mat4}
-        // Rotates a matrix by the given angle around the X axis 
-
-        // (static) rotateY(out, a, rad) → {mat4}
-        // Rotates a matrix by the given angle around the Y axis 
-
-        // (static) rotateZ(out, a, rad) → {mat4}
-        // Rotates a matrix by the given angle around the Z axis 
-
-        // this.rotation_matrix
-        //TODO: suffering
-        
-        mat4.rotateY(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[1]);
-        mat4.rotateX(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[0]);
-        mat4.rotateZ(this.rotation_matrix, this.rotation_matrix, rotation_factor_vec3[2]);
+        this.rotate_local( rotation_factor_vec3 );
     }
 }
 
