@@ -1,5 +1,6 @@
 
 import { Camera } from "/ogl/common/camera/generic_camera.js";
+import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
 
 const TAU = 2.0*Math.PI;
 

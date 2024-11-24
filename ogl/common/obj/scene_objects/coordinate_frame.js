@@ -1,6 +1,6 @@
 import { Shader_Manager } from "/ogl/common/shaders/shader_engine.js";
-import { VERTEX_SHADER_SOURCE as wireframe_vertex_source } from "/ogl/common/shaders/minimal_wireframe_vertex_shader.js"
-import { FRAGMENT_SHADER_SOURCE as wireframe_fragment_source } from "/ogl/common/shaders/minimal_wireframe_fragment_shader.js"
+import { VERTEX_SHADER_SRC as wireframe_vertex_source } from "/ogl/common/shaders/minimal_wireframe_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as wireframe_fragment_source } from "/ogl/common/shaders/minimal_wireframe_fragment_shader.js"
 
 export class Coordinate_Frame {
     // ############################################################################################
