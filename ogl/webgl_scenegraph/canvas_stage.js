@@ -8,21 +8,33 @@ import { Scene_Graph } from "./scene_graph.js";
 //   0.0 to 1.0:                    [   R,   G,   B,   A ]
 const canvas_default_clear_colour = [ 0.1, 0.1, 0.1, 1.0 ];
 
-export class Canvas_Object {
+export class Canvas_Stage {
 
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    constructor( canvas_name ){
+    constructor( canvas_name, webgl_page_manager ){
+        this.construction_event( canvas_name, webgl_page_manager );
+        this.perform_initialisation_event();
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    construction_event( canvas_name, webgl_page_manager ){
         // save the name of the canvas
         this.canvas_name = canvas_name;
+        // save reference to our manager
+        this.webgl_page_manager = webgl_page_manager;
 
         // get the canvas element
         this.canvas_element = document.querySelector(`#${canvas_name}`);
 
         // get webgl context
         this.gl_context =  this.canvas_element.getContext("webgl");
+        
         this.aspect_ratio = this.canvas_element.width/this.canvas_element.height;
 
         // save our clear colour
@@ -31,9 +43,19 @@ export class Canvas_Object {
         // prepare time
         this.old_time = Date.now();
 
-        this.scene_graph = new Scene_Graph(this.gl_context);
+        this.scene_graph = new Scene_Graph( this.gl_context );
     }
 
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * initialisation event
+     */
+    perform_initialisation_event(){
+        this.scene_graph.perform_initialisation_event();
+    }
 
     // ############################################################################################
     // ############################################################################################
@@ -118,23 +140,6 @@ export class Canvas_Object {
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
-
-    static new_with_camera_offset( canvas_element_name, camera_offset_x, camera_offset_y, camera_offset_z ){
-        let canvas_app = new Canvas_Object( canvas_element_name, canvas_default_clear_colour );
-    
-        // prepare the scene
-        canvas_app.get_scene_graph()
-            .set_camera_offset( camera_offset_x, camera_offset_y, camera_offset_z );
-    
-        // give it to the asker
-        return canvas_app;
-    }
-
-    // ############################################################################################
-    // ############################################################################################
-    // ############################################################################################
-
-    
 }
 
 // ############################################################################################

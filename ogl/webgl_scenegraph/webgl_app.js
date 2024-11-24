@@ -1,5 +1,5 @@
 
-import { Canvas_Object } from "./canvas_stage.js";
+import { Canvas_Stage } from "./canvas_stage.js";
 
 
 // ############################################################################################
@@ -8,7 +8,7 @@ import { Canvas_Object } from "./canvas_stage.js";
 
 export class WebGL_App {
     constructor( maximum_fps ){
-        this.app_list = [];
+        this.canvas_stage_list = [];
 
         this.verbose_logging = true;
         this.maximum_fps = maximum_fps;
@@ -28,12 +28,14 @@ export class WebGL_App {
         } );
     }
     start(){
+        // for use inside update loop closure
         let self_reference = this;
+        // make update loop closure
         setInterval(
             function () {
                 requestAnimationFrame(
                         (t) => {
-                            self_reference.app_list.forEach(app_instance => {
+                            self_reference.canvas_stage_list.forEach(app_instance => {
                                 app_instance.frame_update( t );
                             });
                         }
@@ -50,13 +52,13 @@ export class WebGL_App {
         // override to include things
         if(this.verbose_logging){ console.log("initialising canvases..."); }
     
-        this.prepare_new_app( "webgl_scene_graph_01" );
+        this.create_new_canvas_stage( "webgl_scene_graph_01" );
     }
 
-    prepare_new_app( canvas_element_name ){
+    create_new_canvas_stage( canvas_element_name ){
         if(this.verbose_logging){ console.log(`creating canvas with name '${canvas_element_name}'`); }
         // construct and add
-        this.app_list.push( new Canvas_Object( canvas_element_name ) );
+        this.canvas_stage_list.push( new Canvas_Stage( canvas_element_name, this ) );
     }
 
 }

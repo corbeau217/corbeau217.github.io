@@ -20,7 +20,7 @@ export class Scene_Object {
         this.fetch_required_resources();
         // construction event
         this.perform_construction_event( gl_context );
-        // initialisation event
+        // init event
         this.perform_initialisation_event();
     }
     /**
@@ -49,6 +49,9 @@ export class Scene_Object {
         this.initialise_pre_event();
         this.initialise_on_event();
         this.initialise_post_event();
+
+        // give back self reference
+        return this;
     }
     // ############################################################################################
     // ############################################################################################

@@ -2,7 +2,7 @@
 import { Scene_Object } from "./scene_objects/scene_object.js";
 
 import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
-import { Camera } from "./scene_objects/camera.js";
+import { Camera } from "./cameras/camera.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -10,7 +10,6 @@ import { Camera } from "./scene_objects/camera.js";
 
 
 export class Scene_Graph extends Scene_Object {
-
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
@@ -24,7 +23,7 @@ export class Scene_Graph extends Scene_Object {
     initialise_pre_event(){
         super.initialise_pre_event();
 
-        this.aspect_ratio = 640.0/480.0;
+        this.aspect_ratio = this.gl_context.canvas.width/this.gl_context.canvas.height;
     }
     /**
      * ### OVERRIDE OF SUPER FUNCTION
