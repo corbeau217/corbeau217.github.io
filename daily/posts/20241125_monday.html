@@ -1,0 +1,70 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>today's theme is largely about vectors and their usage in graphical systems</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a look into the idea of clouds processed through multipass rendering</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a suggestion to look into skyboxes and cubemaps</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">with a cheeky revisiting of dot products/cross product, to see if there's a way to simply the equation of finding the normal vector for a vertex</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then entirely distracted by lorenz systems from chaos theory (known for <i>the butterfly effect</i>)</li>
+        </ul>
+        <li class="daily_textbody_list_elem">
+            <hr class="hr_list_elem_seperating" />
+            <p>clouds through multipass rendering</p>
+            <ul class="daily_textbody_list daily_textbody_sublist">
+                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the benefit of using multipass rendering to produce clouds means that there's less overhead for each frame to generate the clouds</li>
+                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">a few of the previous posts have explored this, so we'll not go on much more about it</li>
+                <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the thought was that it seemed like clouds were like a soup on the earth where solar winds are what "push" and "pull" the soup like waves on a beach</li>
+            </ul>
+        </li>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>next was an idea to open the can of worms of cubemaps</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this will be opened at some stage as cubemapping makes for some interesting options while exploring skyboxes</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>a brief exploration went into the idea of cross products and how they can be used to generate normal maps for each vertex</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">getting the tangent of a vertex, and then using cross products seemed promising (more explanation is required before it can be used effectively though)</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>finally we delved into something gnawing at the brain for a while, lorenz systems.</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lorenz systems are a method of modelling behaviour of complex numbers under certain conditions</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">hilariously vector mathematics is just complex number mathematics so we just used this</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">after digging through the wikipedia page for lorenz systems and trying to reverse engineer the python code provided (and uncovering a <a href="https://web.math.ucsb.edu/~jhateley/paper/lorenz.pdf"><code>research paper</code></a> into the topic), we were able to loosely identify the variables used</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">largely due to the excessive time spent today and yesterday, it'll be left to the comments and sources to explain it for now</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">several helper methods were used for the construction of the system so to avoid the code becoming too convoluted, but unfortunately it has made it a little bit more "strange magic words" than intended</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">there's currently an issue with the coordinate frame object having its data being overwritten by the other shapes, it was believed to be the shader code used but it's more likely the buffer selections, order of function usage and not cleaning up draw environments between uses</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>some images below show the results while exploring the effects of the numbers on our system</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">colour is currently being used to show the direction of travel between points as a vector 3 which is normalised and then mapped to rgb values</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">first image is an early version that we got to work</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">second image is another view after changing the camera data a little to zoom out</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">third shows that we found an ear shape if the point count was lower than what was needed to change orbits</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">fourth is a sink drain effect</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">fifth is the drain getting larger after tweaking, (we then ended up with an hour glass shape but this isnt included)</li>
+                </ul>
+            </li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/daily/img/20241125_lorenz_01.png" alt="early working example of the code" />
+            <img class="daily_post_content_image" src="/daily/img/20241125_lorenz_02.png" alt="another view after changing the camera data a little" />
+            <img class="daily_post_content_image" src="/daily/img/20241125_lorenz_03.png" alt="exploring the values we found an ear shape" />
+            <img class="daily_post_content_image" src="/daily/img/20241125_lorenz_04.png" alt="then there was a sink drain effect" />
+            <img class="daily_post_content_image" src="/daily/img/20241125_lorenz_05.png" alt="we managed to get the drain to be larger" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>

@@ -5,6 +5,20 @@ const DAILY_POST_DATA = {
         // ========================================
         {
             // date of the post in YYYY/MM/DD format
+            "date": "2024/11/25",
+            // the theme that post is for
+            "theme": "moony",
+            // the day that post is for
+            "day": "monday",
+            // the name for the post on that day
+            "title": "clouds are- oh look a butterfly",
+            // this is just always the book for now
+            "thumbnail": "/img/bookicon.png",
+            "thumbnail_alt_text": "an open book icon"
+        },
+        // ========================================
+        {
+            // date of the post in YYYY/MM/DD format
             "date": "2024/11/24",
             // the theme that post is for
             "theme": "situation",
