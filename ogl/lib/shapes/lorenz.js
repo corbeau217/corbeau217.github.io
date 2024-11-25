@@ -1,9 +1,16 @@
 import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-import { VERTEX_SHADER_SRC as wireframe_vertex_source } from "/ogl/core/shaders/minimal_wireframe_vertex_shader.js"
-import { FRAGMENT_SHADER_SRC as wireframe_fragment_source } from "/ogl/core/shaders/minimal_wireframe_fragment_shader.js"
+import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ogl/lib/shaders/sized_wireframe_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ogl/lib/shaders/sized_wireframe_fragment_shader.js"
 
 export class Lorenz extends Drawable_Scene_Object {
-    // TODO: make it
+
+    constructor( gl_context, lorenz_settings ){
+        super(gl_context); // normally make the object
+
+        // stash the settings if given
+        this.lorenz_settings = lorenz_settings;
+    }
+
 
     // ############################################################################################
     // ############################################################################################
@@ -28,8 +35,35 @@ export class Lorenz extends Drawable_Scene_Object {
     fetch_required_resources(){
         // specify our shader sources
         this.shader_source_data = {
-            vertex_source:      wireframe_vertex_source,
-            fragment_source:    wireframe_fragment_source,
+            vertex_source:      sized_vertex_source,
+            fragment_source:    sized_fragment_source,
+        };
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+    
+    /**
+     * 
+     * @param {*} time_scale [dt] - [delta time] inverse time value
+     * @param {*} points [n] - number of points
+     * @param {*} prandtl [σ] - [sigma] - [prandtl number](https://en.wikipedia.org/wiki/Prandtl_number)
+     * @param {*} rayleigh [ρ] - [rho] - [scaled rayleigh number](https://en.wikipedia.org/wiki/Rayleigh_number)
+     * @param {*} aspect [β] - [beta] - [geometry aspect ratio](https://en.wikipedia.org/wiki/Aspect_ratio)
+     * @returns 
+     */
+    static lorenz_settings_from( time_scale, points, prandtl, rayleigh, aspect ){
+        return {
+            time_step: 1.0/time_scale,
+            number_of_points: points,
+       
+            sigma: prandtl,
+            rho: rayleigh,
+            beta: aspect,
+
+            point_size_origin: 10.0,
+            point_size: 2.0,
         };
     }
 
@@ -46,19 +80,72 @@ export class Lorenz extends Drawable_Scene_Object {
     initialise_pre_event(){
         super.initialise_pre_event();
 
-        this.lorenz_settings = {
-            time_step: 0.01,
-            number_of_points: 200,
+        const half_sqrt_2 = 0.70710678118;
+        const half_sqrt_3 = 0.86602540378;
 
-            sigma: 10,
-            rho: 28,
-            beta: 2.667,
+        const sqrt_2  = 1.41421356237;
+        const half_pi = 1.57079632679;
+        const sqrt_3  = 1.73205080757;
+        const sqrt_pi = 1.772453851;
+        const sqrt_7  = 2.64575131106;
+        
+        const pi = 3.141592654;
 
-            point_size_origin: 10.0,
-            point_size: 4.0,
-        };
+        const tau = pi*2.0;
+
+
+        // when not given them, make our own
+        if(this.lorenz_settings==undefined){
+            // dt -> 54
+            // n  -> 500
+            // sigma -> 11
+            // rho   -> 17
+            // beta  -> 11.0/3.0
+            this.lorenz_settings = Lorenz.lorenz_settings_from( 53, 500, 11.0, 17, 11.0/3.0 );
+        }
+
+        
+        this.translation_vec = vec3.fromValues( 0, 0, 0 );
+        this.rotation_vec = vec3.fromValues( -half_pi, 0.0, 0.0 );
+        this.scale_vec = vec3.fromValues( 0.1, 0.1, 0.1 );
 
         this.verbose_logging = true;
+    }
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * 
+     * any operation that needs to happen during initialisation
+     *      but requires that the object already have information
+     *      ready to be used
+     * 
+     * this is effectively operations which arent part of initialisation
+     *      but need to happen before the object is ready to be used
+     */
+    initialise_post_event(){
+        super.initialise_post_event();
+
+        // oh no, double handling, what are we to do??
+        this.translation_mat = mat4.create();
+        this.rotation_mat = mat4.create();
+        this.scale_mat = mat4.create();
+
+        // mmmm this is hard to decide, but it seems nice now
+        mat4.translate(this.translation_mat, this.translation_mat, this.translation_vec);
+
+        mat4.rotateY(this.rotation_mat, this.rotation_mat, this.rotation_vec[1]);
+        mat4.rotateX(this.rotation_mat, this.rotation_mat, this.rotation_vec[0]);
+        mat4.rotateZ(this.rotation_mat, this.rotation_mat, this.rotation_vec[2]);
+        
+        mat4.scale(this.scale_mat, this.scale_mat, this.scale_vec);
+        
+        // local translation
+        mat4.multiply(this.model_matrix, this.model_matrix, this.translation_mat);
+        
+        // local rotation
+        mat4.multiply(this.model_matrix, this.model_matrix, this.rotation_mat);
+
+        // local scale
+        mat4.multiply(this.model_matrix, this.model_matrix, this.scale_mat);
     }
 
 
@@ -101,6 +188,8 @@ export class Lorenz extends Drawable_Scene_Object {
         this.vertex_bindings = this.lorenz_mesh.vertex_bindings;
         // --------------------------------------------------------
         this.vertex_colours = this.lorenz_mesh.vertex_colours;
+        // --------------------------------------------------------
+        this.vertex_sizes = this.lorenz_mesh.vertex_sizes;
         // --------------------------------------------------------
         this.vertex_normals = [];
         // --------------------------------------------------------
@@ -173,6 +262,7 @@ export class Lorenz extends Drawable_Scene_Object {
      * handles preparing all our uniforms for drawing, and is called during each draw call
      */
     update_uniform_data(){
+        super.update_uniform_data();
         this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_to_ndc_matrix"), false, this.temp_model_to_ndc_matrix );
     }
 
@@ -189,18 +279,18 @@ export class Lorenz extends Drawable_Scene_Object {
     draw_self(){
         // select shader as being used
         this.gl_context.useProgram(this.shader);
+        this.managed_shader.enable_attributes();
         // enable attribute data if it isnt already
         this.update_attribute_data();
         this.update_uniform_data();
-        this.managed_shader.enable_attributes();
         // update uniform data, incase it wasnt
         // draw call
+        // if(this.mesh_data.faces > 0)    this.gl_context.drawElements(this.gl_context.TRIANGLES, this.mesh_data.faces*3,  this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.LINES,     this.mesh_data.vertices,  this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.POINT,     this.mesh_data.vertices,  this.gl_context.UNSIGNED_SHORT, 0);
         // finish with drawing in our context
         this.managed_shader.disable_attributes();
     }
-
 
     // ############################################################################################
     // ############################################################################################
@@ -208,10 +298,13 @@ export class Lorenz extends Drawable_Scene_Object {
 
     /**
      * hot from the press of [wikipedia](https://en.wikipedia.org/wiki/Lorenz_system#Python_simulation)
+     * 
+     * another useful is [this paper](https://web.math.ucsb.edu/~jhateley/paper/lorenz.pdf)
+     * 
      * @param {*} point 
-     * @param {*} sigma sigma value for the lorenz system
-     * @param {*} rho rho value for the lorenz system 
-     * @param {*} beta beta value for the lorenz system 
+     * @param {*} sigma prandtl number
+     * @param {*} rho scaled rayleigh number 
+     * @param {*} beta geometry aspect ratio
      * @returns 
      */
     static get_lorenz_point(point, sigma,rho,beta){
@@ -262,7 +355,7 @@ export class Lorenz extends Drawable_Scene_Object {
             let current_point = lorenz_data.point_list[point_index];
 
             // gather the lorenz value for current point
-            let lorenz_of_current = Lorenz.get_lorenz_point( current_point, lorenz_settings.s, lorenz_settings.r, lorenz_settings.b );
+            let lorenz_of_current = Lorenz.get_lorenz_point( current_point, lorenz_settings.sigma, lorenz_settings.rho, lorenz_settings.beta );
             
             // scale by time interval
             let time_scaled_lorenz = {
@@ -294,12 +387,21 @@ export class Lorenz extends Drawable_Scene_Object {
      * @param {*} lorenz_data the lorenz data created by `get_lorenz_points`
      */
     static get_mesh_data_from_lorenz_data(lorenz_data){
-        const colour_data_black = {r: 0.0, g: 0.0, b: 0.0, a: 1.0};
+        const colour_data_origin = {r: 0.5, g: 0.5, b: 0.5, a: 1.0};
+
         let colour_data_from_points = (first, second) =>{
+            let first_vec = vec3.fromValues(first.x,first.y,first.z);
+            let second_vec = vec3.fromValues(second.x,second.y,second.z);
+            let diff_vec = vec3.create();
+            // (static) subtract(out, a, b) → {vec3}
+            // Subtracts vector b from vector a 
+            vec3.subtract(diff_vec, second_vec, first_vec);
+            vec3.normalize(diff_vec,diff_vec);
+            // bring into 0.0-1.0 as colours
             let difference_vector = {
-                x: second.x - first.x,
-                y: second.y - first.y,
-                z: second.z - first.z,
+                x: (diff_vec[0]+1.0)/2.0,
+                y: (diff_vec[1]+1.0)/2.0,
+                z: (diff_vec[2]+1.0)/2.0,
             };
 
             return {r: difference_vector.x, g: difference_vector.y, b: difference_vector.z, a: 1.0};
@@ -390,8 +492,8 @@ export class Lorenz extends Drawable_Scene_Object {
         //  to allow for a larger point size
 
         prepare_edge(
-            0, colour_data_black, lorenz_data.point_size_origin,
-            0, colour_data_black, 0.0
+            0, colour_data_origin, lorenz_data.point_size_origin,
+            0, colour_data_origin, 0.0
         );
         
         // --------------------------------------------------------
@@ -412,8 +514,8 @@ export class Lorenz extends Drawable_Scene_Object {
             
             // now defer for preparing the edge
             prepare_edge(
-                0, vector_direction_colour, lorenz_data.point_size,
-                0, vector_direction_colour, 0.0
+                i, vector_direction_colour, lorenz_data.point_size,
+                i+1, vector_direction_colour, 0.0
             );
             
         }

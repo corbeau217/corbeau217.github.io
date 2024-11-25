@@ -42,7 +42,7 @@ export class Scene_Graph extends Scene_Object {
         super.initialise_on_event();
 
         this.camera = new Orbital_Perspective_Camera( this.gl_context, this.aspect_ratio );
-        this.camera.set_offset( -0.0, -0.8, -4.3 );
+        this.camera.set_offset( -0.0, -0.8, -7.3 );
 
         this.coordinate_frame = new Coordinate_Frame( this.gl_context );
     }

@@ -42,7 +42,7 @@ export class Perspective_Camera extends Scene_Object {
 
         this.fov_y = 1.2*TAU/7.0;
         this.z_near = 0.5;
-        this.z_far = 50.0;
+        this.z_far = 100.0;
         this.aspect_ratio = 640.0/480.0;
     }
     /**

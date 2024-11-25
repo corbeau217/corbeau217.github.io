@@ -1,6 +1,6 @@
 import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-import { VERTEX_SHADER_SRC as wireframe_vertex_source } from "/ogl/core/shaders/minimal_wireframe_vertex_shader.js"
-import { FRAGMENT_SHADER_SRC as wireframe_fragment_source } from "/ogl/core/shaders/minimal_wireframe_fragment_shader.js"
+import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ogl/lib/shaders/sized_wireframe_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ogl/lib/shaders/sized_wireframe_fragment_shader.js"
 
 export class Coordinate_Frame extends Drawable_Scene_Object {
     // ############################################################################################
@@ -26,8 +26,8 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
     fetch_required_resources(){
         // specify our shader sources
         this.shader_source_data = {
-            vertex_source:      wireframe_vertex_source,
-            fragment_source:    wireframe_fragment_source,
+            vertex_source:      sized_vertex_source,
+            fragment_source:    sized_fragment_source,
         };
     }
 
@@ -79,6 +79,7 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
 
             // t / origin / center
             0.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 0.0, 1.0,
         ];
         // --------------------------------------------------------
         this.vertex_bindings = [
@@ -89,7 +90,7 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
             // k / z / blue
             4, 5,
             // t / origin / center
-            6,
+            6, 7,
         ];
         // --------------------------------------------------------
         this.vertex_colours = [
@@ -107,6 +108,7 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
 
             // t / origin / center
             0.5, 0.5, 0.5, 1.0,
+            0.5, 0.5, 0.5, 1.0,
         ];
         // --------------------------------------------------------
         this.vertex_sizes = [
@@ -123,12 +125,13 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
             this.point_data.ends_size,
 
             // t / origin / center
+            0.0,
             this.point_data.center_size,
         ];
         // --------------------------------------------------------
         this.mesh_data = {
-            vertices: 7,
-            edges: 3,
+            vertices: 8,
+            edges: 4,
             faces: 0,
         };
         // --------------------------------------------------------
@@ -194,6 +197,32 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
      */
     update_uniform_data(){
         this.gl_context.uniformMatrix4fv( this.gl_context.getUniformLocation(this.shader, "u_model_to_ndc_matrix"), false, this.temp_model_to_ndc_matrix );
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * #### !! REPLACEMENT !!
+     * 
+     * draw this object using the already prepared `temp_model_to_ndc_matrix`
+     */
+    draw_self(){
+        // select shader as being used
+        this.gl_context.useProgram(this.shader);
+        this.managed_shader.enable_attributes();
+        // enable attribute data if it isnt already
+        this.update_attribute_data();
+        this.update_uniform_data();
+        // update uniform data, incase it wasnt
+        // draw call
+        // if(this.mesh_data.faces > 0)    this.gl_context.drawElements(this.gl_context.TRIANGLES, this.mesh_data.faces*3,  this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.LINES,     this.mesh_data.vertices,  this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.POINT,     this.mesh_data.vertices, this.gl_context.UNSIGNED_SHORT, 0);
+        // finish with drawing in our context
+        this.managed_shader.disable_attributes();
     }
 
 

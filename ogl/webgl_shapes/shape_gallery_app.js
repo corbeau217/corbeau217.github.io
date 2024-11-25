@@ -16,6 +16,26 @@ export class Shape_Gallery_App extends WebGL_App {
         this.prepare_selection_mappings();
 
         // ------------------------------
+
+        this.prepare_lorenz_id();
+
+        // ------------------------------
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    prepare_lorenz_id(){
+        let lorenz_index = -1;
+        for (let selection_index = 0; selection_index < this.selection_type_map.length; selection_index++) {
+            const current_type_map = this.selection_type_map[selection_index];
+            if(current_type_map.id==="lorenz"){
+                lorenz_index = selection_index;
+                break; // leave loop
+            }
+        }
+        this.lorenz_index = lorenz_index;
     }
 
     // ############################################################################################
