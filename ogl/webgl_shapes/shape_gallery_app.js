@@ -1,6 +1,6 @@
 import { GALLERY_SHAPES_DB } from "./gallery_shapes_db.js"
 // import { Shape_Wrapper } from "./objects/shape_wrapper.js";
-import { Canvas_Stage } from "/ogl/core/canvas_stage.js";
+// import { Canvas_Stage } from "/ogl/core/canvas_stage.js";
 import { WebGL_App } from "/ogl/core/webgl_app.js";
 
 
@@ -13,11 +13,11 @@ export class Shape_Gallery_App extends WebGL_App {
         super(maximum_fps);
         // ------------------------------
 
-        this.prepare_selection_mappings();
+        this.initialise_selection_mappings();
 
         // ------------------------------
 
-        this.prepare_lorenz_id();
+        this.initialise_attribute_inspector();
 
         // ------------------------------
     }
@@ -26,23 +26,33 @@ export class Shape_Gallery_App extends WebGL_App {
     // ############################################################################################
     // ############################################################################################
 
-    prepare_lorenz_id(){
-        let lorenz_index = -1;
-        for (let selection_index = 0; selection_index < this.selection_type_map.length; selection_index++) {
-            const current_type_map = this.selection_type_map[selection_index];
-            if(current_type_map.id==="lorenz"){
-                lorenz_index = selection_index;
-                break; // leave loop
-            }
-        }
-        this.lorenz_index = lorenz_index;
+    /**
+     * preparing our attribute viewing system information
+     */
+    initialise_attribute_inspector(){
+        this.attribute_inspector_data = {
+            // used to identify each element
+            attribute_element_id: [
+                { name: "vertex_positions", label_id: "shape_data_attribute_name_vertex_positions", length_id: "shape_data_attribute_length_vertex_positions", expected_id: "shape_data_attribute_expected_vertex_positions" },
+                { name: "vertex_bindings", label_id: "shape_data_attribute_name_vertex_bindings", length_id: "shape_data_attribute_length_vertex_bindings", expected_id: "shape_data_attribute_expected_vertex_bindings" },
+                { name: "vertex_colours", label_id: "shape_data_attribute_name_vertex_colours", length_id: "shape_data_attribute_length_vertex_colours", expected_id: "shape_data_attribute_expected_vertex_colours" },
+                { name: "vertex_sizes", label_id: "shape_data_attribute_name_vertex_sizes", length_id: "shape_data_attribute_length_vertex_sizes", expected_id: "shape_data_attribute_expected_vertex_sizes" },
+            ],
+            // used to keep track of our values
+            attribute_data: [
+                { length: 0, expected: 0 },
+                { length: 0, expected: 0 },
+                { length: 0, expected: 0 },
+                { length: 0, expected: 0 },
+            ]
+        };
     }
 
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    prepare_selection_mappings(){
+    initialise_selection_mappings(){
         this.selection_type_map = GALLERY_SHAPES_DB;
     }
     prepare_default_settings(){
@@ -67,6 +77,7 @@ export class Shape_Gallery_App extends WebGL_App {
         
         this.connect_gallery_selection_function_to_page();
         this.prepare_gallery_selection_options();
+        this.prepare_attribute_inspector_elements();
 
         // ------------------------------
 
@@ -160,7 +171,115 @@ export class Shape_Gallery_App extends WebGL_App {
     // ############################################################################################
 
     provide_shape_data(){
-        this.set_current_object( this.new_current_object() );
+        let new_object = this.new_current_object();
+        this.set_current_object( new_object );
+        this.gather_shape_attribute_data( new_object );
+        this.update_shape_attribute_data();
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    get_attribute_inspector_element_id_list(attribute_index){
+        return this.attribute_inspector_data.attribute_element_id[attribute_index];
+    }
+    prepare_attribute_inspector_elements(){
+        //shape_details_inner_data_elem
+        let attribute_inspector_elem = document.querySelector(`#shape_details_inner_data_elem`);
+        let outer_line_white_space = "                        ";
+        let replacement_inner_html = `${outer_line_white_space}<!-- attribute inspector -->`;
+
+        let add_line = (line_to_add)=>{
+            replacement_inner_html = `${replacement_inner_html}\n${outer_line_white_space}${line_to_add}`;
+        };
+        let add_attribute_block = (attribute_data)=>{
+            add_line(`    <li class="shape_data_attribute">`);
+            add_line(`        <p><code id="shape_data_attribute_name_${attribute_data.name}">${attribute_data.name}</code></p>`);
+            add_line(`        <ul>`);
+            add_line(`            <li><p>length: <code id="${attribute_data.length_id}">?</code></p></li>`);
+            add_line(`            <li><p>expected: <code id="${attribute_data.expected_id}">?</code></p></li>`);
+            add_line(`        </ul>`);
+            add_line(`    </li>`);
+        }
+        
+        add_line(`<hr />`);
+        add_line(`<ul id="shape_data_attribute_list">`);
+        add_line(`    <hr />` );
+        add_attribute_block( this.get_attribute_inspector_element_id_list(0) );
+        add_line(`    <hr />` );
+        add_attribute_block( this.get_attribute_inspector_element_id_list(1) );
+        add_line(`    <hr />` );
+        add_attribute_block( this.get_attribute_inspector_element_id_list(2) );
+        add_line(`    <hr />` );
+        add_attribute_block( this.get_attribute_inspector_element_id_list(3) );
+        add_line(`    <hr />` );
+        add_line(`</ul>`);
+        add_line(`<hr />`);
+
+
+        attribute_inspector_elem.innerHTML = replacement_inner_html;
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * rather manually does the updating of the data we're using
+     * @param {*} new_object 
+     */
+    gather_shape_attribute_data( new_object ){
+        // ------------------------------------------------
+        // --------- helper methods to deal with undefined errors
+
+        let get_length_if_defined = (list)=>{
+            return (list!=undefined)?list.length:-1;
+        }
+        let get_vertex_count_if_defined = (mesh_data)=>{
+            return (mesh_data!=undefined)?mesh_data.vertices*4:-1;
+        }
+        
+        // ------------------------------------------------
+
+        // vertex position
+        this.attribute_inspector_data.attribute_data[0].length = get_length_if_defined(new_object.vertex_positions);
+        this.attribute_inspector_data.attribute_data[0].expected = get_vertex_count_if_defined(new_object.mesh_data);
+        // bindings
+        this.attribute_inspector_data.attribute_data[1].length = get_length_if_defined(new_object.vertex_bindings);
+        this.attribute_inspector_data.attribute_data[1].expected = 0;
+        // colours
+        this.attribute_inspector_data.attribute_data[2].length = get_length_if_defined(new_object.vertex_colours);
+        this.attribute_inspector_data.attribute_data[2].expected = 0;
+        // sizes
+        this.attribute_inspector_data.attribute_data[3].length = get_length_if_defined(new_object.vertex_sizes);
+        this.attribute_inspector_data.attribute_data[3].expected = 0;
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    update_shape_attribute_data(){
+
+        // prepare abbreviated count value
+        let attribute_count = this.attribute_inspector_data.attribute_data.length;
+
+        // for all our attributes, change their values over
+        for (let attribute_index = 0; attribute_index < attribute_count; attribute_index++) {
+            const attribute_elem_data = this.attribute_inspector_data.attribute_element_id[ attribute_index ];
+            const attribute_values = this.attribute_inspector_data.attribute_data[ attribute_index ];
+            
+            // go find the elements
+            let attribute_length_elem = document.querySelector(`#${attribute_elem_data.length_id}`);
+            let attribute_expected_elem = document.querySelector(`#${attribute_elem_data.expected_id}`);
+
+            // set them
+            attribute_length_elem.innerHTML = attribute_values.length;
+            attribute_expected_elem.innerHTML = attribute_values.expected;
+        }
+
+        if(this.verbose_logging) console.log("updated attributes data");
     }
 
     // ############################################################################################
