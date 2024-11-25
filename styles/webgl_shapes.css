@@ -68,18 +68,39 @@
 .shape_gallery_canvas_wrapper_inner {
     display: block;
     background-color: #0c2547;
-    padding: 5px;
     text-align: center;
-    margin: 5px;
     max-width: 100%;
     max-height:100%;
     border-bottom: 2px solid #5988c6;
     border-right: 2px solid #5988c6;
+    padding: 5px;
+    margin: 5px;
 }
 /* === details container === */
 .shape_details_outer {
+    display: block;
     border-left: 2px solid #c1d4ed;
-    padding: 2em;
+    align-content: center;
+    padding: 1em;
+    padding-right: unset;
+    margin: unset;
+    margin-right: 1em;
+}
+.shape_details_middle_wrapper_outer {
+    display: block;
+    padding: 1px;
+    margin: 1px;
+    background-color: #0c2547;
+    border-top: 2px solid #8cb0de;
+    border-left: 2px solid #8cb0de;
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.shape_details_middle_wrapper_inner {
+    display: block;
+    padding: 1em;
+    margin: 1em;
+    border-bottom: 2px solid #5988c6;
+    border-right: 2px solid #5988c6;
 }
 .shape_details_inner {
     display: block;
