@@ -14,5 +14,5 @@ export const GALLERY_SHAPES_DB = [
     { index: 3, id: "sphere",       type: Sphere,          thumbnail: "/img/thumbs/shape_gallery/sphere_01.png"     },
     { index: 4, id: "turbofan",     type: Turbofan,        thumbnail: "/img/thumbs/shape_gallery/turbofan_01.png"   },
     { index: 5, id: "lorenz",       type: Lorenz,          thumbnail: "/img/thumbs/shape_gallery/lorenz_01.png"     },
-    { index: 6, id: "book",         type: Book,            thumbnail: "/img/bookicon.png" },
+    { index: 6, id: "book",         type: Book,            thumbnail: "/img/thumbs/shape_gallery/book_01.png" },
 ];

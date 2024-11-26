@@ -18,7 +18,7 @@ void main() {
   float light_intensity = min( (ambient+light_lambert), 1.0);
 
   vec3 material_rgb = vec3(light_intensity*v_vertex_colour.r, light_intensity*v_vertex_colour.g, light_intensity*v_vertex_colour.b);
-  
+
   gl_FragColor = vec4(material_rgb, 1.0);
 }
 `;
