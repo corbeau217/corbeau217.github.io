@@ -380,17 +380,8 @@ export class Book extends Drawable_Scene_Object {
         const cover_point_size = 5.0;
         const paper_point_size = 2.0;
 
-
         // --------------------------------------------------------
-        // ---- construct the shape
-
-        // TODO: use the add_face_with_colour_size instead
-        // let cover_outer_point = (pos)=>{ add_pos_colour_size( pos, cover_outer_colour, cover_point_size ); };
-        // let cover_inner_point = (pos)=>{ add_pos_colour_size( pos, cover_inner_colour, cover_point_size ); };
-        // let paper_inner_point = (pos)=>{ add_pos_colour_size( pos, cover_inner_colour, cover_point_size ); };
-
-        // // TODO : construct the shape
-        // // cover_outer_point( {x: 0.00, y: 0.00, z: 0.00} );
+        // ---- shape specific helper functions
 
         /**
          * build face for paper
@@ -415,16 +406,213 @@ export class Book extends Drawable_Scene_Object {
         let cover_inner_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,cover_inner_colour,cover_point_size); }
 
         // --------------------------------------------------------
-        // ---- bind the faces
+        // ---- create points for shape
 
-        // TODO: bind the faces
+        /**
+         * dimensions in model space within a unit cube
+         */
+        const book = {
+            cover: {
+                width: 0.8,
+                height: 2.0,
+                thickness: 0.1,
+                // how much to lift the cover from spine center
+                spine_lift: 0.1,
+            },
+            page: {
+                width: 0.7,
+                height: 1.8,
+                // ---- page lift ----
+                // how much to lift the middle page from the spine lift
+                center_lift: 0.07,
+                // ---- page thicknesses ----
+                thickness_left: 0.3,
+                thickness_center: 0.1,
+                thickness_right: 0.3,
+            }
+        };
+
+        // assume right handed
+        let shape_points = [
+            // ############################################### COVER ###############################################
+            // -------------------------------------------- top points --------------------------------------------
+            // spine top middle inner
+            { x:  0.000,                y:  book.cover.thickness,                       z:  book.cover.height/2.0 }, // p[ 0]
+            // spine top left   inner
+            //       [left most, retreat back with cover width]
+            { x: -1.0+book.cover.width, y:  book.cover.thickness+book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 1]
+            // cover top left   inner
+            //       [left most, no retreat]
+            { x: -1.0,                  y:  book.cover.thickness+book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 2]
+            // cover top left   outer
+            //       [left most, no retreat]
+            { x: -1.0,                  y:                       book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 3]
+            // spine top left   outer
+            //       [left most, retreat back with cover width]
+            { x: -1.0+book.cover.width, y:                       book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 4]
+            // spine top middle   outer
+            { x:  0.000,                y:  0.000,                                      z:  book.cover.height/2.0 }, // p[ 5]
+            // spine top right   outer
+            //       [right most, retreat back with cover width]
+            { x:  1.0-book.cover.width, y:                       book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 6]
+            // cover top right   outer
+            //       [right most, no retreat]
+            { x:  1.0,                  y:                       book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 7]
+            // cover top right   inner
+            //       [right most, no retreat]
+            { x:  1.0,                  y:  book.cover.thickness+book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 8]
+            // spine top right   inner
+            //       [right most, retreat back with cover width]
+            { x:  1.0-book.cover.width, y:  book.cover.thickness+book.cover.spine_lift, z:  book.cover.height/2.0 }, // p[ 9]
+
+            // -------------------------------------------- bottom points --------------------------------------------
+            // spine bottom middle inner
+            { x:  0.000,                y:  book.cover.thickness,                       z: -book.cover.height/2.0 }, // p[10]
+            // spine bottom left   inner
+            //       [left most, retreat back with cover width]
+            { x: -1.0+book.cover.width, y:  book.cover.thickness+book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[11]
+            // cover bottom left   inner
+            //       [left most, no retreat]
+            { x: -1.0,                  y:  book.cover.thickness+book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[12]
+            // cover bottom left   outer
+            //       [left most, no retreat]
+            { x: -1.0,                  y:                       book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[13]
+            // spine bottom left   outer
+            //       [left most, retreat back with cover width]
+            { x: -1.0+book.cover.width, y:                       book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[14]
+            // spine bottom middle   outer
+            { x:  0.000,                y:  0.000,                                      z: -book.cover.height/2.0 }, // p[15]
+            // spine bottom right   outer
+            //       [right most, retreat back with cover width]
+            { x:  1.0-book.cover.width, y:                       book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[16]
+            // cover bottom right   outer
+            //       [right most, no retreat]
+            { x:  1.0,                  y:                       book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[17]
+            // cover bottom right   inner
+            //       [right most, no retreat]
+            { x:  1.0,                  y:  book.cover.thickness+book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[18]
+            // spine bottom right   inner
+            //       [right most, retreat back with cover width]
+            { x:  1.0-book.cover.width, y:  book.cover.thickness+book.cover.spine_lift, z: -book.cover.height/2.0 }, // p[19]
+            
+
+            // ############################################### PAGES ###############################################
+
+            // TODO: make pages
+
+        ];
 
         // --------------------------------------------------------
-        // ---- make the normal vectors
+        // ---- make cover face
 
-        // TODO: bind the faces
+        let cover_outer_face_from_indices = (first,second,third)=>{ cover_outer_face(shape_points[first], shape_points[second], shape_points[third]); };
+        let cover_inner_face_from_indices = (first,second,third)=>{ cover_inner_face(shape_points[first], shape_points[second], shape_points[third]); };
+        let paper_face_from_indices = (first,second,third)=>{ paper_face(shape_points[first], shape_points[second], shape_points[third]); };
+
+        /**
+         * given 4 indices that make a quad, going around clockwise from a point on the quad,
+         * constructs two faces based on currently used winding order
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         * @param {*} fourth 
+         */
+        let cover_outer_quad = (clockwise_face_winding,first,second,third,fourth)=>{
+            if(clockwise_face_winding){
+                cover_outer_face_from_indices( first, second, third);
+                cover_outer_face_from_indices( first, third, fourth);
+            }
+            else {
+                cover_outer_face_from_indices( first, third, second);
+                cover_outer_face_from_indices( first, fourth, third);
+            }
+        }
+        /**
+         * given 4 indices that make a quad, going around clockwise from a point on the quad,
+         * constructs two faces based on currently used winding order
+         * 
+         * [same as for outer but making an inner faces]
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         * @param {*} fourth 
+         */
+        let cover_inner_quad = (clockwise_face_winding,first,second,third,fourth)=>{
+            if(clockwise_face_winding){
+                cover_inner_face_from_indices( first, second, third);
+                cover_inner_face_from_indices( first, third, fourth);
+            }
+            else {
+                cover_inner_face_from_indices( first, third, second);
+                cover_inner_face_from_indices( first, fourth, third);
+            }
+        }
+        /**
+         * given 4 indices that make a quad, going around clockwise from a point on the quad,
+         * constructs two faces based on currently used winding order
+         * 
+         * [same as cover but for paper faces]
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         * @param {*} fourth 
+         */
+        let paper_quad = (clockwise_face_winding,first,second,third,fourth)=>{
+            if(clockwise_face_winding){
+                paper_face_from_indices( first, second, third);
+                paper_face_from_indices( first, third, fourth);
+            }
+            else {
+                paper_face_from_indices( first, third, second);
+                paper_face_from_indices( first, fourth, third);
+            }
+        }
+
+        const clockwise_winding_order = false;
+        // ------------ top side ------------
+        cover_outer_quad(clockwise_winding_order, 1, 2, 3, 4); // left
+        cover_outer_quad(clockwise_winding_order, 9, 6, 7, 8); // right
+        // ------------ left side -----------
+        cover_outer_quad(clockwise_winding_order, 2,12,13, 3);
+        // ------------ bottom side ---------
+        cover_outer_quad(clockwise_winding_order,11,14,13,12); // left
+        cover_outer_quad(clockwise_winding_order,19,18,17,16); // right
+        // ------------ right side ----------
+        cover_outer_quad(clockwise_winding_order,18, 8, 7,17);
+        // ------------ spine top ----------
+        cover_outer_quad(clockwise_winding_order, 0, 1, 4, 5); // left
+        cover_outer_quad(clockwise_winding_order, 0, 5, 6, 9); // right
+        // ------------ spine outer ----------
+        cover_outer_quad(clockwise_winding_order,15, 5, 4,14); // left
+        cover_outer_quad(clockwise_winding_order,15,16, 6, 5); // right
+        // ------------ spine bottom ----------
+        cover_outer_quad(clockwise_winding_order,10,15,14,11); // left
+        cover_outer_quad(clockwise_winding_order,10,19,16,15); // right
+        // ------------ spine inner ----------
+        cover_inner_quad(clockwise_winding_order, 0,10,11, 1); // left
+        cover_inner_quad(clockwise_winding_order, 0, 9,19,10); // right
+        // ------------ left inner ----------
+        cover_inner_quad(clockwise_winding_order, 1,11,12, 2);
+        // ------------ left outer ----------
+        cover_outer_quad(clockwise_winding_order,14, 4, 3,13);
+        // ------------ right inner ----------
+        cover_inner_quad(clockwise_winding_order, 9, 8,18,19);
+        // ------------ right outer ----------
+        cover_outer_quad(clockwise_winding_order,16,17, 7, 6);
 
         // --------------------------------------------------------
+        // ---- make paper faces
+
+        // TODO: do this
+
+        // --------------------------------------------------------
+        
+        // --------------------------------------------------------
+        // ---- finished, give it back
+        return shape_data;
     }
 
 
