@@ -1,6 +1,7 @@
 import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
 import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ogl/lib/shaders/sized_diffuse_vertex_shader.js"
 import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ogl/lib/shaders/sized_diffuse_fragment_shader.js"
+import { Shape_Factory } from "../../core/util/shape_factory.js";
 
 export class Book extends Drawable_Scene_Object {
     // ############################################################################################
@@ -209,168 +210,10 @@ export class Book extends Drawable_Scene_Object {
 
 
     static prepare_shape(){
-        // prepare the shape information container
-        /**
-         * shape information container to be used by Drawable_Scene_Object
-         */
-        let shape_data = {
-            // ------------------------
-            vertex_positions: [],
-            vertex_bindings: [],
-            vertex_colours: [],
-            vertex_sizes: [],
-            vertex_normals: [],
-            // ------------------------
-            vertex_count: 0,
-            edge_count: 0,
-            face_count: 0,
-            colour_count: 0,
-            size_count: 0,
-            normal_count: 0,
-            // ------------------------
-        };
-
         // --------------------------------------------------------
-        // ------ helper methods
+        // ---- prepare shape factory
 
-        /**
-         * included in our data
-         * @param {*} vertex_data 
-         */
-        let add_vertex_position = (vertex_data)=>{
-            shape_data.vertex_positions.push(vertex_data.x);
-            shape_data.vertex_positions.push(vertex_data.y);
-            shape_data.vertex_positions.push(vertex_data.z);
-            shape_data.vertex_positions.push(1.0);
-            
-            shape_data.vertex_count += 1;
-        };
-        /**
-         * including it in our data
-         * @param {*} first 
-         * @param {*} second 
-         * @param {*} third 
-         */
-        let add_binding_face = (first,second,third)=>{
-            shape_data.vertex_bindings.push(first);
-            shape_data.vertex_bindings.push(second);
-            shape_data.vertex_bindings.push(third);
-            shape_data.face_count += 1;
-        };
-        /**
-         * including it in our data
-         * @param {*} colour 
-         * @param {*} size 
-         */
-        let add_colour_and_size = (colour, size)=>{
-            // colour first
-            shape_data.vertex_colours.push(colour.r);
-            shape_data.vertex_colours.push(colour.g);
-            shape_data.vertex_colours.push(colour.b);
-            shape_data.vertex_colours.push(colour.a);
-            shape_data.colour_count += 1;
-
-            // then size
-            shape_data.vertex_sizes.push(size);
-            shape_data.size_count += 1;
-        };
-        /**
-         * does all for a point, but concisely
-         * @param {*} pos 
-         * @param {*} colour 
-         * @param {*} size 
-         */
-        let add_pos_colour_size = (pos,colour,size)=>{
-            add_vertex_position(pos);
-            add_colour_and_size(colour,size);
-        };
-
-        /**
-         * takes vec3 and includes it as a normal for our shape
-         * @param {*} normal_vec3 
-         */
-        let add_normal = (normal_vec3)=>{
-            shape_data.vertex_normals.push(normal_vec3[0]);
-            shape_data.vertex_normals.push(normal_vec3[1]);
-            shape_data.vertex_normals.push(normal_vec3[2]);
-            shape_data.normal_count += 1;
-        };
-        /**
-         * converts the position data to two vec3s then does a cross product
-         *  to get the perpendicular vector to the plane that all 3 vertices
-         *  exist on
-         * 
-         * @param {*} first_pos 
-         * @param {*} second_pos 
-         * @param {*} third_pos 
-         * @returns vec3 perpendicular vector
-         */
-        let normal_vec3_from_face_vertices = ( first_pos, second_pos, third_pos )=>{
-            // prepare the positions as vec3
-            let first_vec = vec3.fromValues( first_pos.x, first_pos.y, first_pos.z );
-            let second_vec = vec3.fromValues( second_pos.x, second_pos.y, second_pos.z );
-            let third_vec = vec3.fromValues( third_pos.x, third_pos.y, third_pos.z );
-            // ready the vectors for the math library
-            let left_vec = vec3.create();
-            let right_vec = vec3.create();
-            let cross_vec = vec3.create();
-
-            // --- vector math ---
-
-            // (static) subtract(out, a, b) → {vec3}
-            // Subtracts vector b from vector a 
-
-            // get the two vectors
-            vec3.subtract(left_vec, second_vec, first_vec);
-            vec3.subtract(right_vec, second_vec, third_vec);
-
-            // (static) cross(out, a, b) → {vec3}
-            // Computes the cross product of two vec3's 
-            
-            // CLOCKWISE / right-handed coordinate frame
-            vec3.cross(cross_vec, left_vec, right_vec);
-
-            // // ANTICLOCKWISE / left-handed coordinate frame
-            // vec3.cross(cross_vec, right_vec, left_vec);
-
-            // --- give ---
-            return cross_vec;
-        };
-        /**
-         * determine the normal, then provide it
-         * @param {*} first_pos 
-         * @param {*} second_pos 
-         * @param {*} third_pos 
-         */
-        let add_normals_for_face = (first_pos, second_pos, third_pos)=>{
-            // generate the normal
-            let face_normal = normal_vec3_from_face_vertices(first_pos, second_pos, third_pos);
-
-            // add as normal for each of the triangle's/face's vertices
-            add_normal(face_normal);
-            add_normal(face_normal);
-            add_normal(face_normal);
-        };
-        /**
-         * makes a triangle/face including the normal vector, with colour and point size for it too
-         * @param {*} first_pos 
-         * @param {*} second_pos 
-         * @param {*} third_pos 
-         * @param {*} colour 
-         * @param {*} size 
-         */
-        let add_face_with_colour_size = ( first_pos, second_pos, third_pos, colour, size )=>{
-            // keep where we're adding
-            let starting_index = shape_data.vertex_count;
-            // generate the vertices
-            add_pos_colour_size( first_pos,  colour, size );
-            add_pos_colour_size( second_pos, colour, size );
-            add_pos_colour_size( third_pos,  colour, size );
-            // bind it
-            add_binding_face( starting_index, starting_index+1, starting_index+2);
-            // add the normals for it
-            add_normals_for_face( first_pos, second_pos, third_pos );
-        };
+        let shape_factory = new Shape_Factory();
 
         // --------------------------------------------------------
         // ---- prepare settings
@@ -386,28 +229,58 @@ export class Book extends Drawable_Scene_Object {
 
         // --------------------------------------------------------
         // ---- shape specific helper functions
+        //          [these are to shorten the function call line lengths]
 
         /**
-         * build face for paper
+         * given 4 indices that make a quad, going around clockwise from a point on the quad,
+         * constructs two faces based on currently used winding order
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
          * @param {*} first 
          * @param {*} second 
          * @param {*} third 
+         * @param {*} fourth 
          */
-        let paper_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,paper_colour,paper_point_size); }
+        let cover_outer_quad = (clockwise_face_winding,first,second,third,fourth)=>{
+            shape_factory.add_quad_with_colour_size( shape_points[first], shape_points[second], shape_points[third], shape_points[fourth], cover_outer_colour, cover_point_size, clockwise_face_winding );
+        };
         /**
-         * build face for cover outer face
+         * given 4 indices that make a quad, going around clockwise from a point on the quad,
+         * constructs two faces based on currently used winding order
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
          * @param {*} first 
          * @param {*} second 
          * @param {*} third 
+         * @param {*} fourth 
          */
-        let cover_outer_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,cover_outer_colour,cover_point_size); }
+        let cover_inner_quad = (clockwise_face_winding,first,second,third,fourth)=>{
+            shape_factory.add_quad_with_colour_size( shape_points[first], shape_points[second], shape_points[third], shape_points[fourth], cover_inner_colour, cover_point_size, clockwise_face_winding );
+        };
         /**
-         * build face for cover inner face
+         * given 4 indices that make a quad, going around clockwise from a point on the quad,
+         * constructs two faces based on currently used winding order
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         * @param {*} fourth 
+         */
+        let paper_quad = (clockwise_face_winding,first,second,third,fourth)=>{
+            shape_factory.add_quad_with_colour_size( shape_points[first], shape_points[second], shape_points[third], shape_points[fourth], paper_colour, paper_point_size, clockwise_face_winding );
+        };
+        /**
+         * given 3 indices that make a triangle, going around clockwise from a point on the triangle,
+         * constructs a face based on currently used winding order
+         * 
+         * [same as quad but for triangles]
+         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
          * @param {*} first 
          * @param {*} second 
          * @param {*} third 
          */
-        let cover_inner_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,cover_inner_colour,cover_point_size); }
+        let paper_triangle = (clockwise_face_winding,first,second,third)=>{
+            shape_factory.add_triangle_with_colour_size(  shape_points[first], shape_points[second], shape_points[third], paper_colour, paper_point_size, clockwise_face_winding  )
+        };
+
 
         // --------------------------------------------------------
         // ---- create points for shape
@@ -571,92 +444,6 @@ export class Book extends Drawable_Scene_Object {
             { x:  1.0-book.cover.width,                                                  y:  book.cover.thickness+book.cover.spine_lift,                                        z: -book.cover.height/2.0 }, // p[41]
         ];
 
-        // --------------------------------------------------------
-        // ---- make cover face
-
-        let cover_outer_face_from_indices = (first,second,third)=>{ cover_outer_face(shape_points[first], shape_points[second], shape_points[third]); };
-        let cover_inner_face_from_indices = (first,second,third)=>{ cover_inner_face(shape_points[first], shape_points[second], shape_points[third]); };
-        let paper_face_from_indices = (first,second,third)=>{ paper_face(shape_points[first], shape_points[second], shape_points[third]); };
-
-        /**
-         * given 4 indices that make a quad, going around clockwise from a point on the quad,
-         * constructs two faces based on currently used winding order
-         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
-         * @param {*} first 
-         * @param {*} second 
-         * @param {*} third 
-         * @param {*} fourth 
-         */
-        let cover_outer_quad = (clockwise_face_winding,first,second,third,fourth)=>{
-            if(clockwise_face_winding){
-                cover_outer_face_from_indices( first, second, third);
-                cover_outer_face_from_indices( first, third, fourth);
-            }
-            else {
-                cover_outer_face_from_indices( first, third, second);
-                cover_outer_face_from_indices( first, fourth, third);
-            }
-        };
-        /**
-         * given 4 indices that make a quad, going around clockwise from a point on the quad,
-         * constructs two faces based on currently used winding order
-         * 
-         * [same as for outer but making an inner faces]
-         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
-         * @param {*} first 
-         * @param {*} second 
-         * @param {*} third 
-         * @param {*} fourth 
-         */
-        let cover_inner_quad = (clockwise_face_winding,first,second,third,fourth)=>{
-            if(clockwise_face_winding){
-                cover_inner_face_from_indices( first, second, third);
-                cover_inner_face_from_indices( first, third, fourth);
-            }
-            else {
-                cover_inner_face_from_indices( first, third, second);
-                cover_inner_face_from_indices( first, fourth, third);
-            }
-        };
-        /**
-         * given 4 indices that make a quad, going around clockwise from a point on the quad,
-         * constructs two faces based on currently used winding order
-         * 
-         * [same as cover but for paper faces]
-         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
-         * @param {*} first 
-         * @param {*} second 
-         * @param {*} third 
-         * @param {*} fourth 
-         */
-        let paper_quad = (clockwise_face_winding,first,second,third,fourth)=>{
-            if(clockwise_face_winding){
-                paper_face_from_indices( first, second, third);
-                paper_face_from_indices( first, third, fourth);
-            }
-            else {
-                paper_face_from_indices( first, third, second);
-                paper_face_from_indices( first, fourth, third);
-            }
-        };
-        /**
-         * given 3 indices that make a triangle, going around clockwise from a point on the triangle,
-         * constructs a face based on currently used winding order
-         * 
-         * [same as quad but for triangles]
-         * @param {*} clockwise_face_winding if the winding order of faces is clockwise 
-         * @param {*} first 
-         * @param {*} second 
-         * @param {*} third 
-         */
-        let paper_triangle = (clockwise_face_winding,first,second,third,fourth)=>{
-            if(clockwise_face_winding){
-                paper_face_from_indices( first, second, third);
-            }
-            else {
-                paper_face_from_indices( first, third, second);
-            }
-        };
 
         const clockwise_winding_order = false;
         // ------------ top side ------------
@@ -728,7 +515,7 @@ export class Book extends Drawable_Scene_Object {
         
         // --------------------------------------------------------
         // ---- finished, give it back
-        return shape_data;
+        return shape_factory.shape_data;
     }
 
 
