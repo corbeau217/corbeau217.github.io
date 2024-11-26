@@ -46,7 +46,7 @@ export class Book extends Drawable_Scene_Object {
         
         this.translation_vec = vec3.fromValues( 0, 0, 0 );
         this.rotation_vec = vec3.fromValues( 0.0, 0.0, 0.0 );
-        this.scale_vec = vec3.fromValues( 1.0, 1.0, 1.0 );
+        this.scale_vec = vec3.fromValues( 2.0, 2.0, 2.0 );
 
         this.verbose_logging = true;
     }
@@ -418,7 +418,7 @@ export class Book extends Drawable_Scene_Object {
         const book = {
             cover: {
                 width: 0.8,
-                height: 2.0,
+                height: 1.0,
                 thickness: 0.1,
                 // how much to lift the cover from spine center
                 spine_lift: 0.1,
@@ -432,7 +432,7 @@ export class Book extends Drawable_Scene_Object {
                 center_lift: 0.07,
                 // ---- page thicknesses ----
                 thickness_left: 0.15,
-                thickness_center: 0.1,
+                thickness_center: 0.02,
                 thickness_right: 0.15,
             }
         };
