@@ -299,10 +299,10 @@ export class Book extends Drawable_Scene_Object {
             page: {
                 width: 0.7,
                 height: 1.8,
-                spine_lift: 0.05,
+                spine_lift: 0.08,
                 // ---- page lift ----
                 // how much to lift the middle page from the spine lift
-                center_lift: 0.07,
+                center_lift: 0.2,
                 // ---- page thicknesses ----
                 thickness_left: 0.15,
                 thickness_center: 0.02,
@@ -509,9 +509,9 @@ export class Book extends Drawable_Scene_Object {
         paper_triangle(clockwise_winding_order,20,27,24);
         paper_triangle(clockwise_winding_order,20,24,21);
         // ===================== spine bottom ==============
-        paper_triangle(clockwise_winding_order,31,41,38);
-        paper_triangle(clockwise_winding_order,31,38,35);
-        paper_triangle(clockwise_winding_order,31,35,32);
+        paper_triangle(clockwise_winding_order,31,38,41);
+        paper_triangle(clockwise_winding_order,31,35,38);
+        paper_triangle(clockwise_winding_order,31,32,35);
         
         // --------------------------------------------------------
         // ---- finished, give it back
