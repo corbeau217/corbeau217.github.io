@@ -325,7 +325,7 @@ export class Book extends Drawable_Scene_Object {
             
             // CLOCKWISE / right-handed coordinate frame
             vec3.cross(cross_vec, left_vec, right_vec);
-            
+
             // // ANTICLOCKWISE / left-handed coordinate frame
             // vec3.cross(cross_vec, right_vec, left_vec);
 
@@ -391,6 +391,28 @@ export class Book extends Drawable_Scene_Object {
 
         // // TODO : construct the shape
         // // cover_outer_point( {x: 0.00, y: 0.00, z: 0.00} );
+
+        /**
+         * build face for paper
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         */
+        let paper_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,paper_colour,paper_point_size); }
+        /**
+         * build face for cover outer face
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         */
+        let cover_outer_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,cover_outer_colour,cover_point_size); }
+        /**
+         * build face for cover inner face
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         */
+        let cover_inner_face = (first,second,third)=>{ add_face_with_colour_size(first,second,third,cover_inner_colour,cover_point_size); }
 
         // --------------------------------------------------------
         // ---- bind the faces
