@@ -84,13 +84,13 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
         // --------------------------------------------------------
         this.vertex_bindings = [
             // i / x / red
-            0, 1,
+            0, 1, 0,
             // j / y / green
-            2, 3,
+            2, 3, 2,
             // k / z / blue
-            4, 5,
+            4, 5, 4,
             // t / origin / center
-            6, 7,
+            6, 7, 6,
         ];
         // --------------------------------------------------------
         this.vertex_colours = [
@@ -213,14 +213,13 @@ export class Coordinate_Frame extends Drawable_Scene_Object {
         // select shader as being used
         this.gl_context.useProgram(this.shader);
         this.managed_shader.enable_attributes();
-        // enable attribute data if it isnt already
         this.update_attribute_data();
         this.update_uniform_data();
         // update uniform data, incase it wasnt
         // draw call
         // if(this.mesh_data.faces > 0)    this.gl_context.drawElements(this.gl_context.TRIANGLES, this.mesh_data.faces*3,  this.gl_context.UNSIGNED_SHORT, 0);
         this.gl_context.drawElements(this.gl_context.LINES,     this.mesh_data.vertices,  this.gl_context.UNSIGNED_SHORT, 0);
-        this.gl_context.drawElements(this.gl_context.POINT,     this.mesh_data.vertices, this.gl_context.UNSIGNED_SHORT, 0);
+        this.gl_context.drawElements(this.gl_context.POINT,     this.mesh_data.vertices,  this.gl_context.UNSIGNED_SHORT, 0);
         // finish with drawing in our context
         this.managed_shader.disable_attributes();
     }

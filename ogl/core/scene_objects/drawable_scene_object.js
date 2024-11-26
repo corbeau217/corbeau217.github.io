@@ -169,10 +169,10 @@ export class Drawable_Scene_Object extends Scene_Object {
     draw_self(){
         // select shader as being used
         this.gl_context.useProgram(this.shader);
+        this.managed_shader.enable_attributes();
         // enable attribute data if it isnt already
         this.update_attribute_data();
         this.update_uniform_data();
-        this.managed_shader.enable_attributes();
         // update uniform data, incase it wasnt
         // draw call
         if(this.mesh_data.faces > 0)    this.gl_context.drawElements(this.gl_context.TRIANGLES, this.mesh_data.faces*3,  this.gl_context.UNSIGNED_SHORT, 0);
