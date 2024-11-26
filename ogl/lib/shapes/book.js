@@ -203,4 +203,211 @@ export class Book extends Drawable_Scene_Object {
     // ############################################################################################
     // ############################################################################################
 
+
+    static prepare_shape(){
+        // prepare the shape information container
+        /**
+         * shape information container to be used by Drawable_Scene_Object
+         */
+        let shape_data = {
+            // ------------------------
+            vertex_positions: [],
+            vertex_bindings: [],
+            vertex_colours: [],
+            vertex_sizes: [],
+            vertex_normals: [],
+            // ------------------------
+            vertex_count: 0,
+            edge_count: 0,
+            face_count: 0,
+            colour_count: 0,
+            size_count: 0,
+            normal_count: 0,
+            // ------------------------
+        };
+
+        // --------------------------------------------------------
+        // ------ helper methods
+
+        /**
+         * included in our data
+         * @param {*} vertex_data 
+         */
+        let add_vertex_position = (vertex_data)=>{
+            shape_data.vertex_positions.push(vertex_data.x);
+            shape_data.vertex_positions.push(vertex_data.y);
+            shape_data.vertex_positions.push(vertex_data.z);
+            shape_data.vertex_positions.push(1.0);
+            
+            shape_data.vertex_count += 1;
+        };
+        /**
+         * including it in our data
+         * @param {*} first 
+         * @param {*} second 
+         * @param {*} third 
+         */
+        let add_binding_face = (first,second,third)=>{
+            shape_data.vertex_bindings.push(first);
+            shape_data.vertex_bindings.push(second);
+            shape_data.vertex_bindings.push(third);
+            shape_data.face_count += 1;
+        };
+        /**
+         * including it in our data
+         * @param {*} colour 
+         * @param {*} size 
+         */
+        let add_colour_and_size = (colour, size)=>{
+            // colour first
+            shape_data.vertex_colours.push(colour.r);
+            shape_data.vertex_colours.push(colour.g);
+            shape_data.vertex_colours.push(colour.b);
+            shape_data.vertex_colours.push(colour.a);
+            shape_data.colour_count += 1;
+
+            // then size
+            shape_data.vertex_sizes.push(size);
+            shape_data.size_count += 1;
+        };
+        /**
+         * does all for a point, but concisely
+         * @param {*} pos 
+         * @param {*} colour 
+         * @param {*} size 
+         */
+        let add_pos_colour_size = (pos,colour,size)=>{
+            add_vertex_position(pos);
+            add_colour_and_size(colour,size);
+        };
+
+        /**
+         * takes vec3 and includes it as a normal for our shape
+         * @param {*} normal_vec3 
+         */
+        let add_normal = (normal_vec3)=>{
+            shape_data.vertex_normals.push(normal_vec3[0]);
+            shape_data.vertex_normals.push(normal_vec3[1]);
+            shape_data.vertex_normals.push(normal_vec3[2]);
+            shape_data.normal_count += 1;
+        };
+        /**
+         * converts the position data to two vec3s then does a cross product
+         *  to get the perpendicular vector to the plane that all 3 vertices
+         *  exist on
+         * 
+         * @param {*} first_pos 
+         * @param {*} second_pos 
+         * @param {*} third_pos 
+         * @returns vec3 perpendicular vector
+         */
+        let normal_vec3_from_face_vertices = ( first_pos, second_pos, third_pos )=>{
+            // prepare the positions as vec3
+            let first_vec = vec3.fromValues( first_pos.x, first_pos.y, first_pos.z );
+            let second_vec = vec3.fromValues( second_pos.x, second_pos.y, second_pos.z );
+            let third_vec = vec3.fromValues( third_pos.x, third_pos.y, third_pos.z );
+            // ready the vectors for the math library
+            let left_vec = vec3.create();
+            let right_vec = vec3.create();
+            let cross_vec = vec3.create();
+
+            // --- vector math ---
+
+            // (static) subtract(out, a, b) → {vec3}
+            // Subtracts vector b from vector a 
+
+            // get the two vectors
+            vec3.subtract(left_vec, second_vec, first_vec);
+            vec3.subtract(right_vec, second_vec, third_vec);
+
+            // (static) cross(out, a, b) → {vec3}
+            // Computes the cross product of two vec3's 
+            
+            // CLOCKWISE / right-handed coordinate frame
+            vec3.cross(cross_vec, left_vec, right_vec);
+            
+            // // ANTICLOCKWISE / left-handed coordinate frame
+            // vec3.cross(cross_vec, right_vec, left_vec);
+
+            // --- give ---
+            return cross_vec;
+        };
+        /**
+         * determine the normal, then provide it
+         * @param {*} first_pos 
+         * @param {*} second_pos 
+         * @param {*} third_pos 
+         */
+        let add_normals_for_face = (first_pos, second_pos, third_pos)=>{
+            // generate the normal
+            let face_normal = normal_vec3_from_face_vertices(first_pos, second_pos, third_pos);
+
+            // add as normal for each of the triangle's/face's vertices
+            add_normal(face_normal);
+            add_normal(face_normal);
+            add_normal(face_normal);
+        };
+        /**
+         * makes a triangle/face including the normal vector, with colour and point size for it too
+         * @param {*} first_pos 
+         * @param {*} second_pos 
+         * @param {*} third_pos 
+         * @param {*} colour 
+         * @param {*} size 
+         */
+        let add_face_with_colour_size = ( first_pos, second_pos, third_pos, colour, size )=>{
+            // keep where we're adding
+            let starting_index = shape_data.vertex_count;
+            // generate the vertices
+            add_pos_colour_size( first_pos,  colour, size );
+            add_pos_colour_size( second_pos, colour, size );
+            add_pos_colour_size( third_pos,  colour, size );
+            // bind it
+            add_binding_face( starting_index, starting_index+1, starting_index+2);
+            // add the normals for it
+            add_normals_for_face( first_pos, second_pos, third_pos );
+        };
+
+        // --------------------------------------------------------
+        // ---- prepare settings
+
+        // --- colours ---
+        const paper_colour       = {r: 1.0, g: 0.8, b: 0.4, a: 1.0};
+        const cover_outer_colour = {r: 1.0, g: 0.4, b: 0.2, a: 1.0};
+        const cover_inner_colour = {r: 0.5, g: 0.2, b: 0.1, a: 1.0};
+
+        // --- sizes ---
+        const cover_point_size = 5.0;
+        const paper_point_size = 2.0;
+
+
+        // --------------------------------------------------------
+        // ---- construct the shape
+
+        // TODO: use the add_face_with_colour_size instead
+        // let cover_outer_point = (pos)=>{ add_pos_colour_size( pos, cover_outer_colour, cover_point_size ); };
+        // let cover_inner_point = (pos)=>{ add_pos_colour_size( pos, cover_inner_colour, cover_point_size ); };
+        // let paper_inner_point = (pos)=>{ add_pos_colour_size( pos, cover_inner_colour, cover_point_size ); };
+
+        // // TODO : construct the shape
+        // // cover_outer_point( {x: 0.00, y: 0.00, z: 0.00} );
+
+        // --------------------------------------------------------
+        // ---- bind the faces
+
+        // TODO: bind the faces
+
+        // --------------------------------------------------------
+        // ---- make the normal vectors
+
+        // TODO: bind the faces
+
+        // --------------------------------------------------------
+    }
+
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
 }
