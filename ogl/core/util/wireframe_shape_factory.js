@@ -1,6 +1,6 @@
 import { Shape_Factory } from "./shape_factory.js";
 
-export class Wireframe_Shape_factory {
+export class Wireframe_Shape_factory extends Shape_Factory {
 
     
     /**
