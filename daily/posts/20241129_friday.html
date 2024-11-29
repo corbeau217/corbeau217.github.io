@@ -1,0 +1,26 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>re-orienting ourselves back to the goal of these daily posts, we've taken to doing something within the originally planned timeframe</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">new <a href="https://www.w3schools.com/js/js_class_inheritance.asp"><code>derived class</code></a> was made for building shapes with the same ideas behind it as the shape wrapper that was previously used</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">there was some headache with the way that javascript handles accessing <a href="https://www.w3schools.com/js/js_class_static.asp"><code>static methods</code></a>, turns out it doesnt like to dynamically bind those, so we had to do a bit of a hacky solution to that</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">created a simple cube shape for the crate shape, will need to work on uv coordinates at some point</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>dynamically binding and javascript</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using the <code>super</code> keyword, works fine for <a href="https://www.w3schools.com/js/js_class_inheritance.asp"><code>derived classes</code></a> to access the parent class's methods, but to go from parent to derived is a bit goofy</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">if there's a function/method predefined in the parent/super class, we can override it and make use of dynamic binding of functions which replaces the address of the function at runtime</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">but if we want to use a <a href="https://www.w3schools.com/js/js_class_static.asp"><code>static method</code></a>, which is verbosely called via specifying a classname then function name, it's not redirectable at runtime, so to get around this, we'll use a regular instance method (one we can override later) to invoke the static method</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we can get around the need for this by just turning the shape construction into an instance method, but that feels wrong and like it's working in space it's not intended to</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">there's something deep within the soul that screams out at using an instance method instead, something about how every instance would have their own version of that function lying around in memory</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem"><p>not much else to report, there was a brief thought experiment about the magic circles again, but nothing more than scribbles with no meaning</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
