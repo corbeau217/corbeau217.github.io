@@ -11,7 +11,7 @@ import { Joint          } from "/ogl/lib/shapes/joint.js";
 export const GALLERY_SHAPES_DB = [
     { index: 0, id: "clear",        type: Scene_Object,    thumbnail: "/img/bookicon.png" },
     { index: 1, id: "can",          type: Can,             thumbnail: "/img/bookicon.png" },
-    { index: 2, id: "crate",        type: Crate,           thumbnail: "/img/thumbs/shape_gallery/crate_01.png" },
+    { index: 2, id: "crate",        type: Crate,           thumbnail: "/img/thumbs/shape_gallery/crate_02.png" },
     { index: 3, id: "sphere",       type: Sphere,          thumbnail: "/img/thumbs/shape_gallery/sphere_01.png"     },
     { index: 4, id: "turbofan",     type: Turbofan,        thumbnail: "/img/thumbs/shape_gallery/turbofan_01.png"   },
     { index: 5, id: "lorenz",       type: Lorenz,          thumbnail: "/img/thumbs/shape_gallery/lorenz_01.png"     },

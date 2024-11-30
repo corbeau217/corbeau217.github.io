@@ -21,6 +21,26 @@ export class Crate extends Textured_Shape_Factory_Scene_Object {
         this.verbose_logging = true;
     }
 
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * 
+     * this is use by derived classes to call `this.add_texture_source(source_of_texture)`
+     */
+    announce_texture_paths(){
+        super.announce_texture_paths();
+
+        this.add_texture_source("/img/textures/crate_single_side.png");
+    }
+
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
 
     /**
      * overriden in derived classes
