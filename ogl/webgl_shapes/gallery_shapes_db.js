@@ -19,6 +19,6 @@ export const GALLERY_SHAPES_DB = [
     { index: 5, id: "lorenz",       type: Lorenz,          thumbnail: "/img/thumbs/shape_gallery/lorenz_01.png"     },
     { index: 6, id: "book",         type: Book,            thumbnail: "/img/thumbs/shape_gallery/book_02.png"       },
     { index: 7, id: "joint",        type: Joint,           thumbnail: "/img/thumbs/shape_gallery/joint_01.png"      },
-    { index: 8, id: "turbofan_02",  type: Turbofan02,      thumbnail: "/img/thumbs/shape_gallery/turbofan_02.png"   },
-    { index: 9, id: "barrel",       type: Barrel,          thumbnail: "/img/bookicon.png"   },
+    { index: 8, id: "turbofan_02",  type: Turbofan02,      thumbnail: "/img/thumbs/shape_gallery/turbofan_03.png"   },
+    { index: 9, id: "barrel",       type: Barrel,          thumbnail: "/img/thumbs/shape_gallery/barrel_01.png"   },
 ];

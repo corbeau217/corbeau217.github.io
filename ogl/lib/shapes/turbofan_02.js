@@ -15,7 +15,7 @@ export class Turbofan extends Shape_Factory_Scene_Object {
         super.initialise_pre_event();
         
         this.translation_vec = vec3.fromValues( 0, 0, 0 );
-        this.rotation_vec = vec3.fromValues( 0.0, 0.0, Math.PI/2.0 );
+        this.rotation_vec = vec3.fromValues( 0.0, 0.0, 0.0 );
         this.scale_vec = vec3.fromValues( 1.0, 1.0, 1.0 );
 
         this.verbose_logging = true;
@@ -52,13 +52,13 @@ export class Turbofan extends Shape_Factory_Scene_Object {
         // --------------------------------------------------------
         // ---- prepare lathe data
 
-        let model_radius_factor = 0.75; 
+        let model_radius_factor = 1.0; 
 
         let lathe_data = {
             // front cone tip
             first_point: { radius: 0.0,  position_z:  0.87, colour: {r:0.1, g:0.1, b:0.5, a: 1.0} },
             // rear tip
-            last_point: { radius: 0.0,  position_z: -1.0,  colour: {r:1.0, g:0.4, b:0.2, a: 1.0} },
+            last_point: { radius: 0.0,  position_z: -1.0,  colour: {r:8.0, g:0.6, b:0.4, a: 1.0} },
             // the others
             body_points: [
                 // front cone base
@@ -77,7 +77,7 @@ export class Turbofan extends Shape_Factory_Scene_Object {
                 { radius: 0.62, position_z: -0.4,  colour: {r:0.05, g:0.05, b:0.05, a: 1.0} },
                 { radius: 0.39, position_z: -0.86, colour: {r:0.5, g:0.2, b:0.52, a: 1.0} },
                 // rear inner exhaust
-                { radius: 0.52, position_z: -0.6,  colour: {r:1.0, g:0.9, b:0.8, a: 1.0} },
+                { radius: 0.52, position_z: -0.6,  colour: {r:0.85, g:0.5, b:0.3, a: 1.0} },
             ],
         };
 
@@ -124,8 +124,8 @@ export class Turbofan extends Shape_Factory_Scene_Object {
             let data = {
                 position: {
                     x: model_radius_factor * body_points_data.radius * point_on_circle.x,
-                    y: body_points_data.position_z,
-                    z: model_radius_factor * body_points_data.radius * point_on_circle.y,
+                    y: model_radius_factor * body_points_data.radius * point_on_circle.y,
+                    z: -1.0*body_points_data.position_z,
                     w: 1.0
                 },
                 colour: body_points_data.colour,
