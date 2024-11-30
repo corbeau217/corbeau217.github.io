@@ -30,7 +30,7 @@ export class Orbital_Perspective_Camera extends Perspective_Camera {
         super.initialise_on_event();
 
         // new vector for our rotation
-        this.rotation_speed = vec3.fromValues(0.0, 0.3, 0.0);
+        this.rotation_speed = vec3.fromValues(0.0, 0.6, 0.0);
     }
 
     // ############################################################################################
