@@ -1,6 +1,37 @@
 import { Shape_Factory_Scene_Object } from "/ogl/core/scene_objects/shape_factory_scene_object.js";
+import { VERTEX_SHADER_SRC as textured_vertex_source } from "/ogl/lib/shaders/textured_sized_diffuse_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as textured_fragment_source } from "/ogl/lib/shaders/textured_sized_diffuse_fragment_shader.js"
+import { Textured_Shape_Factory } from "/ogl/core/util/textured_shape_factory.js";
 
 export class Crate extends Shape_Factory_Scene_Object {
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+    
+    /**
+     * ### OVERRIDE OF SUPER FUNCTION
+     * #### !! REPLACEMENT !!
+     * 
+     * prepares the shader sources using: `this.shader_source_data`
+     * 
+     * * the structure of `this.shader_source_data` is a string list containing the shaders in order
+     *   of their usage
+     * * *since WebGL 1 only has the `vertex` and `fragment` shaders, it'll just be those*
+     * 
+     *   **Items in this list are raw string values for compilation by the shader manager**
+     *                  
+     *   Ordering is reserved as:
+     *   * `this.shader_source_data[0]` -> *vertex shader source*
+     *   * `this.shader_source_data[1]` -> *fragment shader source*
+     */
+    fetch_required_resources(){
+        // specify our shader sources
+        this.shader_source_data = {
+            vertex_source:      textured_vertex_source,
+            fragment_source:    textured_fragment_source,
+        };
+    }
+
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
@@ -37,13 +68,22 @@ export class Crate extends Shape_Factory_Scene_Object {
     /**
      * overriding super function
      * 
+     * so we dont need to import shape factory on derived classes
+     * @returns 
+     */
+    static make_shape_factory(){
+        return new Textured_Shape_Factory();
+    }
+    /**
+     * overriding super function
+     * 
      * @returns 
      */
     static prepare_shape_mesh(){
         // --------------------------------------------------------
         // ---- prepare shape factory
 
-        let shape_factory = super.make_shape_factory();
+        let shape_factory = Crate.make_shape_factory();
 
         // --------------------------------------------------------
         // ---- prepare settings

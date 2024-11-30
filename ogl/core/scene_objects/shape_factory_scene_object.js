@@ -47,7 +47,7 @@ export class Shape_Factory_Scene_Object extends Drawable_Scene_Object {
         
         this.translation_vec = vec3.fromValues( 0, 0, 0 );
         this.rotation_vec = vec3.fromValues( 0.0, 0.0, 0.0 );
-        this.scale_vec = vec3.fromValues( 2.0, 2.0, 2.0 );
+        this.scale_vec = vec3.fromValues( 1.0, 1.0, 1.0 );
 
         this.verbose_logging = true;
     }
