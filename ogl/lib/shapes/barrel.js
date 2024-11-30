@@ -15,7 +15,7 @@ export class Barrel extends Textured_Shape_Factory_Scene_Object {
         super.initialise_pre_event();
         
         this.translation_vec = vec3.fromValues( 0, 0, 0 );
-        this.rotation_vec = vec3.fromValues( 0.0, 0.0, 0.0 );
+        this.rotation_vec = vec3.fromValues( 0.0, 5.0, 0.0 );
         this.scale_vec = vec3.fromValues( 1.0, 1.0, 1.0 );
 
         this.verbose_logging = true;
@@ -33,7 +33,9 @@ export class Barrel extends Textured_Shape_Factory_Scene_Object {
     announce_texture_paths(){
         super.announce_texture_paths();
 
-        this.add_texture_source("/img/textures/can.png");
+        this.add_texture_source("/img/textures/barrel.png");
+        // this.add_texture_source("/img/textures/barrel_uv_guides_1.png");
+        // this.add_texture_source("/img/textures/barrel_uv_guides_2.png");
     }
 
 
@@ -86,16 +88,16 @@ export class Barrel extends Textured_Shape_Factory_Scene_Object {
         };
         const uv_data = {
             top: {
-                center: { x: 0.23, y: 0.20},
-                size: { x: 0.18, y: 0.19 },
+                center: { x: 0.17, y: 0.153},
+                size: { x: 0.15, y: 0.145 },
             },
             bottom: {
-                center: { x: 0.62, y: 0.20},
-                size: { x: 0.18, y: 0.19 },
+                center: { x: 0.495, y: 0.15},
+                size: { x: 0.15, y: 0.145 },
             },
             side: {
-                top_right: { x: 1.0, y: 0.395},
-                size: { x: 1.0, y: 0.605 },
+                top_right: { x: 0.95, y: 0.31},
+                size: { x: 0.95, y: 0.69 },
             },
         };
         const lathe_data = {
