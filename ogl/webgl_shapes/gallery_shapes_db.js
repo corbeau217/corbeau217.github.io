@@ -8,6 +8,7 @@ import { Turbofan as Turbofan02 } from "/ogl/lib/shapes/turbofan_02.js";
 import { Lorenz         } from "/ogl/lib/shapes/lorenz.js";
 import { Book           } from "/ogl/lib/shapes/book.js";
 import { Joint          } from "/ogl/lib/shapes/joint.js";
+import { Barrel         } from "/ogl/lib/shapes/barrel.js";
 
 export const GALLERY_SHAPES_DB = [
     { index: 0, id: "clear",        type: Scene_Object,    thumbnail: "/img/bookicon.png" },
@@ -19,4 +20,5 @@ export const GALLERY_SHAPES_DB = [
     { index: 6, id: "book",         type: Book,            thumbnail: "/img/thumbs/shape_gallery/book_02.png"       },
     { index: 7, id: "joint",        type: Joint,           thumbnail: "/img/thumbs/shape_gallery/joint_01.png"      },
     { index: 8, id: "turbofan_02",  type: Turbofan02,      thumbnail: "/img/thumbs/shape_gallery/turbofan_02.png"   },
+    { index: 9, id: "barrel",       type: Barrel,          thumbnail: "/img/bookicon.png"   },
 ];
