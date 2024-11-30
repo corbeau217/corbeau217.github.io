@@ -122,16 +122,26 @@ export class Textured_Shape_Factory_Scene_Object extends Drawable_Scene_Object {
         // --------------------------------------------------------
         this.vertex_bindings = empty_or_defined(this.mesh_shape.vertex_bindings);
         // --------------------------------------------------------
-        this.vertex_uv_mappings = empty_or_defined(this.mesh_shape.vertex_uv_mappings);
+        this.vertex_colours = empty_or_defined(this.mesh_shape.vertex_colours);
         // --------------------------------------------------------
         this.vertex_sizes = empty_or_defined(this.mesh_shape.vertex_sizes);
         // --------------------------------------------------------
         this.vertex_normals = empty_or_defined(this.mesh_shape.vertex_normals);
         // --------------------------------------------------------
+        this.vertex_uv_mappings = empty_or_defined(this.mesh_shape.vertex_uv_mappings);
+        // --------------------------------------------------------
         this.mesh_data = {
+            // ==========================================
             vertices: zero_or_defined(this.mesh_shape.vertex_count),
             edges: zero_or_defined(this.mesh_shape.edge_count),
             faces: zero_or_defined(this.mesh_shape.face_count),
+            // ==========================================
+            colours: zero_or_defined(this.mesh_shape.colour_count),
+            sizes: zero_or_defined(this.mesh_shape.size_count),
+            normals: zero_or_defined(this.mesh_shape.normal_count),
+            // ==========================================
+            uv_mappings: zero_or_defined(this.mesh_shape.uv_mapping_count),
+            // ==========================================
         };
 
 

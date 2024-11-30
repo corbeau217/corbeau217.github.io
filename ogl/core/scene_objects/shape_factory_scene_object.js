@@ -128,9 +128,15 @@ export class Shape_Factory_Scene_Object extends Drawable_Scene_Object {
         this.vertex_normals = empty_or_defined(this.mesh_shape.vertex_normals);
         // --------------------------------------------------------
         this.mesh_data = {
+            // ==========================================
             vertices: zero_or_defined(this.mesh_shape.vertex_count),
             edges: zero_or_defined(this.mesh_shape.edge_count),
             faces: zero_or_defined(this.mesh_shape.face_count),
+            // ==========================================
+            colours: zero_or_defined(this.mesh_shape.colour_count),
+            sizes: zero_or_defined(this.mesh_shape.size_count),
+            normals: zero_or_defined(this.mesh_shape.normal_count),
+            // ==========================================
         };
 
 

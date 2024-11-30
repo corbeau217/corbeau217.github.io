@@ -30,22 +30,59 @@ export class Shape_Gallery_App extends WebGL_App {
      * preparing our attribute viewing system information
      */
     initialise_attribute_inspector(){
+        
+        // -----------------------------------------------
+        // ------ helper method for making our attributes
+
+        let add_attribute_to_data_list = (attribute_name)=>{
+            // -----------------------------------------------------------------
+            // add the id tracking information
+            this.attribute_inspector_data.attribute_element_id.push(
+                {
+                    // attribute name
+                    name: attribute_name,
+                    // inspector label
+                    label_id: `shape_data_attribute_name_${attribute_name}`,
+                    // inspector length container
+                    length_id: `shape_data_attribute_length_${attribute_name}`,
+                    // inspector expected container
+                    expected_id: `shape_data_attribute_expected_${attribute_name}`,
+                    // inspector elements container
+                    elements_id: `shape_data_attribute_elements_${attribute_name}`,
+                }
+            );
+            // -----------------------------------------------------------------
+            // add a spot within the attribute data list
+            this.attribute_inspector_data.attribute_data.push(
+                {
+                    length: 0,
+                    expected: 0,
+                    elements: 0,
+                }
+            );
+            // -----------------------------------------------------------------
+        };
+        
+        // -----------------------------------------------
+        // ------ initialise our data structure
+        
         this.attribute_inspector_data = {
             // used to identify each element
-            attribute_element_id: [
-                { name: "vertex_positions", label_id: "shape_data_attribute_name_vertex_positions", length_id: "shape_data_attribute_length_vertex_positions", expected_id: "shape_data_attribute_expected_vertex_positions" },
-                { name: "vertex_bindings", label_id: "shape_data_attribute_name_vertex_bindings", length_id: "shape_data_attribute_length_vertex_bindings", expected_id: "shape_data_attribute_expected_vertex_bindings" },
-                { name: "vertex_colours", label_id: "shape_data_attribute_name_vertex_colours", length_id: "shape_data_attribute_length_vertex_colours", expected_id: "shape_data_attribute_expected_vertex_colours" },
-                { name: "vertex_sizes", label_id: "shape_data_attribute_name_vertex_sizes", length_id: "shape_data_attribute_length_vertex_sizes", expected_id: "shape_data_attribute_expected_vertex_sizes" },
-            ],
+            attribute_element_id: [],
             // used to keep track of our values
-            attribute_data: [
-                { length: 0, expected: 0 },
-                { length: 0, expected: 0 },
-                { length: 0, expected: 0 },
-                { length: 0, expected: 0 },
-            ]
+            attribute_data: [],
         };
+        
+        // -----------------------------------------------
+        // ------ now include the attributes
+
+        add_attribute_to_data_list("vertex_positions");
+        add_attribute_to_data_list("vertex_bindings");
+        add_attribute_to_data_list("vertex_colours");
+        add_attribute_to_data_list("vertex_sizes");
+        add_attribute_to_data_list("vertex_uv_mappings");
+
+        // -----------------------------------------------
     }
 
     // ############################################################################################
@@ -199,21 +236,32 @@ export class Shape_Gallery_App extends WebGL_App {
             add_line(`        <ul>`);
             add_line(`            <li><p>length: <code id="${attribute_data.length_id}">?</code></p></li>`);
             add_line(`            <li><p>expected: <code id="${attribute_data.expected_id}">?</code></p></li>`);
+            add_line(`            <li><p>elements: <code id="${attribute_data.elements_id}">?</code></p></li>`);
             add_line(`        </ul>`);
             add_line(`    </li>`);
         }
         
+        // -----------------------------
+        // ---- first chunk
         add_line(`<hr />`);
         add_line(`<ul id="shape_data_attribute_list">`);
         add_line(`    <hr />` );
-        add_attribute_block( this.get_attribute_inspector_element_id_list(0) );
-        add_line(`    <hr />` );
-        add_attribute_block( this.get_attribute_inspector_element_id_list(1) );
-        add_line(`    <hr />` );
-        add_attribute_block( this.get_attribute_inspector_element_id_list(2) );
-        add_line(`    <hr />` );
-        add_attribute_block( this.get_attribute_inspector_element_id_list(3) );
-        add_line(`    <hr />` );
+        // -----------------------------
+
+
+        // for all our attributes
+        for (let attribute_index = 0; attribute_index < this.attribute_inspector_data.attribute_element_id.length; attribute_index++) {
+            const current_attribute_id_list = this.get_attribute_inspector_element_id_list(attribute_index);
+            
+            // make it
+            add_attribute_block( current_attribute_id_list );
+            // include breaker
+            add_line(`    <hr />`);
+        }
+        
+
+        // -----------------------------
+        // ---- last chunk after
         add_line(`</ul>`);
         add_line(`<hr />`);
 
@@ -226,34 +274,171 @@ export class Shape_Gallery_App extends WebGL_App {
     // ############################################################################################
 
     /**
-     * rather manually does the updating of the data we're using
-     * @param {*} new_object 
+     * gathers information about the object
+     * @param {*} new_object the object to gather information for
      */
-    gather_shape_attribute_data( new_object ){
+    prepare_shape_attribute_information( new_object ){
+        // ------------------------------------------------
+        // --------- prepare the data
+
+        let mesh_data = {
+            // ==========================================
+            vertices: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            edges: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            faces: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            // selected from edges/faces
+            bindings: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            // ==========================================
+            colours: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            sizes: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            normals: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            // ==========================================
+            uv_mappings: {
+                length: -1,
+                expected: -1,
+                elements: -1,
+            },
+            // ==========================================
+        };
+
+        // test we have something
+        if(new_object == undefined){
+            // when we dont have an object to work with
+            return mesh_data;
+        }
+
+        // otherwise we continue to get the information
+
         // ------------------------------------------------
         // --------- helper methods to deal with undefined errors
 
         let get_length_if_defined = (list)=>{
             return (list!=undefined)?list.length:-1;
         }
-        let get_vertex_count_if_defined = (mesh_data)=>{
-            return (mesh_data!=undefined)?mesh_data.vertices*4:-1;
+        /**
+         * should only be used when `new_object.mesh_data` is confirmed real
+         * @param {*} count the count to check
+         * @returns count | -1
+         */
+        let get_count_if_defined = (count)=>{
+            return (count!=undefined)?count:-1;
         }
+
+        // ------------------------------------------------
+        // --------- handle the object information
+
+        // ---- gather the list lengths
+        mesh_data.vertices.length    = get_length_if_defined( new_object.vertex_positions   );
+        mesh_data.edges.length       = get_length_if_defined( new_object.vertex_bindings    );
+        mesh_data.faces.length       = get_length_if_defined( new_object.vertex_bindings    );
+        mesh_data.colours.length     = get_length_if_defined( new_object.vertex_colours     );
+        mesh_data.sizes.length       = get_length_if_defined( new_object.vertex_sizes       );
+        mesh_data.normals.length     = get_length_if_defined( new_object.vertex_normals     );
+        mesh_data.uv_mappings.length = get_length_if_defined( new_object.vertex_uv_mappings );
+
+        // ---- can we gather the expected values?
+        if(new_object.mesh_data != undefined){
+            // data to be gathered for expected
+            mesh_data.vertices.expected    = get_count_if_defined( new_object.mesh_data.vertices    );
+            mesh_data.edges.expected       = get_count_if_defined( new_object.mesh_data.edges       );
+            mesh_data.faces.expected       = get_count_if_defined( new_object.mesh_data.faces       );
+            mesh_data.colours.expected     = get_count_if_defined( new_object.mesh_data.colours     );
+            mesh_data.sizes.expected       = get_count_if_defined( new_object.mesh_data.sizes       );
+            mesh_data.normals.expected     = get_count_if_defined( new_object.mesh_data.normals     );
+            mesh_data.uv_mappings.expected = get_count_if_defined( new_object.mesh_data.uv_mappings );
+        }
+
+        // ---- prepare manually done element counts
+        mesh_data.vertices.elements    = 4;
+        mesh_data.edges.elements       = 3;
+        mesh_data.faces.elements       = 3;
+        mesh_data.colours.elements     = 4;
+        mesh_data.sizes.elements       = 1;
+        mesh_data.normals.elements     = 3;
+        mesh_data.uv_mappings.elements = 2;
+
+        // ---- select the largest of edges/faces
+        if(this.verbose_logging) console.log(`> [edges expected: ${mesh_data.edges.expected}][faces expected: ${mesh_data.faces.expected}]`);
+
+        // edges expected is 0, but faces isnt
+        //  (we have a polygon)
+        if(mesh_data.edges.expected <= 0 && mesh_data.faces.expected > 0){
+            if(this.verbose_logging) console.log("> polygon mesh");
+            mesh_data.bindings.length   = mesh_data.faces.length;
+            mesh_data.bindings.expected = mesh_data.faces.expected;
+            mesh_data.bindings.elements = mesh_data.faces.elements;
+        }
+        // faces expected is 0, but edges isnt
+        //  (we have a wireframe)
+        else if(mesh_data.faces.expected <= 0 && mesh_data.edges.expected > 0){
+            if(this.verbose_logging) console.log("> wireframe mesh");
+            mesh_data.bindings.length   = mesh_data.edges.length;
+            mesh_data.bindings.expected = mesh_data.edges.expected;
+            mesh_data.bindings.elements = mesh_data.edges.elements;
+        }
+
+        // ------------------------------------------------
+        // --------- finished
+
+        return mesh_data;
+        
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * rather manually does the updating of the data we're using
+     * @param {*} new_object 
+     */
+    gather_shape_attribute_data( new_object ){
+        // ------------------------------------------------
+        // --------- prepare our information
+
+        // this handles our data already so we can just use it now
+        let mesh_data = this.prepare_shape_attribute_information( new_object );
         
         // ------------------------------------------------
 
         // vertex position
-        this.attribute_inspector_data.attribute_data[0].length = get_length_if_defined(new_object.vertex_positions);
-        this.attribute_inspector_data.attribute_data[0].expected = get_vertex_count_if_defined(new_object.mesh_data);
+        this.attribute_inspector_data.attribute_data[0] = mesh_data.vertices;
         // bindings
-        this.attribute_inspector_data.attribute_data[1].length = get_length_if_defined(new_object.vertex_bindings);
-        this.attribute_inspector_data.attribute_data[1].expected = 0;
+        this.attribute_inspector_data.attribute_data[1] = mesh_data.bindings;
         // colours
-        this.attribute_inspector_data.attribute_data[2].length = get_length_if_defined(new_object.vertex_colours);
-        this.attribute_inspector_data.attribute_data[2].expected = 0;
+        this.attribute_inspector_data.attribute_data[2] = mesh_data.colours;
         // sizes
-        this.attribute_inspector_data.attribute_data[3].length = get_length_if_defined(new_object.vertex_sizes);
-        this.attribute_inspector_data.attribute_data[3].expected = 0;
+        this.attribute_inspector_data.attribute_data[3] = mesh_data.sizes;
+        // uv_mappings
+        this.attribute_inspector_data.attribute_data[4] = mesh_data.uv_mappings;
     }
 
     // ############################################################################################
@@ -273,13 +458,15 @@ export class Shape_Gallery_App extends WebGL_App {
             // go find the elements
             let attribute_length_elem = document.querySelector(`#${attribute_elem_data.length_id}`);
             let attribute_expected_elem = document.querySelector(`#${attribute_elem_data.expected_id}`);
+            let attribute_elements_elem = document.querySelector(`#${attribute_elem_data.elements_id}`);
 
             // set them
             attribute_length_elem.innerHTML = attribute_values.length;
             attribute_expected_elem.innerHTML = attribute_values.expected;
+            attribute_elements_elem.innerHTML = attribute_values.elements;
         }
 
-        if(this.verbose_logging) console.log("updated attributes data");
+        if(this.verbose_logging) console.log("> updated inspector attributes data");
     }
 
     // ############################################################################################
