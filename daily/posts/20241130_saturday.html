@@ -1,0 +1,52 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>few things happening today</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">discovered a neat way to make wooden textures</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">managed to make a crate side profile texture</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">figured out the arcana of texture binding</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">ported the can shape to the new shape factory structure</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">ported the turbofan shape to the new structure</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">made a barrel shape and texture</li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/img/textures/crate_single_side.png" alt="crate side texture" />
+            <img class="daily_post_content_image" src="/img/textures/barrel.png" alt="barrel texture" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>whilst we don't yet have uv map support systems, we do have "a lot of trial and error"</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">focusing on "clubbing complex code", as per <a href="https://grugbrain.dev/"><code>the programmer's bible</code></a> we discarded a lot of the overly complex strategies to solving our problems and instead chose the guess and check approach (learning more about the systems we're using in the process)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">currently there's a lot of ghosts in the code, like if there's multiple shapes in a scene all with their own textures, they may not bind the texture to the correct location once loaded</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">there was <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL#drawing_the_textured_cube"><code>mention</code></a> that webgl guarantees only 8 texture units, so that was the limit we stuck with in our code for now</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">bellow is the barrel texture with some guide lines to help with uv mapping</li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/img/textures/barrel_uv_guides_1.png" alt="barrel uv mapping guide image" />
+            <img class="daily_post_content_image" src="/img/textures/barrel_uv_guides_2.png" alt="barrel uv mapping guide image" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>while making uv mappings, we took the approach of continuing the current vibe of shading by face</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">below is a screenshot of the diagram drawn to help with working this out</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">splitting up the vertices into multiple copies means we can give them new uv data each time, but means that our lighting is doing a bunch of extra unnecessary work</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">maybe later we'll fix the lighting situation, for now we have shapes!</li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/daily/img/20241130_quick_scribble_to_assist_uv.png" alt="diagram drawn to assist with preparing the uv mappings" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem"><p>to make the wooden texture was mostly just utilising the <code>dry brush</code> and <code>old brush</code> brushes in procreate, as well as the charcoal and pencil brushes for drawing the lines</p></li>
+    <li class="daily_textbody_list_elem"><p>then just heavily varying the size, opacity, and hue, making it in lots of layers</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
