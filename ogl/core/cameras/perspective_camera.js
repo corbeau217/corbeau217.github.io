@@ -72,6 +72,28 @@ export class Perspective_Camera extends Scene_Object {
     // ############################################################################################
     // ############################################################################################
     
+    /**
+     * creates a perspective matrix
+     * 
+     * the projection matrix is the scaling factor of the `world-to-camera` transformation
+     * 
+     * with only the projection matrix, it would transform the coordinates from `view-space`/`eye-space` into
+     * `homogeneous-clip-space` coordinates.
+     * 
+     * 
+     * the projection matrix includes the `perspective division`/`w division` when using a perspective matrix.
+     * `perspective division`/`w division` is how we transform the coordinates from 4D clip space coordinates 
+     * to 3D `normalized device coordinates` (usually shortened to `NDC`).
+     * 
+     * this process is done automatically by OpenGL/WebGL at the end of the vertex shader step
+     * 
+     * 
+     * #### references:
+     * * [nice 13 minutes video on youtube with diagrams](https://www.youtube.com/watch?v=U0_ONQQ5ZNM)
+     * * [nice 7 minute video on youtube with diagrams](https://www.youtube.com/watch?v=o-xwmTODTUI)
+     * * [reference regarding the transformations](https://learnopengl.com/Getting-started/Coordinate-Systems)
+     * @returns 
+     */
     get_projection_matrix(){
         // identity
         mat4.identity(this.projection_matrix);
@@ -80,6 +102,47 @@ export class Perspective_Camera extends Scene_Object {
         mat4.perspective(this.projection_matrix, this.fov_y, this.aspect_ratio, this.z_near, this.z_far);
         return this.projection_matrix;
     }
+    /**
+     * view matrix is the world to camera matrix without the scaling factor
+     * this converts `world-space` coordinates into `camera-space` coordinates
+     * 
+     * ---
+     * `world-to-camera` is the inverse of `camera-to-world`
+     * * `MATRIX{camera-to-world} = MATRIX{camera-translation} * MATRIX{camera-rotation} * MATRIX{camera-scale} `
+     * * `MATRIX{world-to-camera} = MATRIX{camera-scale}^-1 * MATRIX{camera-rotation}^-1 * MATRIX{camera-translation}^-1`
+     * ---
+     * ```
+     * V = S * (T * R * S)^-1
+     * V = S * S^-1 * R^-1 * T^-1
+     * 
+     * I = S * S^-1
+     * 
+     * V = I * R^-1 * T^-1
+     * V = R^-1 * T^-1
+     * ```
+     * ---
+     * to cancel the scale we can multiply the `scale` matrix by the `world-to-camera` matrix
+     * * `MATRIX{camera-view} = MATRIX{camera-scale} * MATRIX{world-to-camera}`
+     * * `MATRIX{camera-view} = MATRIX{camera-scale} * MATRIX{camera-scale}^-1 * MATRIX{camera-rotation}^-1 * MATRIX{camera-translation}^-1`
+     * * `MATRIX{camera-view} =`~~`MATRIX{camera-scale} * MATRIX{camera-scale}^-1`~~`* MATRIX{camera-rotation}^-1 * MATRIX{camera-translation}^-1`
+     * * `MATRIX{camera-view} = MATRIX{camera-rotation}^-1 * MATRIX{camera-translation}^-1`
+     * ---
+     * ```
+     * V = R^-1 * T^-1
+     * ```
+     * ---
+     * or we can just take the inverse of the `rotation` matrix and multiply it by the inverse of the `translation` matrix
+     * * `MATRIX{camera-view} = MATRIX{camera-rotation}^-1 * MATRIX{camera-translation}^-1`
+     * ---
+     * last option is
+     * 1. downscale our matrix to a 3x3 matrix
+     * 2. normalize the columns
+     * 3. upscale back to a 4x4 matrix
+     * 4. copy the translation in to the last column
+     * ---
+     * * [reference regarding the transformations](https://learnopengl.com/Getting-started/Coordinate-Systems)
+     * @returns 
+     */
     get_view_matrix(){
         mat4.identity(this.view_matrix);
 
@@ -90,6 +153,17 @@ export class Perspective_Camera extends Scene_Object {
         );
         return this.view_matrix;
     }
+    /**
+     * 
+     * * `world-to-camera` matrix, but this includes the `perspective` matrix we've made for handling scaling
+     * ---
+     * it should be noticed then that 
+     * * `MATRIX{view-projection} = MATRIX{camera-projection} * MATRIX{camera-view}`
+     * ---
+     * this converts world coordinates into clipping coordinates ready for `w-division` by webgl
+     * * [reference regarding the transformations](https://learnopengl.com/Getting-started/Coordinate-Systems)
+     * @returns 
+     */
     get_view_projection_matrix(){
         mat4.identity(this.temp_view_projection);
 
