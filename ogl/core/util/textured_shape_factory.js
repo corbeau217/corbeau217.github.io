@@ -17,7 +17,7 @@ export class Textured_Shape_Factory extends Shape_Factory {
             vertex_colours: [],
             vertex_sizes: [],
             vertex_normals: [],
-            vertex_uv_mapping: [],
+            vertex_uv_mappings: [],
             // ------------------------
             vertex_count: 0,
             edge_count: 0,
@@ -36,8 +36,8 @@ export class Textured_Shape_Factory extends Shape_Factory {
      */
     add_texture_coordinates( uv_mapping ){
         // colour first
-        this.shape_data.vertex_uv_mapping.push(uv_mapping.u);
-        this.shape_data.vertex_uv_mapping.push(uv_mapping.v);
+        this.shape_data.vertex_uv_mappings.push(uv_mapping.u);
+        this.shape_data.vertex_uv_mappings.push(uv_mapping.v);
         this.shape_data.uv_mapping_count += 1;
     }
     /**

@@ -5,12 +5,12 @@ uniform mat4 u_model_to_ndc_matrix;
 
 // --- attributes, for current vertex ---
 attribute vec4  a_vertex_position;
-attribute vec4  a_vertex_colour;
+attribute vec2  a_vertex_uv_mapping;
 attribute float a_vertex_size;
 attribute vec3  a_vertex_normal;
 
 // --- varyings, for fragment shader, interpolated ---
-varying highp vec4 v_vertex_colour;
+varying highp vec2 v_uv_mapping;
 varying highp vec3 v_normal;
 
 void main(){
@@ -19,7 +19,7 @@ void main(){
     gl_PointSize = a_vertex_size;
 
     // interpolate in frag shader
-    v_vertex_colour = vec4(a_vertex_colour.xyz,1.0);
+    v_uv_mapping = a_vertex_uv_mapping;
 
     // v_normal = u_normal_matrix * normalize(a_vertex_normal);
     v_normal = normalize(a_vertex_normal);
