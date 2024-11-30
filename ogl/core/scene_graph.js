@@ -3,7 +3,8 @@ import { Orbital_Perspective_Camera } from "/ogl/core/cameras/orbital_perspectiv
 
 import { Scene_Object } from "/ogl/core/scene_objects/scene_object.js";
 
-import { Coordinate_Frame } from "/ogl/core/scene_objects/coordinate_frame.js";
+// import { Coordinate_Frame } from "/ogl/core/scene_objects/coordinate_frame.js";
+import { Coordinate_Frame } from "/ogl/lib/shapes/coordinate_frame.js";
 
 // ############################################################################################
 // ############################################################################################

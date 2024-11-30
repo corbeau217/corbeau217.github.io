@@ -1,7 +1,8 @@
 import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ogl/lib/shaders/sized_diffuse_vertex_shader.js"
-import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ogl/lib/shaders/sized_diffuse_fragment_shader.js"
+// import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ogl/lib/shaders/sized_diffuse_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ogl/lib/shaders/sized_diffuse_fragment_shader.js";
 import { Shape_Factory } from "../../core/util/shape_factory.js";
+import { Vertex_Shader_Builder } from "/ogl/core/util/vertex_shader_builder.js";
 
 export class Shape_Factory_Scene_Object extends Drawable_Scene_Object {
     // ############################################################################################
@@ -25,9 +26,10 @@ export class Shape_Factory_Scene_Object extends Drawable_Scene_Object {
      *   * `this.shader_source_data[1]` -> *fragment shader source*
      */
     fetch_required_resources(){
+        this.vertex_source_builder = Vertex_Shader_Builder.build_vertex_shader(true,true,true,false);
         // specify our shader sources
         this.shader_source_data = {
-            vertex_source:      sized_vertex_source,
+            vertex_source:      this.vertex_source_builder.get_source(),
             fragment_source:    sized_fragment_source,
         };
     }

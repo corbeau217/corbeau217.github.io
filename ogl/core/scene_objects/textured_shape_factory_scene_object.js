@@ -1,5 +1,5 @@
 import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-import { VERTEX_SHADER_SRC as textured_vertex_source } from "/ogl/lib/shaders/textured_sized_diffuse_vertex_shader.js";
+// import { VERTEX_SHADER_SRC as textured_vertex_source } from "/ogl/lib/shaders/textured_sized_diffuse_vertex_shader.js";
 import { FRAGMENT_SHADER_SRC as textured_fragment_source } from "/ogl/lib/shaders/textured_sized_diffuse_fragment_shader.js";
 import { Textured_Shape_Factory } from "/ogl/core/util/textured_shape_factory.js";
 import { Vertex_Shader_Builder } from "/ogl/core/util/vertex_shader_builder.js";
