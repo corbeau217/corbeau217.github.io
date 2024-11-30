@@ -184,7 +184,7 @@ export class Shape_Gallery_App extends WebGL_App {
         gallery_flow_elem.innerHTML = replacement_inner_html;
     }
     build_gallery_selection_item(element_id, element_thumbnail){
-        return `<div id="${element_id}" onclick="handle_gallery_shape_selection('${element_id}')" class="shape_view_menu_gallery_item"><img class="shape_view_menu_gallery_item_thumbnail" src="${element_thumbnail}" alt="change to ${element_id} shape" /></div>`;
+        return `<div class="shape_view_menu_gallery_item_wrapper_outer"><div id="${element_id}" onclick="handle_gallery_shape_selection('${element_id}')" class="shape_view_menu_gallery_item_wrapper_inner"><img class="shape_view_menu_gallery_item_thumbnail" src="${element_thumbnail}" alt="change to ${element_id} shape" /></div></div>`;
     }
 
     // ############################################################################################

@@ -38,9 +38,12 @@
     grid-template-columns: auto 25%;
     grid-template-rows: auto;
     border-left: 2px solid #c1d4ed;
+    align-items: center;
 }
 .shape_view_menu_outer {
     display: grid;
+    margin-top:unset;
+    margin-bottom:unset;
     grid-template-columns: auto 25%;
     grid-template-rows: auto;
     border-left: 2px solid #c1d4ed;
@@ -79,7 +82,7 @@
 /* === details container === */
 .shape_details_outer {
     display: block;
-    border-left: 2px solid #c1d4ed;
+    /* border-left: 2px solid #c1d4ed; */
     align-content: center;
     padding: 1em;
     padding-right: unset;
@@ -111,9 +114,6 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row dense;
-
-    padding: 2em;
-    /* padding: 5px; */
     
     align-content: space-evenly;
     justify-content: space-evenly;
@@ -121,22 +121,48 @@
     align-items: flex-start;
     text-align: left;
 }
-.shape_view_menu_gallery_item {
-    padding: 2em;
-    padding-left: 1.5;
-    padding-right: 1.5;
+.shape_view_menu_gallery_item_wrapper_outer {
+    display: block;
+    padding: 2px;
+    margin: 2px;
+    margin-top: 1em;
+    background-color: #0c2547;
+    border-top: 2px solid #8cb0de;
+    border-left: 2px solid #8cb0de;
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.shape_view_menu_gallery_item_wrapper_inner {
+    display: block;
+    padding: 2px;
+    margin: 2px;
+    border-bottom: 2px solid #5988c6;
+    border-right: 2px solid #5988c6;
 }
 
 .shape_view_menu_gallery_item_thumbnail {
-    background-color: #0c2547;
-    padding: 5px;
+    margin: 0.5em;
     max-width: 10em;
-    margin-right: 2px;
-    border-bottom: 2px solid #7297c6;
-    border-right: 2px solid #7297c6;
 }
 /* ########## MENU CONFIG ########## */
 .shape_view_menu_config {
-    border-left: 2px solid #c1d4ed;
-    padding: 2em;
+    display: block;
+    /* border-left: 2px solid #c1d4ed; */
+    margin: 0.5em 1em 0.5em 3em;
+    /* max-height:100%; */
+}
+.shape_view_menu_config_wrapper_outer {
+    display: block;
+    padding: 1px;
+    margin: 1px;
+    background-color: #0c2547;
+    border-top: 2px solid #8cb0de;
+    border-left: 2px solid #8cb0de;
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.shape_view_menu_config_wrapper_inner {
+    display: block;
+    padding: 1em;
+    margin: 1em;
+    border-bottom: 2px solid #5988c6;
+    border-right: 2px solid #5988c6;
 }
