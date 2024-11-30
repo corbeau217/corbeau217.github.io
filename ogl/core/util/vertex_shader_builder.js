@@ -1,35 +1,19 @@
 
 
 
-export class Vertex_Shader_builder {
-    constuctor(){
+export class Vertex_Shader_Builder {
+    constructor(){
         // setup our lists and references
-        this.prepare_values();
-    }
+        this.block_padding = "    ";
 
-    // ##################################################################################################
-    // ##################################################################################################
-    // ##################################################################################################
-    // ###################################################################### INSTANCE METHODS BELOW HERE
-    
-    // =====================================================================================
-    // =====================================================================================
-    // ========== construction helpers
-
-    // --------------------------------------------------------
-    // --------------------------------------------------------
-    // --------- making the data
-
-    prepare_values(){
-        this.block_padding = `    `;
         this.uniform_declarations_list = [
-            `// --- uniforms, for all vertices ---`,
+            "// --- uniforms, for all vertices ---",
         ];
         this.attribute_declarations_list = [
-            `// --- attributes, for current vertex ---`,
+            "// --- attributes, for current vertex ---",
         ];
         this.varying_declarations_list = [
-            `// --- varyings, for fragment shader, interpolated ---`,
+            "// --- varyings, for fragment shader, interpolated ---",
         ];
         this.initialisation_lines = [
             `${this.block_padding}// --- initialise data ----`,
@@ -39,11 +23,14 @@ export class Vertex_Shader_builder {
         ];
         this.varying_assignments_lines = [
             `${this.block_padding}// --- assign varyings ----`,
-        ]
+        ];
     }
 
-    // --------------------------------------------------------
-    // --------------------------------------------------------
+    // ##################################################################################################
+    // ##################################################################################################
+    // ##################################################################################################
+    // ###################################################################### INSTANCE METHODS BELOW HERE
+    
     
     // =====================================================================================
     // =====================================================================================
@@ -337,7 +324,7 @@ export class Vertex_Shader_builder {
         // ---------------------------------------------------
         // ---- make the instance
 
-        let shader_builder = new Vertex_Shader_builder();
+        let shader_builder = new Vertex_Shader_Builder();
 
         // ---------------------------------------------------
         // ---- add in the data
@@ -382,7 +369,7 @@ export class Vertex_Shader_builder {
      * @returns the shader builder instance ready for the shader source to be retrieved
      */
     static build_vertex_shader( is_point_size, is_vertex_colour, is_vertex_normal, is_uv_mapping ){
-        const build_settings = Vertex_Shader_builder.generate_conventional_settings( is_point_size, is_vertex_colour, is_vertex_normal, is_uv_mapping );
-        return Vertex_Shader_builder.build_with_settings( build_settings );
+        const build_settings = Vertex_Shader_Builder.generate_conventional_settings( is_point_size, is_vertex_colour, is_vertex_normal, is_uv_mapping );
+        return Vertex_Shader_Builder.build_with_settings( build_settings );
     }
 }
