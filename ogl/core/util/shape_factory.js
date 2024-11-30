@@ -219,4 +219,110 @@ export class Shape_Factory {
     // ############################################################################################
     // ############################################################################################
 
+    /**
+     * does all for a point, but concisely with data given where the layout is:
+     * ```
+     * data = {
+     *  position: { x: number, y: number, z: number, w: number },
+     *  colour: { r: number, g: number, b: number, a: number },
+     *  size: number,
+     * }
+     * ```
+     * @param {*} vertex_data
+     */
+    add_pos_with_data( vertex_data ){
+        this.add_pos_colour_size( vertex_data.position, vertex_data.colour, vertex_data.size );
+    }
+
+    /**
+     * add face with data given for each point where the layout is:
+     * ```
+     * data = {
+     *  position: { x: number, y: number, z: number, w: number },
+     *  colour: { r: number, g: number, b: number, a: number },
+     *  size: number,
+     * }
+     * ```
+     * 
+     * @param {*} first_data 
+     * @param {*} second_data 
+     * @param {*} third_data 
+     */
+    add_face_with_data( first_data, second_data, third_data ){
+        // keep where we're adding
+        let starting_index = this.shape_data.vertex_count;
+        // generate the vertices
+        this.add_pos_with_data( first_data  );
+        this.add_pos_with_data( second_data );
+        this.add_pos_with_data( third_data  );
+        // bind it
+        this.add_binding_face( starting_index, starting_index+1, starting_index+2);
+        // add the normals for it
+        this.add_normals_for_face( first_data.position, second_data.position, third_data.position );
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    /**
+     * 
+     * for adding two triangles to make a quad with data given for each point where the layout is:
+     * ```
+     * data = {
+     *  position: { x: number, y: number, z: number, w: number },
+     *  colour: { r: number, g: number, b: number, a: number },
+     *  size: number,
+     * }
+     * ```
+     * 
+     * data for points is provided in clockwise order regardless of the face winding
+     * 
+     * @param {*} first_data 
+     * @param {*} second_data 
+     * @param {*} third_data 
+     * @param {*} fourth_data 
+     * @param {*} clockwise_face_winding to determine the order of face creation
+     */
+    add_quad_with_data( first_data, second_data, third_data, fourth_data, clockwise_face_winding ){
+        if(clockwise_face_winding){
+            this.add_face_with_data( first_data, second_data, third_data );
+            this.add_face_with_data( first_data, third_data, fourth_data );
+        }
+        else {
+            this.add_face_with_data( first_data, third_data, second_data );
+            this.add_face_with_data( first_data, fourth_data, third_data );
+        }
+    }
+    /**
+     * 
+     * for adding a single triangle with data given for each point where the layout is:
+     * ```
+     * data = {
+     *  position: { x: number, y: number, z: number, w: number },
+     *  colour: { r: number, g: number, b: number, a: number },
+     *  size: number,
+     * }
+     * ```
+     * 
+     * data for points is provided in clockwise order regardless of the face winding
+     * 
+     * @param {*} first_data 
+     * @param {*} second_data 
+     * @param {*} third_data 
+     * @param {*} clockwise_face_winding to determine the order of face creation
+     */
+    add_triangle_with_data( first_data, second_data, third_data, clockwise_face_winding ){
+        if(clockwise_face_winding){
+            this.add_face_with_data( first_data, second_data, third_data );
+        }
+        else {
+            this.add_face_with_data( first_data, third_data, second_data );
+        }
+    }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
 }
