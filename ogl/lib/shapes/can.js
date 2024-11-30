@@ -90,16 +90,47 @@ export class Can extends Shape_Factory_Scene_Object {
 
         const clockwise_winding = false;
 
-        const crate_colour = {r:160.0/255.0, g:82.0/255.0, b:45.0/255.0, a:1.0};
-        const crate_point_size = 4.0;
+        const can_colour = {r:160.0/255.0, g:82.0/255.0, b:45.0/255.0, a:1.0};
+        const can_point_size = 4.0;
 
         // --------------------------------------------------------
-        // ---- prepare helper
+        // ---- prepare helpers
+
+        /**
+         * order is:
+         * 1. (`quad_mappings[0]`) -> bottom left
+         * 2. (`quad_mappings[1]`) -> top    left
+         * 3. (`quad_mappings[2]`) -> top    right
+         * 4. (`quad_mappings[3]`) -> bottom right
+         * @param {*} point_index index of the point
+         * @param {*} uv_index index of the uv mapping 
+         * @returns data prepared for the `Textured_Shape_Factory`
+         */
+        let point_data = (point_index,uv_index)=>{
+            return {
+                position: shape_points[point_index],
+                colour: can_colour,
+                size: can_point_size,
+                uv_mapping: quad_mappings[uv_index],
+            };
+        };
+
+        /**
+         * 
+         * order is:
+         * 1. bottom left
+         * 2. top    left
+         * 3. top    right
+         * 4. bottom right
+         * @param {*} first_index 
+         * @param {*} second_index 
+         * @param {*} third_index 
+         * @param {*} fourth_index 
+         */
         let add_quad = ( first_index, second_index, third_index, fourth_index )=>{
-            shape_factory.add_quad_with_colour_size(
-                shape_points[first_index], shape_points[second_index],
-                shape_points[third_index], shape_points[fourth_index],
-                crate_colour, crate_point_size, clockwise_winding
+            shape_factory.add_quad_with_data(
+                point_data(first_index,0), point_data(second_index,1),
+                point_data(third_index,2), point_data(fourth_index,3), clockwise_winding
             );
         }
 
@@ -133,22 +164,35 @@ export class Can extends Shape_Factory_Scene_Object {
             { x: -1.00, y:  1.00, z: -1.00 }, // 6
             { x: -1.00, y:  1.00, z:  1.00 }, // 7
         ];
+        /**
+         * order is:
+         * 1. (`quad_mappings[0]`) -> bottom left
+         * 2. (`quad_mappings[1]`) -> top    left
+         * 3. (`quad_mappings[2]`) -> top    right
+         * 4. (`quad_mappings[3]`) -> bottom right
+         */
+        let quad_mappings = [
+            { u: 0.0, v: 0.0 }, // 0 - bottom left
+            { u: 0.0, v: 1.0 }, // 1 - top    left
+            { u: 1.0, v: 1.0 }, // 2 - top    right
+            { u: 1.0, v: 0.0 }, // 3 - bottom right
+        ];
 
         // --------------------------------------------------------
         // ---- make shape
 
         // bottom
-        add_quad(5,1,0,4);
+        add_quad(4,5,1,0);
         // left
-        add_quad(0,1,2,3);
+        add_quad(1,2,3,0);
         // back
-        add_quad(1,5,6,2);
+        add_quad(5,6,2,1);
         // right
-        add_quad(5,4,7,6);
+        add_quad(4,7,6,5);
         // front
-        add_quad(4,0,3,7);
+        add_quad(0,3,7,4);
         // top
-        add_quad(7,3,2,6);
+        add_quad(3,2,6,7);
         
         // --------------------------------------------------------
         // ---- finished, give it back
