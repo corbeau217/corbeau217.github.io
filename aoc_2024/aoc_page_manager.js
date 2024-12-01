@@ -1,13 +1,21 @@
+import { AOC_Daily_Card_builder } from "./page_builder.js";
+
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
 export class AdventOfCode_Page_Manager {
     constructor(){
+        this.initialise_daily_card_builder();
         this.initialise();
         this.hook_load_event();
     }
-
+    initialise_daily_card_builder(){
+        /**
+         * handles building our daily card code for our flow body
+         */
+        this.daily_card_builder = new AOC_Daily_Card_builder();
+    }
     initialise(){
         /**
          * list of daily blocks 
@@ -24,10 +32,9 @@ export class AdventOfCode_Page_Manager {
      * @param {*} input_data the input data for the day
      * @returns the index of the block
      */
-    create_day(input_data){
+    create_day(){
         let index = this.daily_block_list.length;
         this.daily_block_list.push({
-            data: input_data,
             parts: [],
             show_result: true,
         });
@@ -44,8 +51,6 @@ export class AdventOfCode_Page_Manager {
             day_function: code_block,
             element_id: element_id,
         });
-
-        this.day_count += 1;
     }
 
     // ############################################################################################
@@ -70,7 +75,7 @@ export class AdventOfCode_Page_Manager {
      * makes the blocks run
      */
     start(){
-        this.run_blocks();
+        // 
     }
 
     // ############################################################################################
@@ -81,9 +86,53 @@ export class AdventOfCode_Page_Manager {
      * gather inputs and run the blocks
      */
     page_main(){
-        this.make_blocks();
-        this.run_blocks();
+        this.construct_page_daily_cards();
+        this.replace_page_run_command();
+        this.map_code_blocks();
     }
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    construct_page_daily_cards(){
+        // TODO: add the daily card code blocks to the flow body
+    }
+    replace_page_run_command(){
+        // TODO: replace the run_block command on our window object
+        //  run_block(input_element_id, day_number, part_number)
+        window.run_block = (input_element_id, day_number, part_number)=>{
+            console.log("running replaced code");
+        };
+    }
+
+    // /**
+    //  * runs all blocks we have
+    //  */
+    // run_blocks(){
+    //     // for all the day data blocks
+    //     this.daily_block_list.forEach(daily_block_data => {
+    //         if(daily_block_data.show_result){
+    //             // ----------------------------------------------------------------
+    //             // ----- get the current items for it
+                
+    //             const day_data = daily_block_data.data;
+    //             const day_part_maps = daily_block_data.parts;
+                
+    //             // ----------------------------------------------------------------
+    //             // ----- do the content
+                
+    //             day_part_maps.forEach(part_mapping => {
+    //                 // run the block 
+    //                 let answer = part_mapping.day_function(day_data);
+    //                 // update the element
+    //                 AdventOfCode_Page_Manager.set_element_value(part_mapping.element_id, answer);
+    //             });
+                
+    //             // ---------------------------------------------------------------- 
+    //         }
+    //     });
+    // }
 
     // ############################################################################################
     // ############################################################################################
@@ -92,35 +141,7 @@ export class AdventOfCode_Page_Manager {
     /**
      * to be overriden
      */
-    make_blocks(){}
-
-    /**
-     * runs all blocks we have
-     */
-    run_blocks(){
-        // for all the day data blocks
-        this.daily_block_list.forEach(daily_block_data => {
-            if(daily_block_data.show_result){
-                // ----------------------------------------------------------------
-                // ----- get the current items for it
-                
-                const day_data = daily_block_data.data;
-                const day_part_maps = daily_block_data.parts;
-                
-                // ----------------------------------------------------------------
-                // ----- do the content
-                
-                day_part_maps.forEach(part_mapping => {
-                    // run the block 
-                    let answer = part_mapping.day_function(day_data);
-                    // update the element
-                    AdventOfCode_Page_Manager.set_element_value(part_mapping.element_id, answer);
-                });
-                
-                // ---------------------------------------------------------------- 
-            }
-        });
-    }
+    map_code_blocks(){}
 
     // ############################################################################################
     // ############################################################################################

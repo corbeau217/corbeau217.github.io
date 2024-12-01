@@ -1,3 +1,41 @@
+.aoc_answer_wrapper{
+    display:grid;
+    grid-template-columns: 5em auto;
+    grid-template-rows: auto;
+    padding: 1em;
+}
+/* ====================================== */
+/* ====================================== */
+.aoc_answer_button{
+    border: 2px solid #526988;
+    background-color: #224875;
+    max-width: 3em;
+    margin: 0.5em;
+    padding: 0.5em;
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.aoc_answer_button:hover{
+    border: 2px double #6d89ad;
+    background-color: #19395f;
+    max-width: 3em;
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    box-shadow: 0px 0px 7px #664629;
+}
+.aoc_answer_button:active{
+    border: 2px solid #4b617c;
+    background-color: #19395f;
+    max-width: 3em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    box-shadow: 0px 0px 10px #8a5f37;
+}
+/* ====================================== */
+/* ====================================== */
 .aoc_answer_element{
     display: block;
     border: 1px solid #345074;

@@ -55,8 +55,9 @@
         </nav>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <main class="content_body">
+        <main id="aoc_flow_body_elem_id" class="content_body">
             <!-- ============================================= -->
+             <!-- constructed by aoc_app -->
             <!-- ============================================= -->
             <section class="sectioned_content_outer">
                 <div class="sectioned_content_inner">
@@ -69,10 +70,16 @@
                             <p><textarea class="aoc_data_element" id="aoc_day_01_data_input" name="aoc_day_01_data_input" rows="4" cols="50"  placeholder="data input here..."></textarea></p>
                             <hr />
                             <p class="brief_heading_elem">Answer pt. 1:</p>
-                            <p class="brief_textbody_elem"><code class="aoc_answer_element" id="answer_day_01_1" >TBD</code></p>
+                            <div class="aoc_answer_wrapper">
+                                <button class="aoc_answer_button" alt="run this block" onclick="run_block('aoc_day_01_data_input',1,1)">></button>
+                                <code class="aoc_answer_element" id="answer_day_01_1" >TBD</code>
+                            </div>
                             <hr />
                             <p class="brief_heading_elem">Answer pt. 2:</p>
-                            <p class="brief_textbody_elem"><code class="aoc_answer_element" id="answer_day_01_2">TBD</code></p>
+                            <div class="aoc_answer_wrapper">
+                                <button class="aoc_answer_button" alt="run this block" onclick="run_block('aoc_day_01_data_input',1,2)">></button>
+                                <code class="aoc_answer_element" id="answer_day_01_2">TBD</code>
+                            </div>
                             <hr />
                         </div>
                     </div>
@@ -645,7 +652,17 @@
     </body>
     <!-- ######################################################################## -->
     <!-- ######################################################################## -->
-    <!-- ... -->
+    <script type="text/javascript">
+        /**
+         * this function is replaced within our app code, so do nothing here
+         */
+        function run_block(input_element_id, day_number,part_number){
+            // handles running the day number code block
+            // yapping lots of yapping here
+            console.log(`wanted to run day ${day_number} code part ${part_number} for data in ${input_element_id}`);
+            console.log(`if you see this message, the function replacement didnt work in our app`);
+        }
+    </script>
     <!-- ######################################################################## -->
     <!-- ######################################################################## -->
 </html>
