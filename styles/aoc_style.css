@@ -62,3 +62,23 @@
 }
 /* ====================================== */
 /* ====================================== */
+.aoc_timer_wrapper {
+    display: block;
+    border: 1px solid #345074;
+    background-color: #061425;
+    text-align: center;
+    font-family: monospace;
+    font-size: 3em;
+    margin: 1em;
+    padding: 1em;
+
+    box-shadow: 5px 5px 3px #131e2f;
+}
+.aoc_timer_element{
+    text-shadow:
+    0 0 2em #7e5922,
+    0 0 1.8em #a07330,
+    0 0 1.4em #bb893f,
+    0 0 1em #caa17b,
+    0 0 3px #140d07;
+}

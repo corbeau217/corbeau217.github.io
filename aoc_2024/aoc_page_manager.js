@@ -21,6 +21,7 @@ export class AdventOfCode_Page_Manager {
         this.daily_card_builder = new AOC_Daily_Card_builder();
     }
     initialise(){
+        this.time_between_timer_updates_in_millis = 1000;
         /**
          * list of daily blocks 
          */
@@ -82,7 +83,33 @@ export class AdventOfCode_Page_Manager {
      * makes the blocks run
      */
     start(){
-        // 
+        // if there's future cards to make
+        if(this.daily_card_builder.challenges_available < DAYS_IN_DECEMBER){
+            // for use inside the closure
+            let page_manager_reference = this;
+            // prepare a reference to use
+            this.next_challenge_timer_element = AdventOfCode_Page_Manager.fetch_element("aoc_time_left_until_next_counter");
+            // update our timer for how long until the next challenge
+            setInterval(
+                function () {
+                    requestAnimationFrame(
+                            (t) => {page_manager_reference.timer_update( t )}
+                        );
+                },
+                this.time_between_timer_updates_in_millis
+            );
+        }
+    }
+    timer_update( new_time ){
+        let pad_number = (number) =>{
+            return `${(number<10)?"0":""}${number}`;
+        }
+        this.daily_card_builder.update_time_data( new_time );
+        const next_challenge_timer = this.daily_card_builder.time_till_next;
+        const hour_number = next_challenge_timer.getHours();
+        
+        const timer_string = `${pad_number(next_challenge_timer.getHours())}:${pad_number(next_challenge_timer.getMinutes())}:${pad_number(next_challenge_timer.getSeconds())}`
+        this.next_challenge_timer_element.innerHTML = timer_string;
     }
 
     // ############################################################################################

@@ -16,31 +16,37 @@ export class AOC_Daily_Card_builder {
         this.start_date.setTime(AOC_START_EPOCH_MILLIS);
         this.challenges_available = 1; //assume 1
     }
-    check_days_available(){
-        const right_now = Date.now();
-        const time_since_first = right_now - this.start_date;
-        const days_in_milliseconds = 1000 * 60 * 60 * 24;
-        const days_since_first = Math.floor(time_since_first.valueOf() / days_in_milliseconds);
+    update_time_data( new_time ){
+        this.right_now = new_time;
+        this.time_since_first = this.right_now - this.start_date;
+        this.days_in_milliseconds = 1000 * 60 * 60 * 24;
+        this.days_since_first = Math.floor(this.time_since_first.valueOf() / this.days_in_milliseconds);
 
         /**
          * time in milliseconds until the next challenge
          */
         this.milliseconds_till_next = 0;
         // when it has been 30 full days since the release of the first or more
-        if(days_since_first >= 30){
+        if(this.days_since_first >= 30){
             // make the value weird to show that it doesnt matter anymore
             this.milliseconds_till_next = -1;
         }
         else{
             // figure it out since it's a real time
-            this.milliseconds_till_next = days_in_milliseconds - (time_since_first.valueOf() % days_in_milliseconds);
+            this.milliseconds_till_next = this.days_in_milliseconds - (this.time_since_first.valueOf() % this.days_in_milliseconds);
         }
-        
+        this.time_till_next = new Date();
+        this.time_till_next.setTime(this.milliseconds_till_next);
+    }
+    check_days_available(){
+        // update our time data first
+        this.update_time_data( Date.now() );
+
         /**
          * confine to between 2 and 31 
          *  including the first day
          */
-        this.challenges_available = Math.min(Math.max(days_since_first+1, 1), 31);
+        this.challenges_available = Math.min(Math.max(this.days_since_first+1, 1), 31);
     }
     build_cards_available(){
         /**
@@ -64,6 +70,8 @@ export class AOC_Daily_Card_builder {
             // construct and add the card to our list of daily challenge cards
             this.daily_card_data_blocks.push( AOC_Daily_Card_builder.make_daily_card(day_number) );           
         }
+        // also include the timer card
+        this.daily_card_data_blocks.push( AOC_Daily_Card_builder.make_timer_card(this.challenges_available+1) );
     }
 
     // ############################################################################################
@@ -141,6 +149,36 @@ export class AOC_Daily_Card_builder {
             answer_part_2_id: answer_part_2_id,
             card_body_code: card_body_code,
         };
+    }
+
+    /**
+     * card to display the time left
+     */
+    static make_timer_card(next_challenge_number){
+        // =======================================================
+        return {
+            number: next_challenge_number,
+            card_body_code: `            <section class="sectioned_content_outer">
+                <div class="sectioned_content_inner">
+                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="book icon thumbnail" /></div>
+                    <div class="sectioned_content_heading">
+                        <h3 class="sectioned_content_heading_text">DAY - ${next_challenge_number} <i>(COMING SOON)</i></h3>
+                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${next_challenge_number}">details</a> ]</code></p>
+                    </div>
+                    <div class="sectioned_content_body">
+                        <div class="techdemo_brief">
+                            <hr />
+                            <p class="brief_heading_elem">time left</p>
+                            <div class="aoc_timer_wrapper">
+                                <code class="aoc_timer_element" id="aoc_time_left_until_next_counter">23:59:59</code>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </section>`,
+        };
+        
     }
 
     // ############################################################################################
