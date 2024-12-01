@@ -1,0 +1,30 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>few things on the brain before advent of code kicks off</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">made a structure to automatically build our vertex shaders for us based on the things we're using</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">dug through and found that there was 3 different coordinate frame objects, so we deleted all but 1</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">changed to having a singleton pattern for the shader manager</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">dug through the way that vertex attributes were set up</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">found out about a little thing called <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObject"><code>WebGLVertexArrayObject</code></a></li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>regarding <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObject"><code>WebGLVertexArrayObject</code></a>s</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">since we're WebGL 1, we'll need to include the <a href="https://developer.mozilla.org/en-US/docs/Web/API/OES_vertex_array_object"><code>extension</code></a> that allows this</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then we'll need to make one per shader we're using</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">apparently using these means that the enabling/disabling our vertex attributes behaves differently</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">results are that <a href="https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object"><code>as mentioned here</code></a>, in normal OpenGL, the VAO system lets us enable and disable the active objects without needing to rebind our data (likely where the issues are coming from)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">to acheive this, we'll need to revisit the shader manager and textures to be managed in a way we can keep track of the size and number of pieces</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it would also make building our shaders much faster and updating information since we're only needing to update what changes rather than the whole buffer</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this method follows the school of thought of interleaving the data for our vertices so that it's "position", then "normal", then "colour", and so on for a given vertex, before then repeating the same order for the next vertex</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem"><p>minimal post today because there was 5 hours of work done</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
