@@ -1,4 +1,5 @@
 import { AOC_Daily_Card_builder } from "./page_builder.js";
+import { Time_Keeper } from "./time_keeper.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -100,16 +101,15 @@ export class AdventOfCode_Page_Manager {
             );
         }
     }
-    timer_update( new_time ){
-        let pad_number = (number) =>{
-            return `${(number<10)?"0":""}${number}`;
-        }
-        this.daily_card_builder.update_time_data( new_time );
-        const next_challenge_timer = this.daily_card_builder.time_till_next;
-        const hour_number = next_challenge_timer.getHours();
-        
-        const timer_string = `${pad_number(next_challenge_timer.getHours())}:${pad_number(next_challenge_timer.getMinutes())}:${pad_number(next_challenge_timer.getSeconds())}`
-        this.next_challenge_timer_element.innerHTML = timer_string;
+    timer_update( app_time_elapsed ){
+        let time_keeper_instance = Time_Keeper.get_instance();
+        // ===== update the time keeper
+
+        time_keeper_instance.update_timer();
+
+        // =================================================================
+        // ===== update the body element
+        this.next_challenge_timer_element.innerHTML = time_keeper_instance.get_time_string_till_next_challenge();
     }
 
     // ############################################################################################

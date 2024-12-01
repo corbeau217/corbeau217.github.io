@@ -1,10 +1,9 @@
+import { Time_Keeper } from "./time_keeper.js";
 
-const AOC_START_EPOCH_MILLIS = 1733029200000;
 export class AOC_Daily_Card_builder {
     constructor(){
         this.initialise_availability_data();
-        this.check_days_available();
-        this.build_cards_available();
+        this.update_days_available();
     }
 
     // ############################################################################################
@@ -12,43 +11,24 @@ export class AOC_Daily_Card_builder {
     // ############################################################################################
 
     initialise_availability_data(){
-        this.start_date = new Date();
-        this.start_date.setTime(AOC_START_EPOCH_MILLIS);
-        this.challenges_available = 1; //assume 1
+        // start with less than none to force a rebuild on next update
+        this.challenges_available = -1;
     }
-    update_time_data( new_time ){
-        this.right_now = new_time;
-        this.time_since_first = this.right_now - this.start_date;
-        this.days_in_milliseconds = 1000 * 60 * 60 * 24;
-        this.days_since_first = Math.floor(this.time_since_first.valueOf() / this.days_in_milliseconds);
-
-        /**
-         * time in milliseconds until the next challenge
-         */
-        this.milliseconds_till_next = 0;
-        // when it has been 30 full days since the release of the first or more
-        if(this.days_since_first >= 30){
-            // make the value weird to show that it doesnt matter anymore
-            this.milliseconds_till_next = -1;
+    /**
+     * builds the card data if there's a change in the number of cards
+     */
+    update_days_available(){
+        let new_count = Time_Keeper.get_instance().get_number_of_challenges_available();
+        
+        // when the new count is more
+        if(new_count > this.challenges_available){
+            // change the number available
+            this.challenges_available = new_count;
+            // build them
+            this.build_available_cards();
         }
-        else{
-            // figure it out since it's a real time
-            this.milliseconds_till_next = this.days_in_milliseconds - (this.time_since_first.valueOf() % this.days_in_milliseconds);
-        }
-        this.time_till_next = new Date();
-        this.time_till_next.setTime(this.milliseconds_till_next);
     }
-    check_days_available(){
-        // update our time data first
-        this.update_time_data( Date.now() );
-
-        /**
-         * confine to between 2 and 31 
-         *  including the first day
-         */
-        this.challenges_available = Math.min(Math.max(this.days_since_first+1, 1), 31);
-    }
-    build_cards_available(){
+    build_available_cards(){
         /**
          * list of card blocks ready for being added to our flow body
          * 
