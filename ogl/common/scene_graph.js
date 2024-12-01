@@ -1,6 +1,6 @@
 
 import { Camera } from "/ogl/common/camera/generic_camera.js";
-import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
+// import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -27,7 +27,7 @@ export class Scene_Graph {
         
         this.camera.set_offset([ -0.0, -0.0, -4.3 ]);
 
-        this.coordinate_frame = new Coordinate_Frame( this.gl_context, null );
+        // this.coordinate_frame = new Coordinate_Frame( this.gl_context, null );
 
         // empty list
         this.object_list = [];
@@ -78,7 +78,7 @@ export class Scene_Graph {
 
 
     update( delta_time, aspectRatio ){
-        this.coordinate_frame.update(delta_time);
+        // this.coordinate_frame.update(delta_time);
 
         // this.triangle.update(delta_time);
         this.camera.update(delta_time, aspectRatio);
@@ -108,7 +108,7 @@ export class Scene_Graph {
         let camera_view_mat4 = this.camera.getViewMatrix();
         let camera_projection_mat4 = this.camera.getProjectionMatrix();
 
-        this.coordinate_frame.draw_as_scene_root(camera_view_mat4, camera_projection_mat4);
+        // this.coordinate_frame.draw_as_scene_root(camera_view_mat4, camera_projection_mat4);
 
         // handle drawing all our objects
         this.object_list.forEach(
