@@ -5,3 +5,10 @@
     margin-right: 1em;
     padding: 0.5em;
 }
+.aoc_data_element{
+    border: 2px double #345074;
+    border-radius: 1em 1.5em 0.25em 1.5em;
+    background-color: #061425;
+    margin: 1em;
+    padding: 0.5em;
+}
