@@ -1,0 +1,7 @@
+.aoc_answer_element{
+    display: block;
+    border: 1px solid #345074;
+    background-color: #061425;
+    margin-right: 1em;
+    padding: 0.5em;
+}
