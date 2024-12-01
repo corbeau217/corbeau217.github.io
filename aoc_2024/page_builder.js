@@ -2,7 +2,6 @@
 const AOC_START_EPOCH_MILLIS = 1733029200000;
 export class AOC_Daily_Card_builder {
     constructor(){
-        this.initialise_references();
         this.initialise_availability_data();
         this.check_days_available();
         this.build_cards_available();
@@ -12,9 +11,6 @@ export class AOC_Daily_Card_builder {
     // ############################################################################################
     // ############################################################################################
 
-    initialise_references(){
-        this.flow_elem_id = "aoc_flow_body_elem_id";
-    }
     initialise_availability_data(){
         this.start_date = new Date();
         this.start_date.setTime(AOC_START_EPOCH_MILLIS);
@@ -23,10 +19,27 @@ export class AOC_Daily_Card_builder {
     check_days_available(){
         const right_now = Date.now();
         const time_since_first = right_now - this.start_date;
-        const seconds_since_first = time_since_first.valueOf() / 1000;
-        const hours_since_first = seconds_since_first/3600;
-        const days_since_first = Math.floor(hours_since_first/24);
-        // confine to between 1 and 31
+        const days_in_milliseconds = 1000 * 60 * 60 * 24;
+        const days_since_first = Math.floor(time_since_first.valueOf() / days_in_milliseconds);
+
+        /**
+         * time in milliseconds until the next challenge
+         */
+        this.milliseconds_till_next = 0;
+        // when it has been 30 full days since the release of the first or more
+        if(days_since_first >= 30){
+            // make the value weird to show that it doesnt matter anymore
+            this.milliseconds_till_next = -1;
+        }
+        else{
+            // figure it out since it's a real time
+            this.milliseconds_till_next = days_in_milliseconds - (time_since_first.valueOf() % days_in_milliseconds);
+        }
+        
+        /**
+         * confine to between 2 and 31 
+         *  including the first day
+         */
         this.challenges_available = Math.min(Math.max(days_since_first+1, 1), 31);
     }
     build_cards_available(){

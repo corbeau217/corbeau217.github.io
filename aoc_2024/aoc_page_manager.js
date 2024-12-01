@@ -11,6 +11,7 @@ export class AdventOfCode_Page_Manager {
         this.hook_load_event();
     }
     initialise_daily_card_builder(){
+        this.flow_elem_id = "aoc_flow_body_elem_id";
         /**
          * handles building our daily card code for our flow body
          */
@@ -86,6 +87,14 @@ export class AdventOfCode_Page_Manager {
      * gather inputs and run the blocks
      */
     page_main(){
+        /**
+         * pre-gathered flow element object reference for manipulation
+         */
+        this.flow_element_object = AdventOfCode_Page_Manager.fetch_element(this.flow_elem_id);
+        // wipe the inside
+        this.flow_element_object.innerHTML = "";
+
+        // do the rest of the page main
         this.construct_page_daily_cards();
         this.replace_page_run_command();
         this.map_code_blocks();
@@ -96,7 +105,10 @@ export class AdventOfCode_Page_Manager {
     // ############################################################################################
 
     construct_page_daily_cards(){
-        // TODO: add the daily card code blocks to the flow body
+        // add all the daily card code blocks to the flow body
+        this.daily_card_builder.get_daily_card_data_blocks().forEach(card_data_block => {
+            this.flow_element_object.innerHTML += card_data_block.card_body_code;
+        });
     }
     replace_page_run_command(){
         // TODO: replace the run_block command on our window object
