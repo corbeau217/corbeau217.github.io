@@ -43,9 +43,11 @@ export class Drawable_Scene_Object extends Scene_Object {
      */
     construction_on_event(){
         // gather our shader
-        this.shader_manager = new Shader_Manager(this.gl_context);
-        this.managed_shader = this.shader_manager.new_shader( this.shader_source_data.vertex_source, this.shader_source_data.fragment_source );
+        this.shader_manager = Shader_Manager.get_instance();
+        this.managed_shader = this.shader_manager.new_shader( this.gl_context, this.shader_source_data.vertex_source, this.shader_source_data.fragment_source );
         this.shader = this.managed_shader.get_shader_program();
+        // select shader as being used
+        this.gl_context.useProgram(this.shader);
     }
 
     // ############################################################################################

@@ -9,8 +9,8 @@ export class Water {
         // gather our context
         this.gl_context = gl_context;
         // gather our shader
-        this.shader_manager = new Shader_Manager(this.gl_context);
-        this.managed_shader = this.shader_manager.new_shader( VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
+        this.shader_manager = Shader_Manager.get_instance();
+        this.managed_shader = this.shader_manager.new_shader( this.gl_context, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC );
         this.shader = this.managed_shader.get_shader_program();
         // settings
         this.prepare_settings();

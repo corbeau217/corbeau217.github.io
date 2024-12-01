@@ -240,6 +240,7 @@ export class Managed_Shader {
      * @param {*} values_per_element vec4 would be 4, and vec3 is 3
      */
     load_attribute_buffer_floats( attribute_index, attribute_data ){
+        //TODO : test if active program before continuing
         // prepare abbreviated reference
         let target_attribute_data = this.attribute_location_list[attribute_index];
 

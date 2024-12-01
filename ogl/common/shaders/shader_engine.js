@@ -106,20 +106,28 @@ export function generate_shader_program( gl_context, vsSourceIn, fsSourceIn ){
 // ############################################################################################
 // ############################################################################################
 
-
+let shader_manager_instance;
 export class Shader_Manager {
-    constructor( gl_context ){
-        // save it
-        this.gl_context = gl_context;
+    /**
+     * singleton pattern for the shader manager since we keep making multiple managers per context
+     * @returns shader manager instance
+     */
+    static get_instance(){
+        if(shader_manager_instance==undefined){
+            shader_manager_instance = new Shader_Manager();
+        }
+        return shader_manager_instance;
+    }
+    constructor(){
         // the data about our shaders
         this.shader_data_list = [];
     }
-    new_shader( vertex_shader_source, fragment_shader_source ){
+    new_shader( gl_context, vertex_shader_source, fragment_shader_source ){
         // id of the shader
         let shader_id = this.shader_data_list.length;
 
         // prepare our managed shader
-        let managed_shader = new Managed_Shader( shader_id, this.gl_context, vertex_shader_source, fragment_shader_source );
+        let managed_shader = new Managed_Shader( shader_id, gl_context, vertex_shader_source, fragment_shader_source );
         managed_shader.initialise();
 
         // add to our list

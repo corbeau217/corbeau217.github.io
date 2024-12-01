@@ -13,8 +13,8 @@ export class Shape_Wrapper extends Scene_Object {
         // gather our context
         this.gl_context = gl_context;
         // gather our shader
-        this.shader_manager = new Shader_Manager(this.gl_context);
-        this.managed_shader = this.shader_manager.new_shader( shape_wrapper_default_vertex_source, shape_wrapper_default_fragment_source );
+        this.shader_manager = Shader_Manager.get_instance();
+        this.managed_shader = this.shader_manager.new_shader( this.gl_context, shape_wrapper_default_vertex_source, shape_wrapper_default_fragment_source );
         this.shader = this.managed_shader.get_shader_program();
 
         // settings
