@@ -12,8 +12,10 @@ import {
 export function code_block( raw_input_data ){
     // prepare answer reference
     let answer = 0;
-    // break each 
-    const lines = split_on_line_break(raw_input_data);
+    // break each line
+    let lines = split_on_line_break(raw_input_data);
+    // throw away empty last line
+    lines.pop();
     // break each line on the spaces
     const lined_token_lists = lines.map((current_line)=>{return split_on_spaces(current_line);});
     // ==============================
