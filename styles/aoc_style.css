@@ -3,6 +3,7 @@
     grid-template-columns: 5em auto;
     grid-template-rows: auto;
     padding: 1em;
+    text-align: center;
 }
 /* ====================================== */
 /* ====================================== */
@@ -44,6 +45,13 @@
     padding: 0.5em;
 
     box-shadow: 5px 5px 3px #131e2f;
+
+    text-shadow:
+    0 0 1em #4e3510,
+    0 0 0.8em #644516,
+    0 0 0.4em #886126,
+    0 0 0em #a37447,
+    0 0 2px #140d07;
 }
 .aoc_data_element{
     border: 2px double #345074;
@@ -76,9 +84,9 @@
 }
 .aoc_timer_element{
     text-shadow:
-    0 0 2em #7e5922,
-    0 0 1.8em #a07330,
-    0 0 1.4em #bb893f,
-    0 0 1em #caa17b,
+    0 0 2em #4e3510,
+    0 0 1.8em #644516,
+    0 0 1.4em #886126,
+    0 0 1em #a37447,
     0 0 3px #140d07;
 }
