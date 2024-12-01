@@ -4,6 +4,8 @@ import { AOC_Daily_Card_builder } from "./page_builder.js";
 // ############################################################################################
 // ############################################################################################
 
+const DAYS_IN_DECEMBER = 31;
+
 export class AdventOfCode_Page_Manager {
     constructor(){
         this.initialise_daily_card_builder();
@@ -12,6 +14,7 @@ export class AdventOfCode_Page_Manager {
     }
     initialise_daily_card_builder(){
         this.flow_elem_id = "aoc_flow_body_elem_id";
+        // TODO: merge the data from this into the daily block list
         /**
          * handles building our daily card code for our flow body
          */
@@ -22,6 +25,9 @@ export class AdventOfCode_Page_Manager {
          * list of daily blocks 
          */
         this.daily_block_list = [];
+        for (let i = 0; i < DAYS_IN_DECEMBER; i++) {
+            this.create_day();
+        }
     }
 
     // ############################################################################################
@@ -49,8 +55,8 @@ export class AdventOfCode_Page_Manager {
      */
     add_part_to_day(day_index, code_block, element_id){
         this.daily_block_list[day_index].parts.push({
-            day_function: code_block,
-            element_id: element_id,
+            part_function: code_block,
+            part_answer_element: element_id,
         });
     }
 
@@ -111,40 +117,26 @@ export class AdventOfCode_Page_Manager {
         });
     }
     replace_page_run_command(){
-        // TODO: replace the run_block command on our window object
-        //  run_block(input_element_id, day_number, part_number)
-        window.run_block = (input_element_id, day_number, part_number)=>{
-            console.log("running replaced code");
+        // self reference for use inside the replacement function
+        const page_manager = this;
+
+        // replace the function
+        window.run_block = (input_element_id, day_number, part_number) => {
+            const input_data = AdventOfCode_Page_Manager.get_data_from_textbox(input_element_id);
+            const relevant_day_mappings = page_manager.daily_block_list[day_number-1];
+            // check we have data to use
+            if(relevant_day_mappings!=undefined){
+                // have data, check for parts
+                const relevant_part = relevant_day_mappings.parts[part_number-1];
+                if(relevant_part!=undefined){
+                    // find the answer
+                    let answer = relevant_part.part_function(input_data);
+                    // add it to the content
+                    AdventOfCode_Page_Manager.set_element_value(relevant_part.part_answer_element,answer);
+                }
+            }
         };
     }
-
-    // /**
-    //  * runs all blocks we have
-    //  */
-    // run_blocks(){
-    //     // for all the day data blocks
-    //     this.daily_block_list.forEach(daily_block_data => {
-    //         if(daily_block_data.show_result){
-    //             // ----------------------------------------------------------------
-    //             // ----- get the current items for it
-                
-    //             const day_data = daily_block_data.data;
-    //             const day_part_maps = daily_block_data.parts;
-                
-    //             // ----------------------------------------------------------------
-    //             // ----- do the content
-                
-    //             day_part_maps.forEach(part_mapping => {
-    //                 // run the block 
-    //                 let answer = part_mapping.day_function(day_data);
-    //                 // update the element
-    //                 AdventOfCode_Page_Manager.set_element_value(part_mapping.element_id, answer);
-    //             });
-                
-    //             // ---------------------------------------------------------------- 
-    //         }
-    //     });
-    // }
 
     // ############################################################################################
     // ############################################################################################
@@ -154,6 +146,17 @@ export class AdventOfCode_Page_Manager {
      * to be overriden
      */
     map_code_blocks(){}
+
+    // ############################################################################################
+    // ############################################################################################
+    // ############################################################################################
+
+    turn_off_day(day_index){
+        this.daily_block_list[day_index].show_result = false;
+    }
+    turn_on_day(day_index){
+        this.daily_block_list[day_index].show_result = true;
+    }
 
     // ############################################################################################
     // ############################################################################################
@@ -182,11 +185,9 @@ export class AdventOfCode_Page_Manager {
     // ############################################################################################
     // ############################################################################################
 
-    turn_off_day(day_index){
-        this.daily_block_list[day_index].show_result = false;
-    }
-    turn_on_day(day_index){
-        this.daily_block_list[day_index].show_result = true;
+    static get_data_from_textbox(element_id){
+        const data_textbox = AdventOfCode_Page_Manager.fetch_element(element_id);
+        return data_textbox.value;
     }
 
     // ############################################################################################

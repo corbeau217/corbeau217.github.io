@@ -104,23 +104,26 @@ export class AOC_Daily_Card_builder {
         const card_body_code = `            <section class="sectioned_content_outer">
                 <div class="sectioned_content_inner">
                     <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="book icon thumbnail" /></div>
-                    <div class="sectioned_content_heading"><a href="https://adventofcode.com/2024/day/${day_number}"><h3 class="sectioned_content_heading_text">DAY - ${day_number}</h3></a></div>
+                    <div class="sectioned_content_heading">
+                        <h3 class="sectioned_content_heading_text">DAY - ${day_number}</h3>
+                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${day_number}">details</a> ] [ <a href="https://adventofcode.com/2024/day/${day_number}/input">input</a> ]</code></p>
+                    </div>
                     <div class="sectioned_content_body">
                         <div class="techdemo_brief">
                             <hr />
-                            <p class="brief_heading_elem"><label for="${data_input_id}">input data</label><sup>[<a href="https://adventofcode.com/2024/day/${day_number}/input"><code>source</code></a>]</sup></p>
-                            <p><textarea class="aoc_data_element" id="${data_input_id}" name="${data_input_id}" rows="4" cols="50"  placeholder="data input here..."></textarea></p>
+                            <p class="brief_heading_elem"><label for="${data_input_id}">input data</label></p>
+                            <p><textarea class="aoc_data_element" id="${data_input_id}" name="${data_input_id}" rows="4" cols="32"  placeholder="paste input here"></textarea></p>
                             <hr />
                             <p class="brief_heading_elem">Answer pt. 1:</p>
                             <div class="aoc_answer_wrapper">
                                 <button class="aoc_answer_button" onclick="run_block('${data_input_id}',${day_number},1)">&gt;</button>
-                                <code class="aoc_answer_element" id="${answer_part_1_id}" >TBD</code>
+                                <code class="aoc_answer_element" id="${answer_part_1_id}" >...</code>
                             </div>
                             <hr />
                             <p class="brief_heading_elem">Answer pt. 2:</p>
                             <div class="aoc_answer_wrapper">
                                 <button class="aoc_answer_button" onclick="run_block('${data_input_id}',${day_number},2)">&gt;</button>
-                                <code class="aoc_answer_element" id="${answer_part_2_id}" >TBD</code>
+                                <code class="aoc_answer_element" id="${answer_part_2_id}" >...</code>
                             </div>
                             <hr />
                         </div>
