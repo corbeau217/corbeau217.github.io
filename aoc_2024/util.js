@@ -1,3 +1,5 @@
+export const ADVENT_CALENDER_DAYS = 25;
+
 /**
  * break into lines
  * @param {*} data_block 

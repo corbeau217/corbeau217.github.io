@@ -1,5 +1,6 @@
 import { AOC_Daily_Card_builder } from "./page_builder.js";
 import { Time_Keeper } from "./time_keeper.js";
+import { ADVENT_CALENDER_DAYS } from "./util.js";
 
 // ############################################################################################
 // ############################################################################################
@@ -27,7 +28,7 @@ export class AdventOfCode_Page_Manager {
          * list of daily blocks 
          */
         this.daily_block_list = [];
-        for (let i = 0; i < DAYS_IN_DECEMBER; i++) {
+        for (let i = 0; i < ADVENT_CALENDER_DAYS; i++) {
             this.create_day();
         }
     }
@@ -72,7 +73,7 @@ export class AdventOfCode_Page_Manager {
             this.page_main();
     
             if(this.verbose_logging){ console.log("--- starting apps ---"); }
-            this.start();
+            this.start_next_challenge_timer();
         } );
     }
 
@@ -80,12 +81,9 @@ export class AdventOfCode_Page_Manager {
     // ############################################################################################
     // ############################################################################################
 
-    /**
-     * makes the blocks run
-     */
-    start(){
+    start_next_challenge_timer(){
         // if there's future cards to make
-        if(this.daily_card_builder.challenges_available < DAYS_IN_DECEMBER){
+        if(this.daily_card_builder.challenges_available < ADVENT_CALENDER_DAYS){
             // for use inside the closure
             let page_manager_reference = this;
             // prepare a reference to use

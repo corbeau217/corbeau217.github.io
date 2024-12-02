@@ -1,4 +1,4 @@
-import {pad_number} from "./util.js";
+import { pad_number, ADVENT_CALENDER_DAYS } from "./util.js";
 
 const AOC_START_EPOCH_MILLIS = 1733029200000;
 
@@ -7,7 +7,7 @@ const HOUR_IN_MILLISECONDS = 1000*60*60;
 const MINUTE_IN_MILLISECONDS = 1000*60;
 const SECOND_IN_MILLISECONDS = 1000;
 
-const DAYS_IN_DECEMBER = 31;
+
 
 export class Time_Keeper {
     // ############################################################################################
@@ -62,7 +62,7 @@ export class Time_Keeper {
         this.days_since_first_challenge = Math.floor(this.time_since_first / DAY_IN_MILLISECONDS);
 
         // when all of them are available
-        if(this.get_number_of_challenges_available() >= DAYS_IN_DECEMBER){
+        if(this.get_number_of_challenges_available() >= ADVENT_CALENDER_DAYS){
             this.current_day_elapsed_milliseconds = 0;
             this.milliseconds_left_before_next = 0;
         }
@@ -83,7 +83,7 @@ export class Time_Keeper {
     // ############################################################################################
 
     get_number_of_challenges_available(){
-        return Math.min((this.days_since_first_challenge+1), DAYS_IN_DECEMBER);
+        return Math.min((this.days_since_first_challenge+1), ADVENT_CALENDER_DAYS);
     }
 
     // ############################################################################################

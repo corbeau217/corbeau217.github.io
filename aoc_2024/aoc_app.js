@@ -84,24 +84,6 @@ import { code_block as code_block_day_24_2 } from "./blocks/day_24_2.js";
 // ----- day_25
 import { code_block as code_block_day_25_1 } from "./blocks/day_25_1.js";
 import { code_block as code_block_day_25_2 } from "./blocks/day_25_2.js";
-// ----- day_26
-import { code_block as code_block_day_26_1 } from "./blocks/day_26_1.js";
-import { code_block as code_block_day_26_2 } from "./blocks/day_26_2.js";
-// ----- day_27
-import { code_block as code_block_day_27_1 } from "./blocks/day_27_1.js";
-import { code_block as code_block_day_27_2 } from "./blocks/day_27_2.js";
-// ----- day_28
-import { code_block as code_block_day_28_1 } from "./blocks/day_28_1.js";
-import { code_block as code_block_day_28_2 } from "./blocks/day_28_2.js";
-// ----- day_29
-import { code_block as code_block_day_29_1 } from "./blocks/day_29_1.js";
-import { code_block as code_block_day_29_2 } from "./blocks/day_29_2.js";
-// ----- day_30
-import { code_block as code_block_day_30_1 } from "./blocks/day_30_1.js";
-import { code_block as code_block_day_30_2 } from "./blocks/day_30_2.js";
-// ----- day_31
-import { code_block as code_block_day_31_1 } from "./blocks/day_31_1.js";
-import { code_block as code_block_day_31_2 } from "./blocks/day_31_2.js";
 // -------------------
 
 // ############################################################################################
@@ -297,48 +279,6 @@ export class AdventOfCode_App extends AdventOfCode_Page_Manager {
         
         this.add_part_to_day( current_day_index, code_block_day_25_1, "answer_day_25_1" );
         this.add_part_to_day( current_day_index, code_block_day_25_2, "answer_day_25_2" );
-        current_day_index++;
-        
-        // ---------------------------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------ day_26
-        
-        this.add_part_to_day( current_day_index, code_block_day_26_1, "answer_day_26_1" );
-        this.add_part_to_day( current_day_index, code_block_day_26_2, "answer_day_26_2" );
-        current_day_index++;
-        
-        // ---------------------------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------ day_27
-        
-        this.add_part_to_day( current_day_index, code_block_day_27_1, "answer_day_27_1" );
-        this.add_part_to_day( current_day_index, code_block_day_27_2, "answer_day_27_2" );
-        current_day_index++;
-        
-        // ---------------------------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------ day_28
-        
-        this.add_part_to_day( current_day_index, code_block_day_28_1, "answer_day_28_1" );
-        this.add_part_to_day( current_day_index, code_block_day_28_2, "answer_day_28_2" );
-        current_day_index++;
-        
-        // ---------------------------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------ day_29
-        
-        this.add_part_to_day( current_day_index, code_block_day_29_1, "answer_day_29_1" );
-        this.add_part_to_day( current_day_index, code_block_day_29_2, "answer_day_29_2" );
-        current_day_index++;
-        
-        // ---------------------------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------ day_30
-        
-        this.add_part_to_day( current_day_index, code_block_day_30_1, "answer_day_30_1" );
-        this.add_part_to_day( current_day_index, code_block_day_30_2, "answer_day_30_2" );
-        current_day_index++;
-        
-        // ---------------------------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------ day_31
-        
-        this.add_part_to_day( current_day_index, code_block_day_31_1, "answer_day_31_1" );
-        this.add_part_to_day( current_day_index, code_block_day_31_2, "answer_day_31_2" );
     }
 
     // ############################################################################################
