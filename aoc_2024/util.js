@@ -136,3 +136,27 @@ export function prep_data( raw_input_data ){
     // -----------------------------------
 
 }
+
+
+export function list_without_index(list_data, index){
+    let result = [];
+    for (let i = 0; i < list_data.length; i++) {
+        if(i==index){ continue; }
+        result.push( list_data[i] );
+    }
+    return result;
+}
+
+export function unique_sorted(list_input){
+    let hashmap = new Map();
+    list_input.forEach(element => {
+        if(!hashmap.has(element))
+            hashmap.set(element,1);
+    });
+    
+    let result = [];
+    hashmap.keys().forEach(element => {
+        result.push(element);
+    });
+    return result;
+}
