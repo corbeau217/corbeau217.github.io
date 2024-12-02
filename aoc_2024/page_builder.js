@@ -101,7 +101,7 @@ export class AOC_Daily_Card_builder {
                         <div class="aoc_card_body_wrapper">
                             <hr />
                             <p class="brief_heading_elem"><label for="${data_input_id}">input data</label></p>
-                            <p><textarea class="aoc_data_element" id="${data_input_id}" name="${data_input_id}" rows="4" cols="32"  placeholder="paste input here"></textarea></p>
+                            <p><textarea class="aoc_data_element" id="${data_input_id}" name="${data_input_id}" rows="4" cols="32"  placeholder="&lt; paste input here &gt;"></textarea></p>
                             <hr />
                             <p class="brief_heading_elem">Answer pt. 1:</p>
                             <div class="aoc_answer_wrapper">
@@ -149,7 +149,7 @@ export class AOC_Daily_Card_builder {
                     <div class="aoc_card_body_block">
                         <div class="aoc_card_body_wrapper">
                             <hr />
-                            <p class="brief_heading_elem">time left</p>
+                            <p class="brief_heading_elem">time until next challenge available</p>
                             <div class="aoc_timer_wrapper">
                                 <code class="aoc_timer_element" id="aoc_time_left_until_next_counter">23:59:59</code>
                             </div>

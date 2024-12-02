@@ -38,29 +38,9 @@
     align-items: center;
 }
 
-
 /* ################################################### */
 /* ################################################### */
 
-.aoc_data_element{
-    background-color: #02070e;
-
-    border: 2px double #345074;
-    border-radius: 1em 1em 0.25em 1em;
-
-    margin: 1em;
-    padding: 1em;
-
-    box-shadow: 5px 5px 3px #131e2f;
-
-    /* ---- extra settings ---- */
-    font-family: monospace;
-    font-size: 1.5em;
-    text-shadow: 2px 2px 2px #140d07;
-    white-space-collapse: preserve;
-}
-/* ====================================== */
-/* ====================================== */
 .aoc_timer_element{
     align-items: center;
     
@@ -86,11 +66,57 @@
 }
 /* ====================================== */
 /* ====================================== */
+.aoc_data_element{
+    background-color: #01060e;
+
+    border: 2px double #345074;
+    border-radius: 1em 1em 0.25em 1em;
+
+    margin: 1em;
+    padding: 1em;
+    padding-left: 1.5em;
+
+    box-shadow: 5px 5px 3px #131e2f;
+
+    /* ---- text settings ---- */
+    
+    color: #70d675;
+    font-family: monospace;
+    font-size: 1.75em;
+    white-space-collapse: preserve;
+
+    /* --------------- */
+    /* - screen glow - */
+    text-shadow:
+    /* initial bloom */
+    0 0 2px #5ec263,
+    /* screen glow */
+    0 0 3px #32b138,
+    0 0 5px #25942a;
+    /* --------------- */
+
+}
+.aoc_data_element::placeholder{
+    color: #e2ad7b;
+
+    align-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-family: monospace;
+    font-style: italic;
+    text-shadow:
+    0 0 2px #bd7d42,
+    0 0 0.5em #2c1602;
+}
+/* ====================================== */
+/* ====================================== */
 .aoc_answer_button{
     max-width: 3em;
     background-color: #224875;
 
     border: 2px solid #526988;
+    border-radius: 1em / 1.5em;
 
     margin: 0.5em;
     padding: 0.5em;
@@ -102,6 +128,7 @@
     background-color: #19395f;
 
     border: 2px double #6d89ad;
+    border-radius: 1em / 1.5em;
 
     margin-top: 0.4em;
     margin-bottom: 0.4em;
@@ -115,6 +142,7 @@
     background-color: #19395f;
 
     border: 2px solid #4b617c;
+    border-radius: 1em / 1.5em;
 
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -138,12 +166,23 @@
     box-shadow: 5px 5px 3px #131e2f;
 
     text-align: center;
+
+    /* ---- text settings ---- */
+    
+    color: #70d675;
+    font-family: monospace;
+    font-size: 1.75em;
+    white-space-collapse: preserve;
+
+    /* --------------- */
+    /* - screen glow - */
     text-shadow:
-    0 0 1em #4e3510,
-    0 0 0.8em #644516,
-    0 0 0.4em #886126,
-    0 0 0em #a37447,
-    0 0 2px #140d07;
+    /* initial bloom */
+    0 0 2px #5ec263,
+    /* screen glow */
+    0 0 3px #32b138,
+    0 0 5px #25942a;
+    /* --------------- */
 }
 /* ################################################### */
 /* ################################################### */
