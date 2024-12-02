@@ -6,8 +6,6 @@ import { ADVENT_CALENDER_DAYS } from "./util.js";
 // ############################################################################################
 // ############################################################################################
 
-const DAYS_IN_DECEMBER = 31;
-
 export class AdventOfCode_Page_Manager {
     constructor(){
         this.initialise_daily_card_builder();

@@ -1,6 +1,7 @@
 import {
     split_on_line_break,
     split_on_spaces,
+    prep_data,
 } from "/aoc_2024/util.js";
 
 
@@ -12,10 +13,25 @@ import {
 export function code_block( raw_input_data ){
     // prepare answer reference
     let answer = 0;
-    // break each 
-    const lines = split_on_line_break(raw_input_data);
-    // break each line on the spaces
-    const lined_token_lists = lines.map((current_line)=>{return split_on_spaces(current_line);});
+    /**
+     * with the structure of:
+     * ```
+     * {
+     *     raw: raw_input_data,
+     *     lines: {
+     *         raw: lines,
+     *         broken_by_spaces: lines_split_on_space,
+     *         character_grid: lines_broken_into_characters,
+     *     },
+     *     lines_without_empty: {
+     *         raw: lines_without_empty,
+     *         broken_by_spaces: lines_without_empty_split_on_space,
+     *         character_grid: lines_without_empty_broken_into_characters,
+     *     },
+     * }
+     * ```
+     */
+    const data_block = prep_data(raw_input_data);
     // ==============================
 
     // TODO:  do the day
