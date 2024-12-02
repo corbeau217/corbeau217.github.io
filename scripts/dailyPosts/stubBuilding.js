@@ -7,10 +7,24 @@ import { IMPORT_POST_TAG_CLASS } from './symbols.js'
 
 function process_post_import_name(post_metadata){
     const post_date_cleaned = process_date_flatten(post_metadata.date);
+    const post_year_month_cleaned = get_date_year_month_flattened(post_metadata.date);
     const post_day = post_metadata.day;
-    return `${post_date_cleaned}_${post_day}`;
+    return `${post_year_month_cleaned}/${post_date_cleaned}_${post_day}`;
 }
-
+/**
+ * break into elements using the slash then keep the first two
+ * @param {*} date_string formated as `YYYY/MM/DD`
+ * @returns `YYYYMM`
+ */
+function get_date_year_month_flattened(date_string){
+    const date_elements = date_string.split("\/");
+    return `${date_elements[0]}${date_elements[1]}`;
+}
+/**
+ * strips slashes from a date
+ * @param {*} date_string any date with slashes, `YYYY/MM/DD` or `DD/MM/YYYY`
+ * @returns `YYYYMMDD` or `DDMMYYYY`
+ */
 function process_date_flatten(date_string){
     return date_string.replaceAll("\/","");
 }
