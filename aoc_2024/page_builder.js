@@ -94,7 +94,7 @@ export class AOC_Daily_Card_builder {
                     <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="book icon thumbnail" /></div>
                     <div class="sectioned_content_heading">
                         <h3 class="sectioned_content_heading_text">DAY - ${day_number}</h3>
-                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${day_number}">details</a> ] [ <a href="https://adventofcode.com/2024/day/${day_number}/input">input</a> ]</code></p>
+                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${day_number}" class="aoc_reference_link">details</a> ] [ <a href="https://adventofcode.com/2024/day/${day_number}/input" class="aoc_reference_link">input</a> ]</code></p>
                     </div>
                     <div class="sectioned_content_body">
                         <div class="techdemo_brief">
@@ -143,7 +143,7 @@ export class AOC_Daily_Card_builder {
                     <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="book icon thumbnail" /></div>
                     <div class="sectioned_content_heading">
                         <h3 class="sectioned_content_heading_text">DAY - ${next_challenge_number} <i>(COMING SOON)</i></h3>
-                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${next_challenge_number}">details</a> ]</code></p>
+                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${next_challenge_number}" class="aoc_reference_link">details</a> ]</code></p>
                     </div>
                     <div class="sectioned_content_body">
                         <div class="techdemo_brief">

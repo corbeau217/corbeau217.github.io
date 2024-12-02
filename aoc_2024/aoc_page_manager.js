@@ -138,10 +138,12 @@ export class AdventOfCode_Page_Manager {
     // ############################################################################################
 
     construct_page_daily_cards(){
+        let inner_code_value = "";
         // add all the daily card code blocks to the flow body
         this.daily_card_builder.get_daily_card_data_blocks().forEach(card_data_block => {
-            this.flow_element_object.innerHTML += card_data_block.card_body_code;
+            inner_code_value += card_data_block.card_body_code;
         });
+        this.flow_element_object.innerHTML = inner_code_value;
     }
     replace_page_run_command(){
         // self reference for use inside the replacement function

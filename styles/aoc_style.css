@@ -1,62 +1,88 @@
+.aoc_main_content {
+    grid-column: 2 / span 3;
+
+    display: grid;
+    grid-template-rows: auto auto;
+    
+    border-left: 2px solid #c1d4ed;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_challenges_flow_header{
+    display: block;
+
+    padding: 2em;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_challenges_flow {
+    display: flex;
+
+    flex-wrap: wrap-reverse;
+    flex-direction: row-reverse;
+    
+    padding: 5px;
+    
+    justify-content: space-evenly;
+    align-content: flex-start;
+    align-items: flex-end;
+    text-align: left;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_timer_wrapper {
+    display: block;
+    background-color: #061425;
+
+    border: 1px solid #345074;
+    /* italics is 14 degrees by default
+        tan(14) = 0.72446
+        1.8115/2.5 = 0.7246
+     */
+    border-radius: 2.5em 1.8115em / 2.5em 1.8115em;
+
+    margin: 1em;
+    padding: 1em;
+    
+    box-shadow: 0.25em 0.25em 1em #0a1322,
+    0.25em 0.25em 0.25em #0a1322;
+
+    align-items: center;
+
+    text-align: center;
+
+    font-family: monospace;
+    font-size: 3em;
+}
+/* ====================================== */
+/* ====================================== */
 .aoc_answer_wrapper{
     display:grid;
     grid-template-columns: 5em auto;
     grid-template-rows: auto;
+
     padding: 1em;
+
     text-align: center;
+    align-items: center;
 }
-/* ====================================== */
-/* ====================================== */
-.aoc_answer_button{
-    border: 2px solid #526988;
-    background-color: #224875;
-    max-width: 3em;
-    margin: 0.5em;
-    padding: 0.5em;
-    box-shadow: 3px 3px 2px #131e2f;
-}
-.aoc_answer_button:hover{
-    border: 2px double #6d89ad;
-    background-color: #19395f;
-    max-width: 3em;
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
-    padding-top: 0.6em;
-    padding-bottom: 0.6em;
-    box-shadow: 0px 0px 7px #664629;
-}
-.aoc_answer_button:active{
-    border: 2px solid #4b617c;
-    background-color: #19395f;
-    max-width: 3em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    box-shadow: 0px 0px 10px #8a5f37;
-}
-/* ====================================== */
-/* ====================================== */
-.aoc_answer_element{
-    display: block;
-    border: 1px solid #345074;
-    background-color: #061425;
-    margin-right: 1em;
-    padding: 0.5em;
 
-    box-shadow: 5px 5px 3px #131e2f;
 
-    text-shadow:
-    0 0 1em #4e3510,
-    0 0 0.8em #644516,
-    0 0 0.4em #886126,
-    0 0 0em #a37447,
-    0 0 2px #140d07;
-}
+/* ################################################### */
+/* ################################################### */
+
 .aoc_data_element{
+    background-color: #02070e;
+
     border: 2px double #345074;
     border-radius: 1em 1em 0.25em 1em;
-    background-color: #02070e;
+
     margin: 1em;
     padding: 1em;
 
@@ -70,23 +96,106 @@
 }
 /* ====================================== */
 /* ====================================== */
-.aoc_timer_wrapper {
-    display: block;
-    border: 1px solid #345074;
-    background-color: #061425;
+.aoc_timer_element{
+    align-items: center;
+    
     text-align: center;
-    font-family: monospace;
-    font-size: 3em;
-    margin: 1em;
+
+    /* brighter than the text colour */
+    color: #ffd7b1;
+    text-shadow:
+    /* slightly brighter normal text colour */
+    0 0 1px #ffba79,
+    /* normal text colour as an outline */
+    0 0 3px #ffb570,
+    /* between light and text colour as a  bloom */
+    0 0 0.15em #fdc693,
+    /* normally the shadow of light, instead progressive glow on the screen */
+    -0.1em -0.1em 1em #c07b3a,
+    -0.1em -0.1em 1.4em #886126,
+    /* slight glow behind the text */
+    0.1em 0.1em 1.8em #644516,
+    0.1em 0.1em 2em #4e3510;
+
+    font-style: italic;
+}
+/* ====================================== */
+/* ====================================== */
+.aoc_answer_button{
+    max-width: 3em;
+    background-color: #224875;
+
+    border: 2px solid #526988;
+
+    margin: 0.5em;
+    padding: 0.5em;
+    
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.aoc_answer_button:hover{
+    max-width: 3em;
+    background-color: #19395f;
+
+    border: 2px double #6d89ad;
+
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    
+    box-shadow: 0px 0px 7px #664629;
+}
+.aoc_answer_button:active{
+    max-width: 3em;
+    background-color: #19395f;
+
+    border: 2px solid #4b617c;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    
+    box-shadow: 0px 0px 10px #8a5f37;
+}
+/* ====================================== */
+/* ====================================== */
+.aoc_answer_element{
+    display: block;
+    background-color: #061425;
+    
+    border: 1px solid #345074;
+    border-radius: 1em 1em 1em 1em;
+    
+    margin-right: 1em;
     padding: 1em;
 
     box-shadow: 5px 5px 3px #131e2f;
-}
-.aoc_timer_element{
+
+    text-align: center;
     text-shadow:
-    0 0 2em #4e3510,
-    0 0 1.8em #644516,
-    0 0 1.4em #886126,
-    0 0 1em #a37447,
-    0 0 3px #140d07;
+    0 0 1em #4e3510,
+    0 0 0.8em #644516,
+    0 0 0.4em #886126,
+    0 0 0em #a37447,
+    0 0 2px #140d07;
 }
+/* ################################################### */
+/* ################################################### */
+.aoc_reference_link {
+    color: #fdc591;
+    text-shadow:
+    0 0 2px #ffb570,
+    0 0 0.5em #2c1602;
+
+    font-weight: bold;
+    text-decoration: #fdc591 solid underline;
+    text-decoration-thickness: 0.1em;
+    text-decoration-skip-ink: none;
+    text-underline-position: under left;
+    /* text-decoration: none; */
+    /* text-emphasis: '^'; */
+    /* text-emphasis-position: under right; */
+}
+/* ################################################### */
+/* ################################################### */

@@ -18,7 +18,8 @@
         <script src="/scripts/menu_builder.js" type="module"></script>
         <script src="aoc_app.js" type="module"></script>
         <!-- ... -->
-        <link rel="stylesheet" href="/styles/globalStyle.css">
+        <!-- <link rel="stylesheet" href="/styles/globalStyle.css"> -->
+        <link rel="stylesheet" href="/styles/aoc_alt_global_style.css">
         <link rel="stylesheet" href="/styles/navMenu_style.css">
         <link rel="stylesheet" href="/styles/sectioningFlow_style.css">
         <!-- <link rel="stylesheet" href="/styles/info_style.css"> -->
@@ -55,10 +56,15 @@
         </nav>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
-        <main id="aoc_flow_body_elem_id" class="content_body">
-            <!-- ============================================= -->
-             <!-- constructed by aoc_app -->
-            <!-- ============================================= -->
+        <main class="aoc_main_content">
+            <section class="aoc_challenges_flow_header">
+
+            </section>
+            <section id="aoc_flow_body_elem_id" class="aoc_challenges_flow">
+                <!-- ============================================= -->
+                 <!-- constructed by aoc_app -->
+                <!-- ============================================= -->
+            </section>
         </main>
         <!-- ======================================================================== -->
         <!-- ======================================================================== -->
@@ -66,7 +72,7 @@
             <!-- ============================================= -->
             <section class="footer_section">
                 <!-- ... -->
-                <p><a href="https://adventofcode.com/2024/"><code>link to source</code></a></p>
+                <p><code><a href="https://adventofcode.com/2024/" class="aoc_reference_link">Advent of Code - 2024</a></code></p>
             </section>
             <!-- ============================================= -->
             <section class="footer_section">
