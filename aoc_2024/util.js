@@ -160,3 +160,20 @@ export function unique_sorted(list_input){
     });
     return result;
 }
+
+
+/**
+ * cycles through the list, and checks that all items following one another adhere to the testing function given
+ * @param {*} list_to_check 
+ * @param {*} test_between_two_elements takes first and second element where left is the earlier index in the list provided
+ */
+export function list_follows_adjacency_rule(list_to_check, test_between_two_elements){
+    for (let index = 0; index < list_to_check.length-1; index++) {
+        const first = list_to_check[index];
+        const second = list_to_check[index+1];
+        if(!test_between_two_elements(first,second)){
+            return false;
+        }
+    }
+    return true;
+}
