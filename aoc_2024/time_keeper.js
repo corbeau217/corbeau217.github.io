@@ -1,4 +1,4 @@
-
+import {pad_number} from "./util.js";
 
 const AOC_START_EPOCH_MILLIS = 1733029200000;
 
@@ -8,15 +8,6 @@ const MINUTE_IN_MILLISECONDS = 1000*60;
 const SECOND_IN_MILLISECONDS = 1000;
 
 const DAYS_IN_DECEMBER = 31;
-
-/**
- * formats the number to start with 0 if it's less than 2 digits
- * @param {*} number 
- * @returns 
- */
-function pad_number(number){
-    return `${(number<10)?"0":""}${number}`;
-}
 
 export class Time_Keeper {
     // ############################################################################################

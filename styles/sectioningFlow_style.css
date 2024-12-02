@@ -48,6 +48,10 @@
     border-right: 2px solid #7297c6;
     grid-row: 1 / span 1;
     grid-column: 1 / span 1;
+
+    text-align: center;
+    align-content:center;
+    align-items:center;
 }
 .sectioned_content_thumbnail_img {
     max-width: 100%;

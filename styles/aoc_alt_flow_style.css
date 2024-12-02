@@ -1,0 +1,156 @@
+/* ################################################### */
+/* ################################################### */
+.aoc_main_content {
+    grid-column: 2 / span 3;
+
+    display: grid;
+    border-left: 2px solid #c1d4ed;
+
+    grid-template-rows: auto auto;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_challenges_flow_header{
+    display: block;
+
+    padding: 2em;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_challenges_flow {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    flex-direction: row-reverse;
+
+    padding: 5px;
+    
+    justify-content: space-evenly;
+    align-content: flex-start;
+    align-items: flex-end;
+    text-align: left;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+/* ======== container handles ======== */
+.aoc_card_wrapper_outer:not(.card_hidden) {
+    display:block;
+    background-color: #0c2547;
+
+    margin: 7px;
+    padding: 5px;
+    
+    box-shadow: 3px 3px 2px #131e2f;
+}
+.card_hidden {
+    display: none;
+}
+.aoc_card_wrapper_inner {
+    max-width:100%;
+    max-height:100%;
+
+    display: grid;
+    background-color: #0c2547;
+
+    border-top: 2px solid #8cb0de;
+    border-left: 2px solid #8cb0de;
+    padding: 5px;
+    
+    grid-template-columns: 13em auto auto;
+    grid-template-rows: 11em auto auto;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_card_thumbnail {
+    grid-row: 1 / span 1;
+    grid-column: 1 / span 1;
+    
+    background-color: #0c2547;
+    
+    border-bottom: 2px solid #7297c6;
+    border-right: 2px solid #7297c6;
+
+    padding: 5px;
+    margin-right: 5px;
+
+    text-align: center;
+    align-content:center;
+    align-items:center;
+}
+.aoc_card_heading {
+    grid-row: 1 / span 1;
+    grid-column: 2 / span 2;
+
+    display: block;
+    background-color: #0c2547;
+    
+    text-wrap:nowrap;
+    align-content: left;
+    text-align: left;
+    
+    font-size: 1.5em;
+}
+.aoc_card_body_block {
+    grid-row: 2 / span 2;
+    grid-column: 1 / span 3;
+
+    max-width: 100%;
+    max-height:100%;
+
+    background-color: #0c2547;
+    border-bottom: 2px solid #5988c6;
+    border-right: 2px solid #5988c6;
+    
+    padding: 5px;
+    margin: 5px;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_thumbnail_replacement_text{
+    font-weight: bold;
+    font-size: 2em;
+}
+.aoc_thumbnail_day_number{
+    font-weight: bold;
+    font-size: 3em;
+}
+
+/* ################################################### */
+/* ################################################### */
+.aoc_card_main_heading_text {
+    border-bottom: 2px solid #7297c6;
+    border-right: 2px solid #7297c6;
+    
+    padding: 5px;
+    margin-right: 5px;
+
+    align-content: left;
+    text-align: center;
+}
+.aoc_sub_text {
+    text-align: center;
+}
+
+/* ################################################### */
+/* ################################################### */
+
+.aoc_card_body_wrapper {
+    max-width: 100%;
+    max-height:100%;
+
+    display: block;
+    
+    margin-left: 2em;
+}
+
+/* ################################################### */
+/* ################################################### */

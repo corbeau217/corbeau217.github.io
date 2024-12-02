@@ -1,4 +1,5 @@
 import { Time_Keeper } from "./time_keeper.js";
+import { pad_number } from "./util.js";
 
 export class AOC_Daily_Card_builder {
     constructor(){
@@ -89,15 +90,15 @@ export class AOC_Daily_Card_builder {
         const data_input_id = `aoc_day_${day_number_padded}_data_input`;
         const answer_part_1_id = `answer_day_${day_number_padded}_1`;
         const answer_part_2_id = `answer_day_${day_number_padded}_2`;
-        const card_body_code = `            <section class="sectioned_content_outer">
-                <div class="sectioned_content_inner">
-                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="book icon thumbnail" /></div>
-                    <div class="sectioned_content_heading">
-                        <h3 class="sectioned_content_heading_text">DAY - ${day_number}</h3>
+        const card_body_code = `            <section class="aoc_card_wrapper_outer">
+                <div class="aoc_card_wrapper_inner">
+                    <div class="aoc_card_thumbnail"><code class="aoc_thumbnail_day_number">[${day_number_padded}]</code></div>
+                    <div class="aoc_card_heading">
+                        <h3 class="aoc_card_main_heading_text">DAY - ${day_number}</h3>
                         <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${day_number}" class="aoc_reference_link">details</a> ] [ <a href="https://adventofcode.com/2024/day/${day_number}/input" class="aoc_reference_link">input</a> ]</code></p>
                     </div>
-                    <div class="sectioned_content_body">
-                        <div class="techdemo_brief">
+                    <div class="aoc_card_body_block">
+                        <div class="aoc_card_body_wrapper">
                             <hr />
                             <p class="brief_heading_elem"><label for="${data_input_id}">input data</label></p>
                             <p><textarea class="aoc_data_element" id="${data_input_id}" name="${data_input_id}" rows="4" cols="32"  placeholder="paste input here"></textarea></p>
@@ -138,15 +139,15 @@ export class AOC_Daily_Card_builder {
         // =======================================================
         return {
             number: next_challenge_number,
-            card_body_code: `            <section class="sectioned_content_outer">
-                <div class="sectioned_content_inner">
-                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="book icon thumbnail" /></div>
-                    <div class="sectioned_content_heading">
-                        <h3 class="sectioned_content_heading_text">DAY - ${next_challenge_number} <i>(COMING SOON)</i></h3>
-                        <p class="aoc_sub_text"><code>[ <a href="https://adventofcode.com/2024/day/${next_challenge_number}" class="aoc_reference_link">details</a> ]</code></p>
+            card_body_code: `            <section class="aoc_card_wrapper_outer">
+                <div class="aoc_card_wrapper_inner">
+                    <div class="aoc_card_thumbnail"><code class="aoc_thumbnail_day_number">[${pad_number(next_challenge_number)}]</code></div>
+                    <div class="aoc_card_heading">
+                        <h3 class="aoc_card_main_heading_text">DAY - ${next_challenge_number}</h3>
+                        <p class="aoc_sub_text"><i>(Soon&trade;)</i> <code>[ <a href="https://adventofcode.com/2024/day/${next_challenge_number}" class="aoc_reference_link">details</a> ]</code></p>
                     </div>
-                    <div class="sectioned_content_body">
-                        <div class="techdemo_brief">
+                    <div class="aoc_card_body_block">
+                        <div class="aoc_card_body_wrapper">
                             <hr />
                             <p class="brief_heading_elem">time left</p>
                             <div class="aoc_timer_wrapper">

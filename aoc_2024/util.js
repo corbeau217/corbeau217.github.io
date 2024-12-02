@@ -30,3 +30,12 @@ export function instance_copy_index_from_all_sublists(list_of_lists, sublist_ind
     }
     return result_list;
 }
+
+/**
+ * formats the number to start with 0 if it's less than 2 digits
+ * @param {*} number 
+ * @returns 
+ */
+export function pad_number(number){
+    return `${(number<10)?"0":""}${number}`;
+}
