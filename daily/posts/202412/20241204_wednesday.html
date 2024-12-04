@@ -1,0 +1,42 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>starting the day with some very ambitious ideas</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">system for viewing animations of objects in the scene graph and the changes in data</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">breaking the repository into sub-repositories that are dependencies so we can work on things seperate from one another</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">thoughts on mapping out what builds each part of the day</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">exploring flex shrink/grow</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>animations system</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">original idea is that there would be some function of <code>x</code>,<code>y</code>,<code>z</code>, that would create points in model space</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">following on from that was the idea we could use a function of a transformation matrix, to change it over some number of frames</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">these steps would then either be used as the locations for the model to move to on each frame of the animation</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the design of the interface would be very similar to the current shapes interface</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having sliders for precision/point count/scale</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">checkboxes for whether it animates in a loop, whether the camera orbits, or if the model/path is shown</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>the different views would be</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">1. scene view - shows the points/path/model/grid lines/axises</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">2. controls - is where the sliders and checkboxes would go to manipulate the behaviour of the scene</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">3. values/scene graph hierarchy - would show locations for each of the frames, and or translation/rotation/scale of the model at those points</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">4. menu/settings - things like whether we show the grid lines/axises/colour code the axises as RGB or just single colour</li>
+                </ul>
+            </li>
+        </ul>
+        <hr />
+        <div class="daily_post_content_image_container">
+            <img class="daily_post_content_image" src="/daily/img/20241204_animation_page_layout.png" alt="super rough sketch of the layout for the animations page" />
+        </div>
+    </li>
+    <li class="daily_textbody_list_elem"><p>there was a very quick look at workflows for github pages/github actions, but distractions arose and we moved on</p></li>
+    <li class="daily_textbody_list_elem"><p>animation system had a lot of early brain storming. Ultimately we spent the day exploring flex containers in more detail using private repository code where it was needed</p></li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>probably the last post</p>
+    </li>
+</ul>
