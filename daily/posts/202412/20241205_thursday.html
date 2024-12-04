@@ -1,0 +1,206 @@
+<ul class="daily_textbody_list">
+    <li class="daily_textbody_list_elem">
+        <p>today's thought experiments</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">further thoughts on seperating parts of the site to other repositories</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">exploration of markdown to html conversion/parsing</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">texture wrapping a sphere to look like a clear ball</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">what do cube maps look like in terms of geometry</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">portals, how do they work</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">backlit signs and posters</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">layering of render texture objects</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">html / css rendered to images/canvases for use in programs</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">text block / ncurses but in web pages</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>seperate repository for WebGL 1 core</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>shaders/scene objects could be typed by the method they're getting their shader code</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">type 1 - when the shader code is a literal string variable</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">type 2 - constructed by shader constructor</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">type 3 - provided by page asynchronously from a <code>.glsl</code> file</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having these types means that we can merge shapes and or use instancing to draw things where we use the same shader program across each when it's confirmed to be similiar enough code/structure</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>benefits</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">seperation of concerns</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">reducing redundancies</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">localising commit history</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">localising github issue tickets</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">less cognitive overhead of navigating rendering core's code base</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">modularises the site code base and localised bugs to the rendering core</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>spookies</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">possibly a complexity demon in disguise</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">testing changes requires another environment</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">time it takes to refactor the code base to handle it</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">is it just a sub repository?</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">or is it a library that is fetched via requests? where is that hosted?</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">probably what will happen today if nothing else is worked on before class</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>markdown to html conversion / parsing</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">this could just be done as a library</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">likely will want to keep it as simple as possible in early versions to rush prototype</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">rushing prototype means we can convert posts over to markdown immediately</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>necessary features for conversion</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">unordered lists</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">italics</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">bold</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">code</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">links</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">ordered lists</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>additional suggested features / later milestones</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">ignoring html code and only focusing on parts that are markdown</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">header for the post data instead of continually updating the <code>.json</code> file</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">tables</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">custom canvas element syntax</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">github markdown flavoured things</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>texture wrapping a sphere as a clear ball and</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">inspired by an art post burried in the dashboard algorithm, where an artist painted a scene to be a fisheye perspective</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the video made it look like a lens for several seconds until lighting made it obvious that it was painted</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>the idea would be to</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">use a cube map to wrap the inside of a sphere</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">have the winding order so that you would see into the sphere from outside</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">lighting wouldnt be applied to the sphere at all</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>for added detail</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the sphere could be using a 360 scene view into a render texture that's then used for the cube map</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">if the lens moves, you'll need to redraw the render texture which can be costly due to not having a clipping plane, or require 6 perspectives for each of the faces of the cube map you would be creating</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having it fixed with a fixed camera distance to the sphere means that nothing needs to be re-made and it can be kept as it is</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">performance could be found by only rendering 5 of the perspective cameras (up,down,left,right,forward), and only overwritting the space in the texture which are viewable to the player</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">as these thoughts so far are just brainstorming ideas, we should draw up some diagrams to show how light travels in relation to the sphere</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the <a href="https://www.youtube.com/watch?v=24GfgNtnjXc">recent veritasium video</a> has some excellent explanations regarding the path of light traveling through a sphere</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>cube map geometry</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">not much more to say on the topic</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the idea is that the perspective is from some point within a cube, to the inside faces of the cube</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">when used as intended, that point is from the center of the cube, to each of the inside faces</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the cube map is a collection of 6 textures to represent the insides of the cube as the perspectives when looking in those directions</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">each of the inside faces of the cube are treated as either near or far planes for a perspective camera which create's that face's texture/image</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the perspective is modified so that when looking at a corner, it appears the same distance as looking at any of the points on a face</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">creating an optical illusion that the cube is a sphere, by making the texture act line that section of the cube</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">observing a cube sphere (sphere made from taking a subdivided cube mesh and normalizing all the distances of the vertices)</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://en.wikipedia.org/wiki/Cube_mapping">wikipedia article</a> for cube mapping including some of the maths and code for calculating it</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://webglfundamentals.org/webgl/lessons/webgl-cube-maps.html">WebGL tutorial for cube maps</a> which gives some explanations and diagrams</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://catlikecoding.com/unity/tutorials/cube-sphere/">this unity tutorial</a> shows images of what cube sphere's look like, and what cube maping tries to accomplish</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://jcgt.org/published/0007/02/01/">this article</a> shows shows how cube mapping, and cube spheres working together can make it much easier for creating procedural textures on a sphere (their thumbnail shows worley noise but we could just use perlin/value noise )</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="http://mathcentral.uregina.ca/QQ/database/QQ.09.06/lukas1.html">this maths article</a> shows some geometry of spheres and cubes with their relation to one another</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://learnopengl.com/Advanced-OpenGL/Cubemaps">OpenGL tutorial</a> for using cube maps</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem"><a href="https://webglfundamentals.org/webgl/lessons/webgl-environment-maps.html">WebGL tutorial for environment maps</a> for use in reflections, but our sphere is just a modified version of this to be refractions instead</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>portals</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">portals can be done in a few ways, but the most likely candidate would be render textures</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">render textures mean that recursive viewing of portals could be done over multiple frames and only require one or two extra draw calls per portal to simulate viewing the world from that position</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using alternative strategies would require a lot more overhead without some creative solutions or corner cutting</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>using render textures</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">rendering the world from the perspective of the portal</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">would just find the portal-to-camera transformation matrix, and use it with the world-to-portal matrix to get what things look like from that perspective</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">would be subject to all the evils of projecting textures/texture mapping/texture filtering/etc</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">can then use the portal shape as a mask/stencil for making the render texture</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">could disguise the texture evils by either using it as part of the art style or each draw of a portal inside a portal's render texture is slightly obscured by noise or glitches or some other technique so that it's harder and harder to see through subsequent portals</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>using something like <a href="https://en.wikipedia.org/wiki/Symbolic_link"><code>symbolic links</code></a> in the linux <a href="https://en.wikipedia.org/wiki/Inode"><code>inode</code></a> structure</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">rather than it being for an inode, this would be done on the scenegraph itself</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">the scene graph would then be treated like an inode object, and we can use all the algorithms developed for them within our scenegraph</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">would then have things drawn using <a href="https://webglfundamentals.org/webgl/lessons/webgl-instanced-drawing.html"><code>instancing</code></a> where they're given the matrices of the camera-to-portal-to-world transformation for whichever portal they're a part of</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using stenciling you draw the deepest portal first, then draw the next closest to the actual player, and walk up the links all the way to the actual player's world location, and draw the rest of the scene using the inverse stencil</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">would need to specify how many layers deep that recursion can go (hallway/infinite falling portal orientation, like in <a href="https://en.wikipedia.org/wiki/House_of_mirrors"><code>house of mirrors</code></a>)</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>signs / back lit signs, layering render textures</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">
+                <p>layering structure of the back lit signs</p>
+                <ul class="daily_textbody_list daily_textbody_sublist">
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">light shape would be underneath</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">they would have some default colour/shape/background</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">on top of this is the content to be displayed, either a stencil or poster</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">then the glass and its damage/reflective qualities are added</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">on top of this is any grime build up</li>
+                    <li class="daily_textbody_list_elem daily_textbody_sublist_elem">which is all baked together into the final layer which has world lighting/reflection mapping applied to it</li>
+                </ul>
+            </li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">using this process of layering the render textures means that each part is seperated out and can be done much faster, or instanced with other objects that have the same layer</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">we could then use a tileset style structuring of our render texture to do each of the layers, meaning less time swapping out textures</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">if they're then bound to specific texture units not used by anything else, they can be reused / possibly adding to multiple during a single fragment shader instance (likely webgl 2, or requires providing the location of the buffer to draw to)?</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>html/css rendered in canvases</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">not a lot for this, but exploring this would mean we can use it for making our signs</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">would also mean we can do some more interesting website effects or model effects</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">it's likely able to be done with svg elements, but more likely that we can use a library</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem">
+        <hr class="hr_list_elem_seperating" />
+        <p>html character grid</p>
+        <ul class="daily_textbody_list daily_textbody_sublist">
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">can just use monospaced font</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">each character/glyph is in a span element with the element id to locate which character/glyph it is</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">colouring is then done by adding or removing classes to a character/glyph span container</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">building the grid would just be nested for loop, but you'd need to make each row is inside a row-wrapping element, perhaps another span</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">having it managed by a js class structure will mean we can stash references to all the elements so we dont need to refetch them each time there would be a change needed</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">default character could just be a space so that the lines are empty</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">outer grid wrapping container (the element that wraps the row elements) would then choose the background of the grid</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">efficiency could be found in having a stack/queue data structure for "elements that need updating" so that we're not needing to update every item each frame, and only updating what's required</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">making something like e-ink displays and using double buffering for styling the elements?</li>
+            <li class="daily_textbody_list_elem daily_textbody_sublist_elem">adding classes to regions so that they can all be effected in one go by changing the style used by the region</li>
+        </ul>
+    </li>
+    <li class="daily_textbody_list_elem"><p>we lost track of time while making today's post, so this might be all for today (we'll see what the day holds)</p></li>
+</ul>
