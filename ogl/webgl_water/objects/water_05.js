@@ -1,6 +1,6 @@
-import { Planar_Shape } from "../../common/obj/planar_shape.js";
-import { Shader_Manager } from "/ogl/common/shaders/shader_engine.js";
-import { explode_mesh_with_references, generate_normals_for_explode_vertices as generate_raw_normals_for_explode_vertices, } from "/ogl/common/util/geometry.js";
+import { Planar_Shape } from "../../old_common/obj/planar_shape.js";
+import { Shader_Manager } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
+import { explode_mesh_with_references, generate_normals_for_explode_vertices as generate_raw_normals_for_explode_vertices, } from "/ogl/lib/util/geometry.js";
 import { Perlin_Noise_Machine, generate_normals_for_explode_vertices } from "./perlin_noise_machine.js";
 
 import { VERTEX_SHADER_SRC as water_05_vertex_shader_source } from "../shaders/water_05_vertex_shader.js";

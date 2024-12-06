@@ -1,6 +1,6 @@
-import { FRAGMENT_SHADER_SRC } from "/ogl/common/shaders/minimal_fragmentShader.js";
-import { VERTEX_SHADER_SRC } from "/ogl/common/shaders/minimal_vertexShader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { FRAGMENT_SHADER_SRC } from "/ogl/old_common/shaders/minimal_fragmentShader.js";
+import { VERTEX_SHADER_SRC } from "/ogl/old_common/shaders/minimal_vertexShader.js";
+import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
 
 class Perlin_02 {
 

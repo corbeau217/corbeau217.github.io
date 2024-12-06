@@ -1,6 +1,6 @@
 import { initBuffers } from "./init-buffers.js";
 import { updateScene, drawScene } from "./draw-scene.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
 import { VERTEX_SHADER_SRC } from "./vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "./fragmentShader.js";
 

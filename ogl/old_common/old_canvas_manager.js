@@ -1,4 +1,4 @@
-import { Canvas_Object } from "/ogl/common/canvas_object.js";
+import { Canvas_Object } from "./old_canvas_object.js";
 
 export class Canvas_Manager {
     constructor( maximum_fps ){

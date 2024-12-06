@@ -1,7 +1,7 @@
 import { Water_02 } from "./water_02.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/water_03_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_03_vertex_shader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
 import { Perlin_Noise_Machine, generate_normals_for_explode_vertices } from "./perlin_noise_machine.js";
 
 const SQRT_OF_3 = 1.73205080757;

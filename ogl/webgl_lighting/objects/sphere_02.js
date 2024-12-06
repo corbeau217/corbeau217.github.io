@@ -1,13 +1,13 @@
 import { VERTEX_SHADER_SRC } from "../shaders/sphere_02_vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/sphere_02_fragmentShader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js"
-import { generate_normals } from "/ogl/common/util/geometry.js";
-import { Sphere_Shape } from "/ogl/common/obj/sphere_shape.js"
+import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js"
+import { generate_normals } from "/ogl/lib/util/geometry.js";
+import { Sphere_Shape } from "/ogl/old_common/obj/sphere_shape.js"
 import {
     unit_sphere_float_vertices,
     unit_sphere_bindings,
     unit_sphere_face_count,
-} from "/ogl/common/util/geometry.js";
+} from "/ogl/lib/util/geometry.js";
 
 const TAU = 2.0*Math.PI;
 

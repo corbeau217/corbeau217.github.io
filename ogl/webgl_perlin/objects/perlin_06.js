@@ -1,6 +1,6 @@
 import { FRAGMENT_SHADER_SRC } from "../shaders/perlin_06_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/perlin_06_vertexShader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
 
 const POSITION_MINIMUMS = {
     x: -1.0,

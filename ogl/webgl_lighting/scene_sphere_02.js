@@ -1,6 +1,6 @@
 
 import { Sphere_02 } from "./objects/sphere_02.js";
-import { Camera } from "/ogl/common/camera/generic_camera.js";
+import { Camera } from "/ogl/old_common/camera/old_camera.js";
 
 const TAU = 2.0*Math.PI;
 

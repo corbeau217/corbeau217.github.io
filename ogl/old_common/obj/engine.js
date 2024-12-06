@@ -1,12 +1,5 @@
-import {
-    unit_circle_points,
-    circle_points,
-    circle_points_radius,
-    tesselate_between_indices_lists,
-    tesselate_indices_index_to_list,
-    tesselate_indices_list_to_index,
-} from "../util/geometry.js";
-import { Lathe } from "../util/lathe.js";
+
+import { Lathe } from "/ogl/lib/util/old_lathe.js";
 
 
 export class Engine_Shape {

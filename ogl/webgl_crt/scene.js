@@ -1,6 +1,6 @@
 
 import { Can } from "./objects/can.js";
-import { Camera } from "/ogl/common/camera/generic_camera.js";
+import { Camera } from "/ogl/old_common/camera/old_camera.js";
 
 const TAU = 2.0*Math.PI;
 

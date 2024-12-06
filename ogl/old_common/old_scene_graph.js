@@ -1,6 +1,6 @@
 
-import { Camera } from "/ogl/common/camera/generic_camera.js";
-// import { Coordinate_Frame } from "/ogl/common/obj/scene_objects/coordinate_frame.js";
+import { Camera } from "./camera/old_camera.js";
+// import { Coordinate_Frame } from "/ogl/old_common/obj/scene_objects/coordinate_frame.js";
 
 // ############################################################################################
 // ############################################################################################

@@ -1,7 +1,7 @@
 import { FRAGMENT_SHADER_SRC } from "../shaders/dreenk_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/dreenk_vertexShader.js";
-import { generate_shader_program } from "/ogl/common/shaders/shader_engine.js";
-import { Can_Shape } from "/ogl/common/obj/can_shape.js";
+import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
+import { Can_Shape } from "/ogl/old_common/obj/can_shape.js";
 
 const TAU = 2.0*Math.PI;
 const CIRCLE_POINTS = 16;

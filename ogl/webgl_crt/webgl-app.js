@@ -1,4 +1,4 @@
-import { Canvas_App } from "/ogl/common/old_canvas_app.js";
+import { Canvas_App } from "/ogl/old_common/old_canvas_app.js";
 import { Render_Space_02 } from "./objects/render_space_02.js";
 import { Render_Space_03 } from "./objects/render_space_03.js";
 import { Scene } from "./scene.js";

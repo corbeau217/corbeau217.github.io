@@ -1,7 +1,7 @@
-import { Planar_Shape } from "../../common/obj/planar_shape.js";
+import { Planar_Shape } from "../../old_common/obj/planar_shape.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/water_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_vertex_shader.js";
-import { generate_shader_program, Shader_Manager } from "/ogl/common/shaders/shader_engine.js";
+import { generate_shader_program, Shader_Manager } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
 
 
 export class Water {
