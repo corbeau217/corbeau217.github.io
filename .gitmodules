@@ -1,0 +1,3 @@
+[submodule "ext/webgl_1_core"]
+	path = ext/webgl_1_core
+	url = https://github.com/corbeau217/webgl_1_core.git
