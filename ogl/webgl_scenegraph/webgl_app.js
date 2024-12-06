@@ -1,5 +1,5 @@
 
-import { WebGL_App } from "/ogl/core/webgl_app.js";
+import { WebGL_App } from "/ext/webgl_1_core/src/webgl_app.js";
 
 
 // ############################################################################################
