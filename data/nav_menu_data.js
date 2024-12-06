@@ -4,7 +4,7 @@
 export const NAV_MENU_ITEMS = [
     { label: "HOME", path: "/" },
     { label: "INFO", path: "/info/" },
-    { label: "GRAPHICS", path: "/webgl1/" },
+    { label: "WEBGL1", path: "/webgl1/" },
     { label: "DAILY", path: "/daily/" },
     { label: "AOC '24", path: "/aoc_2024/" },
 ]; 
