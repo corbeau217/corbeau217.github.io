@@ -1,6 +1,6 @@
 
 import { Vehicle } from "./objects/vehicle.js";
-import { Camera } from "/ogl/old_common/camera/old_camera.js";
+import { Camera } from "/webgl1/old_common/camera/old_camera.js";
 
 const TAU = 2.0*Math.PI;
 

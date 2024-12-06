@@ -3,7 +3,7 @@ import {
     unit_sphere_bindings,
     unit_sphere_face_count,
     unit_sphere_normals,
-} from "/ogl/lib/util/geometry.js";
+} from "/webgl1/lib/util/geometry.js";
 import { Drawable_Scene_Object } from "/ext/webgl_1_core/src/scene_objects/drawable_scene_object.js";
 import { VERTEX_SHADER_SRC as diffuse_vertex_source } from "/ext/webgl_1_core/src/shaders/minimal_diffuse_vertex_shader.js"
 import { FRAGMENT_SHADER_SRC as diffuse_fragment_source } from "/ext/webgl_1_core/src/shaders/minimal_diffuse_fragment_shader.js"

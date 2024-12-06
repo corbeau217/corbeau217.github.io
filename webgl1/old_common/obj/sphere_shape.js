@@ -3,7 +3,7 @@ import {
     unit_sphere_bindings,
     unit_sphere_face_count,
     unit_sphere_normals,
-} from "/ogl/lib/util/geometry.js";
+} from "/webgl1/lib/util/geometry.js";
 export class Sphere_Shape {
     // ...
     constructor( winding_cw ){

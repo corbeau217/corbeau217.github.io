@@ -1,6 +1,6 @@
 import { FRAGMENT_SHADER_SRC } from "../shaders/turbofan_fragmentShader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/turbofan_vertexShader.js";
-import { Engine_Shape } from "/ogl/old_common/obj/engine.js"
+import { Engine_Shape } from "/webgl1/old_common/obj/engine.js"
 import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";
 
 const TAU = 2.0*Math.PI;

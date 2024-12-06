@@ -15,7 +15,7 @@ import { VERTEX_SHADER_SRC as water_05_vertex_shader_source } from "./shaders/wa
 import { FRAGMENT_SHADER_SRC as water_05_fragment_shader_source } from "./shaders/water_05_fragment_shader.js";
 
 import { insert_shader_code_block } from "../lib/util/source_block.js";
-import { Canvas_Manager } from "/ogl/old_common/old_canvas_manager.js";
+import { Canvas_Manager } from "/webgl1/old_common/old_canvas_manager.js";
 
 // ############################################################################################
 // ############################################################################################

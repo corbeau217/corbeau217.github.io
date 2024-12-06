@@ -3,7 +3,7 @@ import { Water } from "./water.js";
 import {
     explode_mesh_with_references,
     generate_normals_for_explode_vertices,
-} from "/ogl/lib/util/geometry.js";
+} from "/webgl1/lib/util/geometry.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/water_02_fragment_shader.js";
 import { VERTEX_SHADER_SRC } from "../shaders/water_02_vertex_shader.js";
 import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js";

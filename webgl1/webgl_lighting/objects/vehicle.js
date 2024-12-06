@@ -1,8 +1,8 @@
 import { VERTEX_SHADER_SRC } from "../shaders/vehicle_vertexShader.js";
 import { FRAGMENT_SHADER_SRC } from "../shaders/vehicle_fragmentShader.js";
 import { generate_shader_program } from "/ext/webgl_1_core/src/shader_util/shader_engine.js"
-import { generate_normals } from "/ogl/lib/util/geometry.js";
-import { Vehicle_Shape } from "/ogl/old_common/obj/vehicle.js"
+import { generate_normals } from "/webgl1/lib/util/geometry.js";
+import { Vehicle_Shape } from "/webgl1/old_common/obj/vehicle.js"
 
 
 const TAU = 2.0*Math.PI;

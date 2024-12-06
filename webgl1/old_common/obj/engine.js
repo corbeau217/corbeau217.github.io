@@ -1,5 +1,5 @@
 
-import { Lathe } from "/ogl/lib/util/old_lathe.js";
+import { Lathe } from "/webgl1/lib/util/old_lathe.js";
 
 
 export class Engine_Shape {

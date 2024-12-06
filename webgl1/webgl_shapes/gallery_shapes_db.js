@@ -1,14 +1,14 @@
 
 import { Scene_Object   } from "/ext/webgl_1_core/src/scene_objects/scene_object.js";
-import { Can            } from "/ogl/lib/shapes/can.js";
-import { Crate          } from "/ogl/lib/shapes/crate.js";
-import { Sphere         } from "/ogl/lib/shapes/sphere.js";
-import { Turbofan       } from "/ogl/lib/shapes/turbofan.js";
-import { Turbofan as Turbofan02 } from "/ogl/lib/shapes/turbofan_02.js";
-import { Lorenz         } from "/ogl/lib/shapes/lorenz.js";
-import { Book           } from "/ogl/lib/shapes/book.js";
-import { Joint          } from "/ogl/lib/shapes/joint.js";
-import { Barrel         } from "/ogl/lib/shapes/barrel.js";
+import { Can            } from "/webgl1/lib/shapes/can.js";
+import { Crate          } from "/webgl1/lib/shapes/crate.js";
+import { Sphere         } from "/webgl1/lib/shapes/sphere.js";
+import { Turbofan       } from "/webgl1/lib/shapes/turbofan.js";
+import { Turbofan as Turbofan02 } from "/webgl1/lib/shapes/turbofan_02.js";
+import { Lorenz         } from "/webgl1/lib/shapes/lorenz.js";
+import { Book           } from "/webgl1/lib/shapes/book.js";
+import { Joint          } from "/webgl1/lib/shapes/joint.js";
+import { Barrel         } from "/webgl1/lib/shapes/barrel.js";
 
 export const GALLERY_SHAPES_DB = [
     { index: 0, id: "clear",        type: Scene_Object,    thumbnail: "/img/bookicon.png" },

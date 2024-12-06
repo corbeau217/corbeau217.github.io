@@ -1,5 +1,5 @@
 
-import { Canvas_App } from "/ogl/old_common/old_canvas_app.js";
+import { Canvas_App } from "/webgl1/old_common/old_canvas_app.js";
 import { Perlin_01 } from "./objects/perlin_01.js";
 import { Perlin_02 } from "./objects/perlin_02.js";
 import { Perlin_03 } from "./objects/perlin_03.js";
