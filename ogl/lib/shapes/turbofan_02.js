@@ -1,4 +1,4 @@
-import { Shape_Factory_Scene_Object } from "/ogl/core/scene_objects/shape_factory_scene_object.js";
+import { Shape_Factory_Scene_Object } from "/ext/webgl_1_core/src/scene_objects/shape_factory_scene_object.js";
 
 export class Turbofan extends Shape_Factory_Scene_Object {
     // ############################################################################################

@@ -1,7 +1,7 @@
-import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-import { VERTEX_SHADER_SRC as wireframe_vertex_source } from "/ogl/lib/shaders/minimal_wireframe_vertex_shader.js"
-import { FRAGMENT_SHADER_SRC as wireframe_fragment_source } from "/ogl/lib/shaders/minimal_wireframe_fragment_shader.js"
-import { Lathe } from "/ogl/core/mesh/lathe.js";
+import { Drawable_Scene_Object } from "/ext/webgl_1_core/src/scene_objects/drawable_scene_object.js";
+import { VERTEX_SHADER_SRC as wireframe_vertex_source } from "/ext/webgl_1_core/src/shaders/minimal_wireframe_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as wireframe_fragment_source } from "/ext/webgl_1_core/src/shaders/minimal_wireframe_fragment_shader.js"
+import { Lathe } from "/ext/webgl_1_core/src/mesh/lathe.js";
 
 export class Turbofan extends Drawable_Scene_Object {
     

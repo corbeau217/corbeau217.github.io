@@ -1,5 +1,5 @@
 
-import { Scene_Object   } from "/ogl/core/scene_objects/scene_object.js";
+import { Scene_Object   } from "/ext/webgl_1_core/src/scene_objects/scene_object.js";
 import { Can            } from "/ogl/lib/shapes/can.js";
 import { Crate          } from "/ogl/lib/shapes/crate.js";
 import { Sphere         } from "/ogl/lib/shapes/sphere.js";

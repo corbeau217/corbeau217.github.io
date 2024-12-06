@@ -1,7 +1,5 @@
 import { GALLERY_SHAPES_DB } from "./gallery_shapes_db.js"
-// import { Shape_Wrapper } from "./objects/shape_wrapper.js";
-// import { Canvas_Stage } from "/ogl/core/canvas_stage.js";
-import { WebGL_App } from "/ogl/core/webgl_app.js";
+import { WebGL_App } from "/ext/webgl_1_core/src/webgl_app.js";
 
 
 // ############################################################################################

@@ -1,4 +1,4 @@
-import { Textured_Shape_Factory_Scene_Object } from "/ogl/core/scene_objects/textured_shape_factory_scene_object.js";
+import { Textured_Shape_Factory_Scene_Object } from "/ext/webgl_1_core/src/scene_objects/textured_shape_factory_scene_object.js";
 
 export class Barrel extends Textured_Shape_Factory_Scene_Object {
     // ############################################################################################

@@ -4,9 +4,9 @@ import {
     unit_sphere_face_count,
     unit_sphere_normals,
 } from "/ogl/common/util/geometry.js";
-import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-import { VERTEX_SHADER_SRC as diffuse_vertex_source } from "/ogl/lib/shaders/minimal_diffuse_vertex_shader.js"
-import { FRAGMENT_SHADER_SRC as diffuse_fragment_source } from "/ogl/lib/shaders/minimal_diffuse_fragment_shader.js"
+import { Drawable_Scene_Object } from "/ext/webgl_1_core/src/scene_objects/drawable_scene_object.js";
+import { VERTEX_SHADER_SRC as diffuse_vertex_source } from "/ext/webgl_1_core/src/shaders/minimal_diffuse_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as diffuse_fragment_source } from "/ext/webgl_1_core/src/shaders/minimal_diffuse_fragment_shader.js"
 
 export class Sphere extends Drawable_Scene_Object {
     

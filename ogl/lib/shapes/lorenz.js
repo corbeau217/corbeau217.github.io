@@ -1,7 +1,7 @@
-import { Drawable_Scene_Object } from "/ogl/core/scene_objects/drawable_scene_object.js";
-// import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ogl/lib/shaders/sized_wireframe_vertex_shader.js"
-import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ogl/lib/shaders/sized_wireframe_fragment_shader.js";
-import { Vertex_Shader_Builder } from "/ogl/core/util/vertex_shader_builder.js";
+import { Drawable_Scene_Object } from "/ext/webgl_1_core/src/scene_objects/drawable_scene_object.js";
+// import { VERTEX_SHADER_SRC as sized_vertex_source } from "/ext/webgl_1_core/src/shaders/sized_wireframe_vertex_shader.js"
+import { FRAGMENT_SHADER_SRC as sized_fragment_source } from "/ext/webgl_1_core/src/shaders/sized_wireframe_fragment_shader.js";
+import { Vertex_Shader_Builder } from "/ext/webgl_1_core/src/shader_util/vertex_shader_builder.js";
 
 export class Lorenz extends Drawable_Scene_Object {
 
