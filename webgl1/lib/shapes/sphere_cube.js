@@ -76,7 +76,6 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
             right_top_front: 7,
         };
 
-
         /**
          *                   @ ------ @                   @ ------ @ 
          *       [0] TOP   /########/ |       [1] FRONT / |      / | 
@@ -175,19 +174,130 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         // --------------------------------------------------------
         // ---- prepare side point grabber helpers
 
-        // TODO: grabs the corner points for a side of the cube
-        
+        let get_side_corners_vec3 = (side_index)=>{
+            const point_index_list = side_indices[side_index];
+            return [
+                cube_points_vec3[point_index_list[0]],
+                cube_points_vec3[point_index_list[1]],
+                cube_points_vec3[point_index_list[2]],
+                cube_points_vec3[point_index_list[3]],
+            ];
+        };
 
         // --------------------------------------------------------
-        // ---- prepare point helpers
+        // ---- prepare difference vector helpers
 
-        // TODO: sub dividing the cube
-        // TODO: normalizing the vec3 values so that the mesh is spherical
+        let side_difference_vec_i = (side_corners)=>{
+            let result_vec = vec3.create();
+            return vec3.subtract(result_vec, side_corners[0], side_corners[3]);
+        };
+        let side_difference_vec_j = (side_corners)=>{
+            let result_vec = vec3.create();
+            return vec3.subtract(result_vec, side_corners[0], side_corners[1]);
+        };
+
+        // --------------------------------------------------------
+        // ---- prepare subdividing helpers
+
+        /**
+         * sub dividing the cube
+         * @param {*} side_points_vec3_list side points of the quad
+         * @returns 
+         */
+        let gather_points_for_side = (side_points_vec3_list)=>{
+            const bottom_left = side_points_vec3_list[0];
+            const top_left = side_points_vec3_list[1];
+            const top_right = side_points_vec3_list[2];
+            const bottom_right = side_points_vec3_list[3];
+
+            const difference_vectors = {
+                i: side_difference_vec_i(side_points_vec3_list),
+                j: side_difference_vec_j(side_points_vec3_list),
+            };
+
+            /** add 2 to account for the corners */
+            let axis_subdivisions = {
+                i: subdivisions + 2,
+                j: subdivisions + 2,
+            };
+
+            let result_vec_list = [];
+
+            for (let i_index = 0; i_index < axis_subdivisions.i; i_index++) {
+                const i_percentage = i_index / (axis_subdivisions.i - 1.0);
+                for (let j_index = 0; j_index < axis_subdivisions.j; j_index++) {
+                    const j_percentage = j_index / (axis_subdivisions.j - 1.0);
+
+                    // init
+                    let current_i = vec3.create();
+                    let current_j = vec3.create();
+                    let current_vec = vec3.create();
+
+                    // scale the vectors by the percentage of that axis we've moved
+                    vec3.scale(current_i, difference_vectors.i, i_percentage);
+                    vec3.scale(current_j, difference_vectors.j, j_percentage);
+
+                    // add together
+                    vec3.add(current_vec, current_i, current_j);
+                    vec3.add(current_vec, current_vec, bottom_left);
+
+                    // send to list
+                    result_vec_list.push(current_vec);
+                }
+                
+            }
+
+            return result_vec_list;
+        };
+
+        // --------------------------------------------------------
+        // ---- prepare spherical functions
+
+        /**
+         * clones all the vectors as normalized
+         * @param {*} vec3_list 
+         */
+        let normalize_all_vec3s = (vec3_list)=>{
+            let result_vec_list = [];
+            vec3_list.forEach( current_vec =>{
+                let new_vec = vec3.create();
+                vec3.normalize(new_vec, current_vec);
+                result_vec_list.push( new_vec );
+            } );
+        };
+
+        // --------------------------------------------------------
+        // ---- prepare quad point grab
+
+        /**
+         * retrieves the vertices from the list of subdivided points
+         * @param {*} side_subdivision_point_list list of vertices
+         * @param {*} i_index the quad index along i axis for this side 
+         * @param {*} j_index the quad index along j axis for this side 
+         * @returns clockwise starting bottom left
+         */
+        let get_points_of_subdivision_quad = (side_subdivision_point_list, i_index, j_index)=>{
+            // assume good indices, edges/quads are 1 less than the number of vertices
+            const vertex_count_on_axis = 2+subdivisions;
+            // prepare the indices
+            const bottom_left_index = i_index*vertex_count_on_axis + j_index;
+            const top_left_index = i_index*vertex_count_on_axis + (j_index + 1);
+            const bottom_right_index = (i_index+1)*vertex_count_on_axis + j_index;
+            const top_right_index = (i_index+1)*vertex_count_on_axis + (j_index + 1);
+            // clockwise starting bottom left
+            return [
+                side_subdivision_point_list[bottom_left_index],
+                side_subdivision_point_list[top_left_index],
+                side_subdivision_point_list[top_right_index],
+                side_subdivision_point_list[bottom_right_index],
+            ];
+        };
 
         // --------------------------------------------------------
         // ---- prepare triangle/quad helpers
 
         // TODO: making the faces for all the subdivisions
+        
         // TODO: start with checkerboard
 
         // --------------------------------------------------------
