@@ -65,6 +65,56 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         // --------------------------------------------------------
         // ---- prepare point data
 
+        let cube_indices = { 
+            left_bottom_front: 0,
+            left_bottom_back: 1,
+            left_top_back: 2,
+            left_top_front: 3,
+            right_bottom_front: 4,
+            right_bottom_back: 5,
+            right_top_back: 6,
+            right_top_front: 7,
+        };
+
+
+        /**
+         *                   @ ------ @                   @ ------ @ 
+         *       [0] TOP   /########/ |       [1] FRONT / |      / | 
+         *               /########/   |               /   |    /   | 
+         *             @ ------ @     |             @ ------ @     | 
+         *             |     @ -|---- @             |########|---- @ 
+         *             |   /    |   /               |########|   /   
+         *             | /      | /                 |########| /     
+         *             @ ------ @                   @ ------ @       
+         *                                                           
+         *                   @ ------ @                   @ ------ @ 
+         *      [2] RIGHT  / |      /#|       [3] BACK  / |######/#| 
+         *               /   |    /###|               /   |####/###| 
+         *             @ ------ @#####|             @ ------ @#####| 
+         *             |     @ -|#####@             |     @ -|---- @ 
+         *             |   /    |###/               |   /    |   /   
+         *             | /      |#/                 | /      | /     
+         *             @ ------ @                   @ ------ @       
+         *                                                           
+         *                   @ ------ @                   @ ------ @ 
+         *       [4] LEFT  /#|      / |      [5] BOTTOM / |      / | 
+         *               /###|    /   |               /   |    /   | 
+         *             @ ------ @     |             @ ------ @     | 
+         *             |#####@ -|---- @             |     @ -|---- @ 
+         *             |###/    |   /               |   /####|###/   
+         *             |#/      | /                 | /######|#/     
+         *             @ ------ @                   @ ------ @       
+         *                                                           
+         */
+        
+        let side_indices = {
+            top: [ 3, 2, 6, 7, ],
+            front: [ 0, 3, 7, 4 ],
+            right: [ 4, 7, 6, 5 ],
+            back: [ 5, 6, 2, 1, ],
+            left: [ 1, 2, 3, 0, ],
+            bottom: [ 1, 0, 4, 5, ],
+        };
 
         /**
          *         [2]------[6]
@@ -123,9 +173,9 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         });
         
         // --------------------------------------------------------
-        // ---- prepare face point grabber helpers
+        // ---- prepare side point grabber helpers
 
-        // TODO: grabs the corner points for a face of the cube
+        // TODO: grabs the corner points for a side of the cube
         
 
         // --------------------------------------------------------
