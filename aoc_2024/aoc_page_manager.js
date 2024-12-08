@@ -22,6 +22,7 @@ export class AdventOfCode_Page_Manager {
     }
     initialise(){
         this.time_between_timer_updates_in_millis = 1000;
+        this.show_unfinished = false;
         /**
          * list of daily blocks 
          */
@@ -55,10 +56,29 @@ export class AdventOfCode_Page_Manager {
      * @param {*} element_id the id of the element to modify with the answer
      */
     add_part_to_day(day_index, code_block, element_id){
+        // assume showing it
+        let part_will_display = true;
+
+        if(!this.show_unfinished){
+            // when we want only they completed parts
+            try {
+                if(code_block("") === "unfinished"){
+                    // when unfinished and dont want it to be shown
+                    part_will_display = false;
+                }
+            } catch (error) {
+                // errors when empty given, so possibly done/started
+                // zzz
+            }
+        }
+
+        // add the part
         this.daily_block_list[day_index].parts.push({
             part_function: code_block,
             part_answer_element: element_id,
+            display: part_will_display,
         });
+
     }
 
     // ############################################################################################
