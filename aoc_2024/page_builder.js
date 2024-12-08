@@ -3,31 +3,19 @@ import { pad_number } from "./util.js";
 
 export class AOC_Daily_Card_builder {
     constructor(){
-        this.initialise_availability_data();
-        this.update_days_available();
+        this.initialise();
     }
 
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    initialise_availability_data(){
+    initialise(){
         // start with less than none to force a rebuild on next update
-        this.challenges_available = -1;
-    }
-    /**
-     * builds the card data if there's a change in the number of cards
-     */
-    update_days_available(){
-        let new_count = Time_Keeper.get_instance().get_number_of_challenges_available();
+        this.challenges_available = Time_Keeper.get_instance().get_number_of_challenges_available();
         
-        // when the new count is more
-        if(new_count > this.challenges_available){
-            // change the number available
-            this.challenges_available = new_count;
             // build them
             this.build_available_cards();
-        }
     }
     build_available_cards(){
         /**

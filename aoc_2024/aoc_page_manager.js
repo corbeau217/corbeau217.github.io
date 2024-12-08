@@ -8,21 +8,20 @@ import { ADVENT_CALENDER_DAYS } from "./util.js";
 
 export class AdventOfCode_Page_Manager {
     constructor(){
-        this.initialise_daily_card_builder();
         this.initialise();
         this.hook_load_event();
     }
-    initialise_daily_card_builder(){
+    initialise(){
         this.flow_elem_id = "aoc_flow_body_elem_id";
-        // TODO: merge the data from this into the daily block list
         /**
          * handles building our daily card code for our flow body
          */
         this.daily_card_builder = new AOC_Daily_Card_builder();
-    }
-    initialise(){
+
         this.time_between_timer_updates_in_millis = 1000;
         this.show_unfinished = false;
+        this.timer_constructed_card = null;
+
         /**
          * list of daily blocks 
          */
@@ -45,7 +44,8 @@ export class AdventOfCode_Page_Manager {
         let index = this.daily_block_list.length;
         this.daily_block_list.push({
             parts: [],
-            show_result: true,
+            show_card: true,
+            constructed_card: "",
         });
         return index;
     }
@@ -143,22 +143,85 @@ export class AdventOfCode_Page_Manager {
         // wipe the inside
         this.flow_element_object.innerHTML = "";
 
-        // do the rest of the page main
-        this.construct_page_daily_cards();
-        this.replace_page_run_command();
+        // prepare the code blocks
         this.map_code_blocks();
+        this.fetch_card_data_blocks();
+        // do the rest of the page main
+        this.add_page_daily_cards_to_page();
+        this.replace_page_run_command();
     }
 
     // ############################################################################################
     // ############################################################################################
     // ############################################################################################
 
-    construct_page_daily_cards(){
+    fetch_card_data_blocks(){
+        let built_code_blocks = this.daily_card_builder.get_daily_card_data_blocks();
+
+        let number_of_cards = this.daily_card_builder.challenges_available;
+        let showing_timer = false;
+        if(number_of_cards < ADVENT_CALENDER_DAYS){
+            showing_timer = true;
+        }
+
+        // loop all the code we were given and add to our card data
+        for (let index = 0; index < number_of_cards; index++) {
+            const current_code_block = built_code_blocks[index];
+            
+            // add tthe code to the block
+            this.daily_block_list[index].constructed_card = current_code_block;
+        }
+
+        // save timer code
+        if(showing_timer){
+            // grab the last, since it's the timer block
+            this.timer_constructed_card = built_code_blocks[this.number_of_cards+1];
+        }
+
+        // test for when they should be shown or not
+        if(!this.show_unfinished){
+            this.update_if_cards_are_shown();
+        }
+    }
+    update_if_cards_are_shown(){
+        // loop all cards
+        for (let card_index = 0; card_index < this.daily_block_list.length; card_index++) {
+            const current_card_parts_data = this.daily_block_list[card_index].parts;
+            
+            // assume nope
+            let showing_card = false;
+
+            // loop all parts
+            for (let part_index = 0; part_index < current_card_parts_data.length; part_index++) {
+                const part_data = current_card_parts_data[part_index];
+                
+                if (part_data.display) {
+                    // proven to be not unfinished, show it
+                    showing_card = true;
+                    break;
+                }
+            }
+
+            this.daily_block_list[card_index].show_card = showing_card;
+        }
+    }
+    add_page_daily_cards_to_page(){
         let inner_code_value = "";
+
         // add all the daily card code blocks to the flow body
-        this.daily_card_builder.get_daily_card_data_blocks().forEach(card_data_block => {
-            inner_code_value += card_data_block.card_body_code;
+        this.daily_block_list.forEach(card_data_block => {
+            //when showing 
+
+            if(card_data_block.show_card){
+                inner_code_value += card_data_block.constructed_card.card_body_code;
+            }
         });
+
+        // add the timer card data if exists
+        if(this.timer_constructed_card != null){
+            inner_code_value += this.timer_constructed_card.card_body_code;
+        }
+
         this.flow_element_object.innerHTML = inner_code_value;
     }
     replace_page_run_command(){
@@ -197,10 +260,10 @@ export class AdventOfCode_Page_Manager {
     // ############################################################################################
 
     turn_off_day(day_index){
-        this.daily_block_list[day_index].show_result = false;
+        this.daily_block_list[day_index].show_card = false;
     }
     turn_on_day(day_index){
-        this.daily_block_list[day_index].show_result = true;
+        this.daily_block_list[day_index].show_card = true;
     }
 
     // ############################################################################################
