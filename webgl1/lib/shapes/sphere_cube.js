@@ -159,10 +159,6 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
          */
         const subdivisions = 0;
         
-
-        // --------------------------------------------------------
-        // ---- prepare point helpers
-
         /**
          * collection of the cube points as vec3 values
          */
@@ -170,7 +166,44 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         cube_point_information.forEach(point_info=>{
             cube_points_vec3.push( vec3.fromValues(point_info.x, point_info.y, point_info.z) );
         });
-        
+
+        // --------------------------------------------------------
+        // ---- prepare point helpers
+
+        /**
+         * convert vec3 to point data for our shape factory
+         * @param {*} vec3_input 
+         * @returns 
+         */
+        let vec3_as_point_data = (vec3_input)=>{
+            return {
+                position: {
+                    x: vec3_input[0],
+                    y: vec3_input[1],
+                    z: vec3_input[2],
+                    w: 1.0
+                },
+                colour: general_point_colour,
+                size: general_point_size,
+            };
+        };
+
+        /**
+         * convert vec3 list to point data list
+         * @param {*} vec3_list 
+         * @returns 
+         */
+        let vec3_list_as_point_data_list = (vec3_list)=>{
+            let result_list = [];
+
+            for (let index = 0; index < vec3_list.length; index++) {
+                const current_vec3 = vec3_list[index];
+                result_list.push( vec3_as_point_data(current_vec3) );
+            }
+
+            return result_list;
+        }
+
         // --------------------------------------------------------
         // ---- prepare side point grabber helpers
 
@@ -183,6 +216,16 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
                 cube_points_vec3[point_index_list[3]],
             ];
         };
+        let get_list_of_side_corner_lists_vec3 = ()=>{
+            let result_list = [];
+
+            for (let side_index = 0; side_index < 6; side_index++) {
+                const current_side_corners = get_side_corners_vec3(side_index);
+                result_list.push(current_side_corners);
+            }
+
+            return result_list;
+        }
 
         // --------------------------------------------------------
         // ---- prepare difference vector helpers
@@ -204,7 +247,7 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
          * @param {*} side_points_vec3_list side points of the quad
          * @returns 
          */
-        let gather_points_for_side = (side_points_vec3_list)=>{
+        let subdivide_points_for_side = (side_points_vec3_list)=>{
             const bottom_left = side_points_vec3_list[0];
             const top_left = side_points_vec3_list[1];
             const top_right = side_points_vec3_list[2];
@@ -249,6 +292,19 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
 
             return result_vec_list;
         };
+
+        /**
+         * does subdivision for a side
+         * @param {*} list_of_side_points_vec3_lists 
+         */
+        let get_all_sides_as_subdivided = (list_of_side_points_vec3_lists)=>{
+            let result_list = [];
+            for (let index = 0; index < list_of_side_points_vec3_lists.length; index++) {
+                const current_side_points = list_of_side_points_vec3_lists[index];
+
+                result_list.push( subdivide_points_for_side(current_side_points) );
+            }
+        }
 
         // --------------------------------------------------------
         // ---- prepare spherical functions
@@ -296,14 +352,45 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         // --------------------------------------------------------
         // ---- prepare triangle/quad helpers
 
-        // TODO: making the faces for all the subdivisions
-        
-        // TODO: start with checkerboard
+        /**
+         * making the faces for all the subdivisions
+         * TODO: do as checker board?
+         * @param {*} side_point_data 
+         */
+        let add_side_quads_to_shape = (side_point_data)=>{
+            // not +2 because it's one less than the vertex count
+            const axis_quad_count = subdivisions + 1;
+
+            for (let quad_i_index = 0; quad_i_index < axis_quad_count; quad_i_index++) {
+                for (let quad_j_index = 0; quad_j_index < axis_quad_count; quad_j_index++) {
+                    const quad_points = get_points_of_subdivision_quad(side_point_data, quad_i_index, quad_j_index);
+
+                    shape_factory.add_quad_with_data( quad_points[0], quad_points[1], quad_points[2], quad_points[3] );
+                }
+            }
+        };
 
         // --------------------------------------------------------
         // ---- make shape
 
-        // TODO: constructing the shape from the point information
+        // prepare side corner groups
+        const side_corner_list_of_lists = get_list_of_side_corner_lists_vec3();
+
+        // subdivide all our sides
+        const list_of_subdivided_side_lists = get_all_sides_as_subdivided(side_corner_list_of_lists);
+
+        // for all sides
+        for (let side_index = 0; side_index < list_of_subdivided_side_lists.length; side_index++) {
+            // our vec3s to use
+            const current_side_vec3_list = list_of_subdivided_side_lists[side_index];
+            // normalize them so it's spherical (dont do this if you wanna stay as a cube)
+            const normalized_current_side_vec3_list = normalize_all_vec3s(current_side_vec3_list);
+            // convert to point data that shape factory expects
+            const current_side_point_data = vec3_list_as_point_data_list(normalized_current_side_vec3_list);
+
+            // add to shape
+            add_side_quads_to_shape(current_side_point_data);
+        }
         
         // --------------------------------------------------------
         // ---- finished, give it back
