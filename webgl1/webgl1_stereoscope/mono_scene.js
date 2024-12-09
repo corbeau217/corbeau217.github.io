@@ -8,7 +8,7 @@ import { Scene_Graph } from "/ext/webgl_1_core/src/scene_graph.js";
 /**
  * amount of delta time to feed into a camera update to put the sides out of sync
  */
-const CAMERA_ORBIT_TIME_DIFFERENCE = 0.1;
+const CAMERA_ORBIT_TIME_DIFFERENCE = 0.05;
 
 export class Mono_Scene extends Scene_Graph {
 
