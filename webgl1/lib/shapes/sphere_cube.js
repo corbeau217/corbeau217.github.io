@@ -106,14 +106,15 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
          *                                                           
          */
         
-        let side_indices = {
-            top: [ 3, 2, 6, 7, ],
-            front: [ 0, 3, 7, 4 ],
-            right: [ 4, 7, 6, 5 ],
-            back: [ 5, 6, 2, 1, ],
-            left: [ 1, 2, 3, 0, ],
-            bottom: [ 1, 0, 4, 5, ],
-        };
+        let side_indices = [
+            // clockwise
+            [ 3, 2, 6, 7, ], // top
+            [ 0, 3, 7, 4, ], // front
+            [ 4, 7, 6, 5, ], // right
+            [ 5, 6, 2, 1, ], // back
+            [ 1, 2, 3, 0, ], // left
+            [ 1, 0, 4, 5, ], // bottom
+        ];
 
         /**
          *         [2]------[6]
@@ -157,7 +158,7 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         /**
          * 0 - cube
          */
-        const subdivisions = 0;
+        const subdivisions = 5;
         
         /**
          * collection of the cube points as vec3 values
@@ -232,11 +233,11 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
 
         let side_difference_vec_i = (side_corners)=>{
             let result_vec = vec3.create();
-            return vec3.subtract(result_vec, side_corners[0], side_corners[3]);
+            return vec3.subtract(result_vec, side_corners[3], side_corners[0]);
         };
         let side_difference_vec_j = (side_corners)=>{
             let result_vec = vec3.create();
-            return vec3.subtract(result_vec, side_corners[0], side_corners[1]);
+            return vec3.subtract(result_vec, side_corners[1], side_corners[0]);
         };
 
         // --------------------------------------------------------
@@ -304,7 +305,8 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
 
                 result_list.push( subdivide_points_for_side(current_side_points) );
             }
-        }
+            return result_list;
+        };
 
         // --------------------------------------------------------
         // ---- prepare spherical functions
@@ -320,6 +322,7 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
                 vec3.normalize(new_vec, current_vec);
                 result_vec_list.push( new_vec );
             } );
+            return result_vec_list;
         };
 
         // --------------------------------------------------------
@@ -365,7 +368,11 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
                 for (let quad_j_index = 0; quad_j_index < axis_quad_count; quad_j_index++) {
                     const quad_points = get_points_of_subdivision_quad(side_point_data, quad_i_index, quad_j_index);
 
-                    shape_factory.add_quad_with_data( quad_points[0], quad_points[1], quad_points[2], quad_points[3] );
+                    // // apparently this has it inside out
+                    // shape_factory.add_quad_with_data( quad_points[0], quad_points[1], quad_points[2], quad_points[3] );
+                    
+                    // honestly just flip the order so it works for now
+                    shape_factory.add_quad_with_data( quad_points[3], quad_points[2], quad_points[1], quad_points[0] );
                 }
             }
         };
@@ -383,7 +390,7 @@ export class Sphere_Cube extends Shape_Factory_Scene_Object {
         for (let side_index = 0; side_index < list_of_subdivided_side_lists.length; side_index++) {
             // our vec3s to use
             const current_side_vec3_list = list_of_subdivided_side_lists[side_index];
-            // normalize them so it's spherical (dont do this if you wanna stay as a cube)
+            // normalize them so it's spherical (dont do this if you wanna stay as a cube);
             const normalized_current_side_vec3_list = normalize_all_vec3s(current_side_vec3_list);
             // convert to point data that shape factory expects
             const current_side_point_data = vec3_list_as_point_data_list(normalized_current_side_vec3_list);

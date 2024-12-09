@@ -9,6 +9,7 @@ import { Lorenz         } from "/webgl1/lib/shapes/lorenz.js";
 import { Book           } from "/webgl1/lib/shapes/book.js";
 import { Joint          } from "/webgl1/lib/shapes/joint.js";
 import { Barrel         } from "/webgl1/lib/shapes/barrel.js";
+import { Sphere_Cube    } from "/webgl1/lib/shapes/sphere_cube.js";
 
 export const GALLERY_SHAPES_DB = [
     { index: 0, id: "clear",        type: Scene_Object,    thumbnail: "/img/bookicon.png" },
@@ -21,4 +22,5 @@ export const GALLERY_SHAPES_DB = [
     { index: 7, id: "joint",        type: Joint,           thumbnail: "/img/thumbs/shape_gallery/joint_01.png"      },
     { index: 8, id: "turbofan_02",  type: Turbofan02,      thumbnail: "/img/thumbs/shape_gallery/turbofan_03.png"   },
     { index: 9, id: "barrel",       type: Barrel,          thumbnail: "/img/thumbs/shape_gallery/barrel_01.png"   },
+    { index: 10,id: "spherecube",   type: Sphere_Cube,     thumbnail: "/img/thumbs/shape_gallery/sphere_cube.png"   },
 ];
