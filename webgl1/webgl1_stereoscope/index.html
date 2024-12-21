@@ -79,8 +79,84 @@
                                 <canvas class="stereo_right stereo_canvas" id="webgl_stereoscope_right" width="320" height="480"><code>meant to be a canvas element here, if you're seeing this then it doesn't work on your device sorry</code></canvas>
                             </div>
                             <hr />
-                            <p class="brief_heading_elem">Details</p>
-                            <p class="brief_textbody_elem">testing stereoscopic rendering</p>
+                            <p class="brief_warning_elem">!!WARNING!!</p>
+                            <p class="brief_warningbody_elem">THIS DEMONSTRATION IS KNOWN TO CAUSE NAUSEA AND OR MOTION SICKNESS TO THE VIEWER</p>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="sectioned_content_outer">
+                <div class="sectioned_content_inner">
+                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="[...]" /></div>
+                    <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">Project overview</h3></div>
+                    <div class="sectioned_content_body">
+                        <div class="techdemo_brief">
+                            <hr />
+                            <p class="brief_heading_elem">About</p>
+                            <p class="brief_textbody_elem">testing stereoscopic rendering, you need to focus your eyes on a point behind the screen so that either side overlap in the middle of your view</p>
+                            <p class="brief_textbody_elem">when successful, you should end up with 3 images in your view, the left-image on the left, the overlapping now slightly 3D image in the middle, and the right image on the right</p>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="sectioned_content_outer">
+                <div class="sectioned_content_inner">
+                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="[...]" /></div>
+                    <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">Nausea potential causes</h3></div>
+                    <div class="sectioned_content_body">
+                        <div class="techdemo_brief">
+                            <hr />
+                            <p class="brief_heading_elem">Viewing angle</p>
+                            <p class="brief_textbody_elem">high chance the nausea is from being able to see the sphere from a narrower/wider viewing angle than the human eyes/brain are comfortable with</p>
+                            <p class="brief_textbody_elem">implying that this is some form of existential-nausea/confusion in the muscle memory</p>
+                            <p class="brief_textbody_elem">which explains why it's not immediate and washes over time in the following 10-50 minutes after viewing</p>
+                            <p class="brief_textbody_elem">likely from the brain learning to use a narrower/wider distance between the eyes during the viewing (like inverting the steering directions on a bike)</p>
+                            <p class="brief_textbody_elem">it would then take a moment for the brain to be okay with your natural viewing angle afterwards</p>
+                            <hr />
+                            <p class="brief_heading_elem">Frame rate being too low</p>
+                            <p class="brief_textbody_elem">also high chance having the frame rate locked at less than 60 fps might be the cause of the nausea issue</p>
+                            <p class="brief_textbody_elem">it's then the left-right-left-right-left-right blinking of the frame updates which is confusing the brain</p>
+                            <p class="brief_textbody_elem">this would imply it's the fact the eyes are getting updated information at different speeds to what they're used to</p>
+                            <hr />
+                            <p class="brief_heading_elem">Mixing the two for suffering problem complexity</p>
+                            <p class="brief_textbody_elem">there's a chance it's the fact it's not mirroring the human eye correctly and it's both the asymmetrical updates AND our lazy method of creating perspective</p>
+                            <p class="brief_textbody_elem">which leads into the idea that a non-stereoscope perspective has a wider field of view than a single eye would have, so modifying the field of view of either side might be necessary</p>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="sectioned_content_outer">
+                <div class="sectioned_content_inner">
+                    <div class="sectioned_content_thumbnail"><img class="sectioned_content_thumbnail_img" src="/img/bookicon.png" alt="[...]" /></div>
+                    <div class="sectioned_content_heading"><h3 class="sectioned_content_heading_text">Suggested solutions</h3></div>
+                    <div class="sectioned_content_body">
+                        <div class="techdemo_brief">
+                            <hr />
+                            <p class="brief_heading_elem">Viewing angle - solution 1</p>
+                            <p class="brief_textbody_elem">would need to calculate the average distance and angle between the human eyes relative to the viewing distance of the user</p>
+                            <p class="brief_heading_elem">Viewing angle - solution 2</p>
+                            <p class="brief_textbody_elem">having sliding scales for the viewing angle/distance so the user is responsible for this</p>
+                            <hr />
+                            <p class="brief_heading_elem">Frame rate - solution 1</p>
+                            <p class="brief_textbody_elem">potentially merging the two canvases so that it's all one in a single frame update rather than asymmetrical frame updating</p>
+                            <p class="brief_heading_elem">Frame rate - solution 2</p>
+                            <p class="brief_textbody_elem">updates happen over two frames using interlacing, to "blend" the updating so it appears more like it's simultaneous</p>
+                            <p class="brief_textbody_elem">OPTION A -- using odds/evens row updates, maybe left is odd and right is even, then next frame left is even and right is odd, repeating the pattern so it's more blended (might just increase the nausea moving into overstimulation territory)</p>
+                            <p class="brief_textbody_elem">OPTION B -- go for a more cellular interlacing, using <code>(column+row)%2</code>to get a checkerboard interlacing instead of row/columns</p>
+                            <hr />
+                            <p class="brief_heading_elem">Mixing the two - solution 1</p>
+                            <p class="brief_textbody_elem">updates happen over two frames using interlacing, on a merged canvas</p>
+                            <p class="brief_textbody_elem">OPTION A -- calculating the angles etc, then using row/column updates in a linear fashion, so that it's even/odd column updating flipflop between frames, but the rows of the updating columns are done across both sides in a single frame</p>
+                            <p class="brief_textbody_elem">OPTION B -- somewhat the same as OPTION A, but using a random ordering for the column/row updates</p>
+                            <p class="brief_heading_elem">Mixing the two - solution 2</p>
+                            <p class="brief_textbody_elem">similar to solution 1, however using a cellular style of interlacing to give the appearance of a more "analog" update</p>
+                            <p class="brief_textbody_elem">would likely require more frame buffers to store each frame update, then have the final displayed frame being a combination of these frame buffers</p>
+                            <p class="brief_textbody_elem">8 should be enough, then using update masks to determine which pixel to take from a given frame buffer</p>
+                            <p class="brief_textbody_elem">OPTION A -- randomly updating pixels using white noise update mask (simple yes/no if the pixel is taken from that buffer)</p>
+                            <p class="brief_textbody_elem">OPTION B -- pseudo-random updating pixels using an update mask (some form of fractal noise with alpha blending)</p>
                             <hr />
                         </div>
                     </div>
