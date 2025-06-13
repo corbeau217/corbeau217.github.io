@@ -15,7 +15,10 @@ function nav_menu_element(label,path){
  */
 function construct_nav_menu_inner_html(){
     let constructed_elements = NAV_MENU_ITEMS.map(element_data => {
-        return nav_menu_element(element_data.label, element_data.path);
+        // grab only when we want it
+        if(element_data.enabled){
+            return nav_menu_element(element_data.label, element_data.path);
+        }
     });
     return constructed_elements.join("\n");
 }
