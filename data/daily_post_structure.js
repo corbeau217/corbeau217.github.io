@@ -87,7 +87,7 @@ const DAILY_POST_STRUCTURE = {
                                             "class": [ "daily_textbody_elem", "%IMPORT_POST_CONTENT%" ],
                                             // // this here might break if we change the name
                                             // "import-html": "/daily/posts/${ daily_post_stub_file }",
-                                            "POST_IMPORT_ATTRIBUTE": "/daily/posts/${ daily_post_stub_file }",
+                                            "POST_IMPORT_ATTRIBUTE": "%SITE_BLOG_POSTS_PATH_TOKEN%/posts/${ daily_post_stub_file }",
                                             "inner": [],
                                         },
                                     ],

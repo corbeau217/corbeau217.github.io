@@ -4,7 +4,7 @@
 // } from '/scripts/dailyPosts/symbols.js';
 import {
     DAILY_POST_DATA
-} from '/data/daily_post_data.js';
+} from '/ext/site_blog_posts/data/daily_post_data.js';
 import {
     DAILY_POST_STRUCTURE
 } from '/data/daily_post_structure.js';

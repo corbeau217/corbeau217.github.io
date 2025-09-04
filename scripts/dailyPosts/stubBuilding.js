@@ -60,6 +60,8 @@ function process_stub_text_content( text_content, post_metadata ){
     processed_text = processed_text.replace("%POST_DAY%", post_metadata.day);
     processed_text = processed_text.replace("%POST_THEME%", post_metadata.theme);
     processed_text = processed_text.replace("%POST_TITLE%", post_metadata.title);
+    processed_text = processed_text.replace("%SITE_BLOG_POSTS_PATH_TOKEN%", SITE_BLOG_POSTS_PATH);
+    // %SITE_BLOG_POSTS_PATH_TOKEN%
     processed_text = processed_text.replace("%IMPORT_POST_CONTENT%", "html_import_element");
     // ...
     return processed_text;
@@ -96,7 +98,7 @@ function build_tree( root_node_structure, post_metadata ){
     // test for if it's the import element
     if(class_name_string.includes( IMPORT_POST_TAG_CLASS )){
         const post_import_path = process_post_import_name(post_metadata);
-        current_element.setAttribute("import-html", `/daily/posts/${ post_import_path }.html`);
+        current_element.setAttribute("import-html", `${ SITE_BLOG_POSTS_PATH }/posts/${ post_import_path }.html`);
     }
 
     // handle the other situations

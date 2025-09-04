@@ -6,6 +6,7 @@
 const MEDITATIONS_DAILY_QUOTE_DIV_ID = "meditations_daily_quote";
 const TAOTECHING_DAILY_QUOTE_DIV_ID = "taoteching_daily_quote";
 
+const SITE_BLOG_POSTS_PATH = "/ext/site_blog_posts";
 
 // ################################################################
 // ################################################################
