@@ -60,8 +60,6 @@ function process_stub_text_content( text_content, post_metadata ){
     processed_text = processed_text.replace("%POST_DAY%", post_metadata.day);
     processed_text = processed_text.replace("%POST_THEME%", post_metadata.theme);
     processed_text = processed_text.replace("%POST_TITLE%", post_metadata.title);
-    processed_text = processed_text.replace("%SITE_BLOG_POSTS_PATH_TOKEN%", SITE_BLOG_POSTS_PATH);
-    // %SITE_BLOG_POSTS_PATH_TOKEN%
     processed_text = processed_text.replace("%IMPORT_POST_CONTENT%", "html_import_element");
     // ...
     return processed_text;

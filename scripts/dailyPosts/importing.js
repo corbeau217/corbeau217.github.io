@@ -3,12 +3,22 @@ import {
     IMPORT_HTML_REF_ATTRIBUTE
 } from '/scripts/dailyPosts/symbols.js';
 
+
 // ############################################################################################
 // ############################################################################################
 // ############################################################################################
 
 function daily_post_flow_get_all_stubs(){
     return document.getElementsByClassName( IMPORT_POST_TAG_CLASS );
+}
+
+function process_fetched_post_content(raw_post_data){
+    let resulting_html_code = raw_post_data;
+    // TODO : handle .md file stuff
+
+    resulting_html_code = resulting_html_code.replaceAll("%SITE_BLOG_POSTS_PATH_TOKEN%", SITE_BLOG_POSTS_PATH);
+
+    return resulting_html_code;
 }
 
 // handles a section element that needs to have its inner content imported
@@ -25,7 +35,9 @@ function process_html_importing_section_element( html_importing_stub_section ){
             // xml http request is done state
             if (this.readyState == 4) {
                 // check for page done
-                if (this.status == 200) { html_importing_stub_section.innerHTML = this.responseText; }
+                if (this.status == 200) {
+                    html_importing_stub_section.innerHTML = process_fetched_post_content(this.responseText);
+                }
                 // when spooky 404 for the stub
                 //  should have a thing for failed stubs?
                 if (this.status == 404) { html_importing_stub_section.innerHTML = "Page not found."; }
