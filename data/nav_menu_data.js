@@ -7,5 +7,5 @@ export const NAV_MENU_ITEMS = [
     { label: "WEBGL1",  path: "/webgl1/",   enabled: true },
     { label: "DAILY",   path: "/daily/",    enabled: true },
     { label: "AOC '24", path: "/aoc_2024/", enabled: false },
-    { label: "UNITY",   path: "/unity/",    enabled: false },
+    { label: "UNITY",   path: "/unity_webgl_builds/",    enabled: false },
 ]; 

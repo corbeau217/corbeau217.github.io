@@ -4,3 +4,6 @@
 [submodule "ext/site_blog_posts"]
 	path = ext/site_blog_posts
 	url = https://github.com/corbeau217/site_blog_posts
+[submodule "unity_webgl_builds"]
+	path = unity_webgl_builds
+	url = https://github.com/corbeau217/unity_webgl_builds
