@@ -9,10 +9,15 @@
 .brief_textbody_elem {
     display: block;
     margin-left: 3em;
+    margin-right: 2em;
+    padding-right: 2em;
 
     font-style: italic;
-    word-wrap: normal;
+    text-wrap: wrap;
+    word-wrap: wrap;
 }
 .brief_textbody_elem, .brief_heading_elem {
     padding-left: 2em;
+    margin-right: 2em;
+    padding-right: 2em;
 }
